@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel.DomainServices.Client.ApplicationServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -22,6 +23,10 @@ namespace KanbanBoard
             this.UnhandledException += this.Application_UnhandledException;
 
             InitializeComponent();
+
+            WebContext context = new WebContext();
+            context.Authentication = new FormsAuthentication();
+            ApplicationLifetimeObjects.Add(context);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
