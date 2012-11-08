@@ -4,8 +4,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Grid x:Name="LayoutRoot">
-        <TextBlock Text="Header" TextAlignment="Center" FontSize="20"></TextBlock>
+
+    <Grid x:Name="LayoutRoot" Background="Yellow">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" x:Name="qwerty" Orientation="Horizontal">
+            <TextBlock x:Name="UserName" Text="User Name"/>
+            <HyperlinkButton x:Name="LogOutButton" Content="LogOut"/>
+        </StackPanel>
     </Grid>
+
 </UserControl>

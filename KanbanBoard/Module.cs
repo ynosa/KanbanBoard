@@ -18,9 +18,9 @@ namespace KanbanBoard
 
         public void Initialize()
         {
-            // ToDo : Add initialization logic
+            // TODO : Add initialization logic
             this.regionManager.RegisterViewWithRegion(RegionNames.HEADER_REGION, () => this.container.Resolve<HeaderView>());
-            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<BoardsView>());
+            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<LoginView>());
         }
     }
 }

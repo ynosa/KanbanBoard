@@ -4,21 +4,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://www.codeplex.com/prism"
-    mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400">
+    mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="LightGreen" Height="300" Width="400">
+    <Grid x:Name="LayoutRoot" Background="LightGreen">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0">
-            <ContentControl x:Name="HeaderRegion" prism:RegionManager.RegionName="HeaderRegion"/>
+            <ContentControl x:Name="HeaderRegion" prism:RegionManager.RegionName="HeaderRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
         <Border Grid.Row="1">
-            <ContentControl x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion"/>
+            <ContentControl x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
     </Grid>
 </UserControl>
