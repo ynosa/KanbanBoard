@@ -4,7 +4,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <StartPageUrl>KanbanBoardTestPage.aspx</StartPageUrl>
+          <StartPageUrl>Default.html</StartPageUrl>
           <StartAction>SpecificPage</StartAction>
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>True</SilverlightDebugging>
@@ -22,6 +22,7 @@
           <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
           <ProjectOutputReferences>
             <Ref Project="{EF3F3CB5-5168-41D4-A880-58D7E97ED530}" Folder="ClientBin">KanbanBoard.xap</Ref>
+            <Ref Project="{832FE05C-3C7B-488C-B48B-241BE4E4BE92}" Folder="ClientBin">KanbanBoard.Shell.xap</Ref>
           </ProjectOutputReferences>
         </WebProjectProperties>
       </FlavorProperties>

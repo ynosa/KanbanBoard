@@ -19,7 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <SilverlightApplicationList>{EF3F3CB5-5168-41D4-A880-58D7E97ED530}|..\KanbanBoard\KanbanBoard.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{EF3F3CB5-5168-41D4-A880-58D7E97ED530}|..\KanbanBoard\KanbanBoard.csproj|ClientBin|False,{832FE05C-3C7B-488C-B48B-241BE4E4BE92}|..\KanbanBoard.Shell\KanbanBoard.Shell.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,8 +58,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="KanbanBoardTestPage.aspx" />
-    <Content Include="KanbanBoardTestPage.html" />
+    <Content Include="ClientBin\KanbanBoard.Shell.xap" />
+    <Content Include="ClientBin\KanbanBoard.xap" />
+    <Content Include="Default.html" />
     <Content Include="Silverlight.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -74,9 +75,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClientBin\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -90,7 +89,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>3545</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:9607/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

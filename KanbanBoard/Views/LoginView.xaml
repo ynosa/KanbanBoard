@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="KanbanBoard.Views.LoginView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel x:Name="Login" Background="White">
+        <TextBox x:Name="UserName" Width="200" Text="{Binding UserName, Mode=OneWay}"/>
+        <PasswordBox x:Name="Password" Width="200" Password="{Binding Password, Mode=OneWay}" PasswordChar="#"/>
+        <Button Height="25" Width="200" Content="Login" Command="{Binding LoginCommand}"/>
+    </StackPanel>
+</UserControl>
