@@ -10,11 +10,11 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace KanbanBoard
+namespace KanbanBoard.Views
 {
-    public partial class MainPage : UserControl
+    public partial class BoardsView : UserControl
     {
-        public MainPage()
+        public BoardsView()
         {
             InitializeComponent();
         }

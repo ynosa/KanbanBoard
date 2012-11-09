@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard", "KanbanBoard\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Web", "KanbanBoard.Web\KanbanBoard.Web.csproj", "{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Shell", "KanbanBoard.Shell\KanbanBoard.Shell.csproj", "{832FE05C-3C7B-488C-B48B-241BE4E4BE92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,8 +24,15 @@ Global
 		{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal

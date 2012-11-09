@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace KanbanBoard
+namespace KanbanBoard.Shell
 {
     public partial class App : Application
     {
@@ -31,7 +31,8 @@ namespace KanbanBoard
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage();
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Run();
         }
 
         private void Application_Exit(object sender, EventArgs e)
