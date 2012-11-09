@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace KanbanBoard.Views
 {
-    public partial class BoardsView : UserControl
+    public partial class StatusView : UserControl
     {
-        public BoardsView(BoardsListViewModel viewModel)
+        public StatusView(LoginViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;
