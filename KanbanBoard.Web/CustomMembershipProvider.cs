@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.ServiceModel.DomainServices.Server.ApplicationServices;
+using System.Configuration;
 
 namespace TaskManager.Web
 {
@@ -11,14 +12,9 @@ namespace TaskManager.Web
     {
         public override bool ValidateUser(string username, string password)
         {
-            //using (TaskManagerEntities context = new TaskManagerEntities())
-            //{
-            //    var user = context.Users.Where(u => u.Username == username &&
-            //        u.Password == password).FirstOrDefault();
-            //    return user != null;
-            //}
-
-            return true;
+            return  (ConfigurationManager.AppSettings["UserName"].Equals(username)
+                    &&
+                    ConfigurationManager.AppSettings["Password"].Equals(password));
         }
 
         public override string ApplicationName
@@ -30,9 +26,14 @@ namespace TaskManager.Web
 
         // Other overrides not implemented
         #region Other overrides not implemented
-        public override MembershipUser CreateUser(string username, string password, string email,
-    string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey,
-    out MembershipCreateStatus status)
+        public override MembershipUser CreateUser(string username, 
+                                                    string password, 
+                                                    string email,
+                                                    string passwordQuestion, 
+                                                    string passwordAnswer, 
+                                                    bool isApproved, 
+                                                    object providerUserKey,
+                                                    out MembershipCreateStatus status)
         {
             throw new NotImplementedException();
         }
