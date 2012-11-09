@@ -1,4 +1,5 @@
-﻿using KanbanBoard.Views;
+﻿using KanbanBoard.ViewModel;
+using KanbanBoard.Views;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
@@ -18,9 +19,11 @@ namespace KanbanBoard
 
         public void Initialize()
         {
-            // TODO : Add initialization logic
-            this.regionManager.RegisterViewWithRegion(RegionNames.HEADER_REGION, () => this.container.Resolve<HeaderView>());
+            this.container.RegisterType<BaseViewModel>();
+            this.regionManager.RegisterViewWithRegion(RegionNames.HEADER_REGION, () => this.container.Resolve<StatusView>());
+            
             this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<LoginView>());
+            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<BoardsView>());
         }
     }
 }

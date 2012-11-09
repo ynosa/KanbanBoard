@@ -17,7 +17,6 @@ namespace TaskManager.Web
             //        u.Password == password).FirstOrDefault();
             //    return user != null;
             //}
-
             return true;
         }
 
@@ -27,12 +26,9 @@ namespace TaskManager.Web
             set { }
         }
 
-
         // Other overrides not implemented
         #region Other overrides not implemented
-        public override MembershipUser CreateUser(string username, string password, string email,
-    string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey,
-    out MembershipCreateStatus status)
+        public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey,out MembershipCreateStatus status)
         {
             throw new NotImplementedException();
         }
@@ -158,6 +154,5 @@ namespace TaskManager.Web
             throw new NotImplementedException();
         }
         #endregion
-
     }
 }

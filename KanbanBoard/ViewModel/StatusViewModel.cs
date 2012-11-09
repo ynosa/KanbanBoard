@@ -1,15 +1,18 @@
 ﻿using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Regions;
 
 namespace KanbanBoard.ViewModel
 {
     public class StatusViewModel : BaseViewModel
     {
-        public DelegateCommand LogOutCommand { get; protected set; }
+        //TODO : Add implementation
 
-        public StatusViewModel()
+        public DelegateCommand LogOutCommand { get; private set; }
+
+        public StatusViewModel(IRegionManager manager)
+            : base(manager)
         {
                 
         }
-
     }
 }
