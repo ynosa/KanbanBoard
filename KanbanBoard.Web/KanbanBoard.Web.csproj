@@ -39,7 +39,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\Program Files (x86)\Microsoft Web Tools\Packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,15 +77,52 @@
     <Content Include="ClientBin\KanbanBoard.xap" />
     <Content Include="Default.html" />
     <Content Include="Silverlight.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Board.cs">
+      <DependentUpon>KanbanData.tt</DependentUpon>
+    </Compile>
     <Compile Include="CustomMembershipProvider.cs" />
     <Compile Include="CustomRoleProvider.cs" />
     <Compile Include="KanbanBoardAuthenticationDomainService.cs" />
+    <Compile Include="KanbanData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KanbanData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KanbanData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KanbanData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KanbanData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KanbanData.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="KanbanData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KanbanData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="KanbanData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KanbanData.edmx</DependentUpon>
+      <LastGenOutput>KanbanData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="KanbanData.edmx.diagram">
+      <DependentUpon>KanbanData.edmx</DependentUpon>
+    </Content>
+    <Content Include="KanbanData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KanbanData.edmx</DependentUpon>
+      <LastGenOutput>KanbanData.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -87,7 +130,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
