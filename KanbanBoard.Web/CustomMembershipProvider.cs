@@ -23,7 +23,6 @@ namespace TaskManager.Web
             set { }
         }
 
-
         // Other overrides not implemented
         #region Other overrides not implemented
         public override MembershipUser CreateUser(string username, 

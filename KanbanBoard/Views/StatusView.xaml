@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <StackPanel x:Name="qwerty" Orientation="Horizontal">
-        <TextBlock x:Name="UserName" Text="User Name" />
+        <TextBlock x:Name="UserName" Text="{Binding Uname, Mode=OneTime}" />
         <HyperlinkButton x:Name="LogOutButton" Content="LogOut"/>
     </StackPanel>
 </UserControl>

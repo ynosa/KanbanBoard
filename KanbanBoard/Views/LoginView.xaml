@@ -7,8 +7,8 @@
 
     <StackPanel x:Name="Login" Background="#333333" Width="400">
         <TextBlock Text="Login" />
-        <TextBox x:Name="UserName" Text="{Binding UserName, Mode=OneWay}"/>
-        <PasswordBox x:Name="Password" Password="{Binding Password, Mode=OneWay}" PasswordChar="#"/>
+        <TextBox x:Name="UserName" Text="{Binding UserName, Mode=TwoWay}"/>
+        <PasswordBox x:Name="Password" Password="{Binding Password, Mode=TwoWay}" PasswordChar="#"/>
         <Button Height="25" Content="Login" Command="{Binding LoginCommand}"/>
     </StackPanel>
 </UserControl>
