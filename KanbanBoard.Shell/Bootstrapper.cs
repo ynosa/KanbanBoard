@@ -1,5 +1,7 @@
 ﻿using Microsoft.Practices.Prism.UnityExtensions;
+using Microsoft.Practices.Unity;
 using System;
+using System.ServiceModel.DomainServices.Client.ApplicationServices;
 using System.Windows;
 using Modularity = Microsoft.Practices.Prism.Modularity;
 

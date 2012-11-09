@@ -7,6 +7,25 @@ namespace KanbanBoard.ViewModel
     {
         //TODO : Add implementation
 
+        private string name;
+
+        public string Uname 
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                if (!string.IsNullOrEmpty(name))
+                {
+                    name = value;
+                    //NotifyPropertyChanged("Uname");
+                }
+            }
+        }
+
         public DelegateCommand LogOutCommand { get; private set; }
 
         public StatusViewModel(IRegionManager manager)
