@@ -11,7 +11,7 @@
                     <Border>
                         <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
                             <TextBlock x:Name="BoardName" Text="{Binding BoardName, Mode=TwoWay}"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="X" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}"/>
+                            <Button x:Name="ListBoxRemoveButton" Content="X" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

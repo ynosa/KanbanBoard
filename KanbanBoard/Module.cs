@@ -19,11 +19,10 @@ namespace KanbanBoard
 
         public void Initialize()
         {
-            this.container.RegisterType<BaseViewModel>();
             this.regionManager.RegisterViewWithRegion(RegionNames.HEADER_REGION, () => this.container.Resolve<StatusView>());
-            
             this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<LoginView>());
             this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<BoardsView>());
+            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<ErrorView>());
         }
     }
 }
