@@ -9,6 +9,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Web", "KanbanBoard.Web\KanbanBoard.Web.csproj", "{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Shell", "KanbanBoard.Shell\KanbanBoard.Shell.csproj", "{832FE05C-3C7B-488C-B48B-241BE4E4BE92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4C1689C0-98C3-46FA-B77F-6E89FF7E899B} = {4C1689C0-98C3-46FA-B77F-6E89FF7E899B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
