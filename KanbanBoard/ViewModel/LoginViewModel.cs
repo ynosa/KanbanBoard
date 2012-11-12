@@ -4,12 +4,32 @@ using Microsoft.Practices.Prism.Regions;
 using System.ServiceModel.DomainServices.Client.ApplicationServices;
 namespace KanbanBoard.ViewModel
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel, INavigationAware
     {
-        //TODO : Add implementation
         
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        private const string ERROR_TEMPLATE = "{0}:{1}";
+        
+        private string userName;
+        private string password;
+
+        public string UserName
+        {
+            get { return userName; }
+            set
+            {
+                userName = value;
+                NotifyPropertyChanged("UserName");
+            }
+        }
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                password = value;
+                NotifyPropertyChanged("Password");
+            }
+        }
 
         public DelegateCommand LoginCommand { get; private set; }
 
@@ -23,23 +43,41 @@ namespace KanbanBoard.ViewModel
                 {
                     if (loginOp.HasError)
                     {
-                        // TODO : Add error page view.
-
+                        ChangeRegion(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE,"MESSAGE",loginOp.Error.Message));
                         loginOp.MarkErrorAsHandled();
                         return;
                     }
                     else if (!loginOp.LoginSuccess)
                     {
+                        ChangeRegion(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE, "MESSAGE", "Incorrect username or password!"));
                         return;
                     }
                     else
                     {
-                        ChangeRegion(RegionNames.MAIN_REGION, new System.Uri("BoardsView", System.UriKind.Relative));
+                        ChangeRegion(RegionNames.MAIN_REGION, "BoardsView");
                     }
                 };
             });
 
-            
+
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return false;
+            //throw new System.NotImplementedException();
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            // Sets started params
+            UserName = string.Empty;
+            Password = string.Empty;
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            //throw new System.NotImplementedException();
         }
     }
 }
