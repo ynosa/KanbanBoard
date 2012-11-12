@@ -7,8 +7,8 @@ namespace KanbanBoard.ViewModel
         public string ErrorType { get; set; }
         public string Message { get; set; }
 
-        public ErrorViewModel(IRegionManager manager)
-            : base(manager)
+        public ErrorViewModel()
+            : base()
         {
 
         }
