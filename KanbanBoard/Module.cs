@@ -25,7 +25,7 @@ namespace KanbanBoard
             container.RegisterType<object, BoardsView>("BoardsView");
             container.RegisterType<object, ErrorView>("ErrorView");
 
-            regionManager.Regions[RegionNames.HEADER_REGION].RequestNavigate(new Uri("StatusView", UriKind.Relative));
+            //regionManager.Regions[RegionNames.HEADER_REGION].RequestNavigate(new Uri("StatusView", UriKind.Relative));
             regionManager.Regions[RegionNames.MAIN_REGION].RequestNavigate(new Uri("LoginView", UriKind.Relative));
         }
     }
