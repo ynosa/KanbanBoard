@@ -1,4 +1,5 @@
 ﻿using KanbanBoard.ViewModel;
+using Microsoft.Practices.Prism.Regions;
 using System.Windows.Controls;
 
 namespace KanbanBoard.Views

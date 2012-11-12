@@ -15,8 +15,8 @@ namespace KanbanBoard.ViewModel
 
         public ObservableCollection<UserBoard> BoardsList { get; set; }
 
-        public BoardsListViewModel(IRegionManager manager)
-            : base(manager)
+        public BoardsListViewModel()
+            : base()
         {
             BoardsList = new ObservableCollection<UserBoard>();
             BoardsList.Add(new UserBoard { BoardID = 1, BoardName = "testName1" });

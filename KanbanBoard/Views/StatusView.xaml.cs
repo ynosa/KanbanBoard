@@ -5,7 +5,7 @@ namespace KanbanBoard.Views
 {
     public partial class StatusView : UserControl
     {
-        public StatusView(LoginViewModel viewModel)
+        public StatusView(StatusViewModel viewModel)
         {
             InitializeComponent();
             this.DataContext = viewModel;

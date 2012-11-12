@@ -1,37 +1,43 @@
 ﻿using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
+using System.ServiceModel.DomainServices.Client.ApplicationServices;
 
 namespace KanbanBoard.ViewModel
 {
     public class StatusViewModel : BaseViewModel
     {
-        //TODO : Add implementation
-
-        private string name;
-
-        public string Uname 
+        private string name = "";
+        
+        public string UserName 
         {
-            get
-            {
-                return name;
-            }
-
+            get { return name; }
             set
             {
-                if (!string.IsNullOrEmpty(name))
-                {
-                    name = value;
-                    //NotifyPropertyChanged("Uname");
-                }
+                name = value;
+                NotifyPropertyChanged("UserName");
             }
         }
 
         public DelegateCommand LogOutCommand { get; private set; }
 
-        public StatusViewModel(IRegionManager manager)
-            : base(manager)
+        public StatusViewModel()
+            : base()
         {
-                
+            WebContextBase.Current.Authentication.LoggedIn += (s, e) => 
+            {
+                UserName = e.User.Identity.Name;
+            };
+
+            WebContextBase.Current.Authentication.LoggedOut += (s, e) =>
+            {
+                UserName = string.Empty;
+                ChangeRegion(RegionNames.MAIN_REGION, new System.Uri("LoginView", System.UriKind.Relative));
+            };
+
+            LogOutCommand = new DelegateCommand(() => 
+            {
+                WebContextBase.Current.Authentication.Logout(false);
+            });
         }
     }
 }

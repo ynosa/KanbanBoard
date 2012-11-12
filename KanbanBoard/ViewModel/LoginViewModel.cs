@@ -13,8 +13,8 @@ namespace KanbanBoard.ViewModel
 
         public DelegateCommand LoginCommand { get; private set; }
 
-        public LoginViewModel(IRegionManager manager)
-            : base(manager)
+        public LoginViewModel()
+            : base()
         {
             LoginCommand = new DelegateCommand(() =>
             {
@@ -35,10 +35,11 @@ namespace KanbanBoard.ViewModel
                     else
                     {
                         ChangeRegion(RegionNames.MAIN_REGION, new System.Uri("BoardsView", System.UriKind.Relative));
-                        
                     }
                 };
             });
+
+            
         }
     }
 }

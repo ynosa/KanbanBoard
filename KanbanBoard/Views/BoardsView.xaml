@@ -9,9 +9,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
-                        <StackPanel Orientation="Horizontal" Width="300" HorizontalAlignment="Center">
-                            <TextBlock x:Name="BoardName" Text="{Binding BoardName, Mode=TwoWay}"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="X" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="BoardName" Width="300" Text="{Binding BoardName, Mode=TwoWay}"/>
+                            <Button x:Name="ListBoxEditButton" Content="Edit"/>
+                            <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
