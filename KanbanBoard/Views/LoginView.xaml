@@ -5,10 +5,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel x:Name="Login" Background="#333333" Width="400">
-        <TextBlock Text="Login" />
+    <StackPanel Background="#333333" Width="400">
+        <TextBlock Text="login" />
         <TextBox x:Name="UserName" Text="{Binding UserName, Mode=TwoWay}"/>
         <PasswordBox x:Name="Password" Password="{Binding Password, Mode=TwoWay}" PasswordChar="#"/>
-        <Button Height="25" Content="Login" Command="{Binding LoginCommand}"/>
+        <Button Height="25" Content="login" Command="{Binding LoginCommand}"/>
     </StackPanel>
 </UserControl>

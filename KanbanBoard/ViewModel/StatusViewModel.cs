@@ -31,7 +31,7 @@ namespace KanbanBoard.ViewModel
             WebContextBase.Current.Authentication.LoggedOut += (s, e) =>
             {
                 UserName = string.Empty;
-                ChangeRegion(RegionNames.MAIN_REGION, new System.Uri("LoginView", System.UriKind.Relative));
+                ChangeRegion(RegionNames.MAIN_REGION, "LoginView");
             };
 
             LogOutCommand = new DelegateCommand(() => 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Regions;
+﻿using Microsoft.Practices.Prism;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System;
 using System.ComponentModel;
@@ -20,9 +21,18 @@ namespace KanbanBoard.ViewModel
             }
         }
 
-        public void ChangeRegion(string regionName, Uri regionUri)
+        public void ChangeRegion(string regionName, string viewName, params string[] args)
         {
-            RegionManager.RequestNavigate(regionName, regionUri);
+            UriQuery query = new UriQuery();
+
+            foreach (var item in args)
+            {
+                var splited = item.Split(':');
+                if (splited.Length > 1)
+                    query.Add(splited[0], splited[1]);
+            }
+
+            RegionManager.RequestNavigate(regionName, new Uri(viewName + query.ToString(), System.UriKind.Relative));
         }
     }
 }

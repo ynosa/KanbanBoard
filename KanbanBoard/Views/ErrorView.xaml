@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" x:Class="KanbanBoard.Views.ErrorView"
+    x:Class="KanbanBoard.Views.ErrorView"
     mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot">
-        <sdk:ChildWindow HorizontalAlignment="Stretch" Margin="-8,-17,0,0" VerticalAlignment="Stretch" d:LayoutOverrides="Width, Height">
-			<TextBlock x:Name="Message" Text="{Binding Message}"/>
-		</sdk:ChildWindow>
-	</Grid>
+        <StackPanel Background="#333333">
+            <TextBlock x:Name="Header" Text="Message"/>
+            <TextBlock x:Name="Message" Text="{Binding Message, Mode=OneWay}"/>
+        <Button Content="ok" Command="{Binding OkCommand}"/>
+        </StackPanel>
 </UserControl>

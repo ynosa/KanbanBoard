@@ -3,6 +3,7 @@ using KanbanBoard.Views;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using System;
 
 namespace KanbanBoard
 {
@@ -19,10 +20,13 @@ namespace KanbanBoard
 
         public void Initialize()
         {
-            this.regionManager.RegisterViewWithRegion(RegionNames.HEADER_REGION, () => this.container.Resolve<StatusView>());
-            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<LoginView>());
-            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<BoardsView>());
-            this.regionManager.RegisterViewWithRegion(RegionNames.MAIN_REGION, () => this.container.Resolve<ErrorView>());
+            container.RegisterType<object, StatusView>("StatusView");
+            container.RegisterType<object, LoginView>("LoginView");
+            container.RegisterType<object, BoardsView>("BoardsView");
+            container.RegisterType<object, ErrorView>("ErrorView");
+
+            regionManager.Regions[RegionNames.HEADER_REGION].RequestNavigate(new Uri("StatusView", UriKind.Relative));
+            regionManager.Regions[RegionNames.MAIN_REGION].RequestNavigate(new Uri("LoginView", UriKind.Relative));
         }
     }
 }
