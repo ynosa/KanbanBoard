@@ -23,15 +23,14 @@ namespace KanbanBoard.ViewModel
         public StatusViewModel()
             : base()
         {
-            WebContextBase.Current.Authentication.LoggedIn += (s, e) => 
-            {
-                UserName = e.User.Identity.Name;
-            };
+
+            UserName = WebContextBase.Current.Authentication.User.Identity.Name;
 
             WebContextBase.Current.Authentication.LoggedOut += (s, e) =>
             {
                 UserName = string.Empty;
-                ChangeRegion(RegionNames.MAIN_REGION, "LoginView");
+                ChangeView(RegionNames.MAIN_REGION, "LoginView");
+                DeactivateView(RegionNames.HEADER_REGION, "StatusView");
             };
 
             LogOutCommand = new DelegateCommand(() => 

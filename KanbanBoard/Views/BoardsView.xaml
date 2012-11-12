@@ -4,13 +4,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot">
+    <StackPanel x:Name="LayoutRoot" Background="#333333">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="my boards"></TextBlock>
+            <Button Grid.Column="1" HorizontalAlignment="Right" Content="add new"/>
+        </Grid>
         <ListBox x:Name="BoardsListBox" ItemsSource="{Binding BoardsList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="BoardName" Width="300" Text="{Binding BoardName, Mode=TwoWay}"/>
+                            <TextBlock x:Name="BoardName" MinWidth="300"  Text="{Binding BoardName, Mode=TwoWay}"/>
                             <Button x:Name="ListBoxEditButton" Content="Edit"/>
                             <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
@@ -18,6 +26,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <!--<Button Content="LALALA" Command="{Binding RemoveBoard}"/>-->
-    </Grid>
+    </StackPanel>
 </UserControl>

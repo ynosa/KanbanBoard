@@ -3,6 +3,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace KanbanBoard.ViewModel
 {
@@ -21,7 +22,7 @@ namespace KanbanBoard.ViewModel
             }
         }
 
-        public void ChangeRegion(string regionName, string viewName, params string[] args)
+        public void ChangeView(string regionName, string viewName, params string[] args)
         {
             UriQuery query = new UriQuery();
 
@@ -33,6 +34,13 @@ namespace KanbanBoard.ViewModel
             }
 
             RegionManager.RequestNavigate(regionName, new Uri(viewName + query.ToString(), System.UriKind.Relative));
+        }
+
+        public void DeactivateView(string regionName, string viewName)
+        {
+            var currentView = RegionManager.Regions[regionName].ActiveViews.FirstOrDefault();
+            if (currentView != null)
+                RegionManager.Regions[regionName].Deactivate(currentView);
         }
     }
 }

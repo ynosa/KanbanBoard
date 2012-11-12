@@ -43,18 +43,19 @@ namespace KanbanBoard.ViewModel
                 {
                     if (loginOp.HasError)
                     {
-                        ChangeRegion(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE,"MESSAGE",loginOp.Error.Message));
+                        ChangeView(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE,"MESSAGE",loginOp.Error.Message));
                         loginOp.MarkErrorAsHandled();
                         return;
                     }
                     else if (!loginOp.LoginSuccess)
                     {
-                        ChangeRegion(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE, "MESSAGE", "Incorrect username or password!"));
+                        ChangeView(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE, "MESSAGE", "Incorrect username or password!"));
                         return;
                     }
                     else
                     {
-                        ChangeRegion(RegionNames.MAIN_REGION, "BoardsView");
+                        ChangeView(RegionNames.MAIN_REGION, "BoardsView");
+                        ChangeView(RegionNames.HEADER_REGION, "StatusView");
                     }
                 };
             });
