@@ -9,6 +9,7 @@ namespace KanbanBoard.ViewModel
     {
         //TODO : Add implementation
 
+        public DelegateCommand AddNewBoard { get; set; }
         public DelegateCommand RemoveBoard { get; private set; }
         public DelegateCommand EditBoard { get; private set; }
         public DelegateCommand SelectBoard { get; private set; }

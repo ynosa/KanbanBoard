@@ -17,7 +17,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="3">
                             <TextBlock x:Name="BoardName" MinWidth="300"  Text="{Binding BoardName, Mode=TwoWay}"/>
                             <Button x:Name="ListBoxEditButton" Content="Edit"/>
                             <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>

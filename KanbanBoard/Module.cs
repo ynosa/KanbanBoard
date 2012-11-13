@@ -1,21 +1,22 @@
-﻿using KanbanBoard.ViewModel;
+﻿using KanbanBoard.Controller;
+using KanbanBoard.Events;
+using KanbanBoard.Interfaces;
 using KanbanBoard.Views;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using System;
 
 namespace KanbanBoard
 {
     public class Module : IModule
     {
         IUnityContainer container;
-        IRegionManager regionManager;
+        IEventAggregator eventAggregator;
 
-        public Module(IUnityContainer container, IRegionManager regionManager)
+        public Module(IUnityContainer container, IEventAggregator eventAggregator)
         {
-            this.regionManager = regionManager;
             this.container = container;
+            this.eventAggregator = eventAggregator;
         }
 
         public void Initialize()
@@ -24,9 +25,13 @@ namespace KanbanBoard
             container.RegisterType<object, LoginView>("LoginView");
             container.RegisterType<object, BoardsView>("BoardsView");
             container.RegisterType<object, ErrorView>("ErrorView");
+            container.RegisterType<ILoginController, LoginController>();
 
-            //regionManager.Regions[RegionNames.HEADER_REGION].RequestNavigate(new Uri("StatusView", UriKind.Relative));
-            regionManager.Regions[RegionNames.MAIN_REGION].RequestNavigate(new Uri("LoginView", UriKind.Relative));
+            container.Resolve<ILoginController>();
+            container.Resolve<ApplicationController>();
+            
+            // Raise event
+            eventAggregator.GetEvent<AuthenticationEvent>().Publish(0);
         }
     }
 }

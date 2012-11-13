@@ -1,14 +1,15 @@
 ﻿
+using KanbanBoard.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Unity;
 using System.ServiceModel.DomainServices.Client.ApplicationServices;
 namespace KanbanBoard.ViewModel
 {
     public class LoginViewModel : BaseViewModel, INavigationAware
     {
-        
-        private const string ERROR_TEMPLATE = "{0}:{1}";
-        
+        private readonly ILoginController controller;
+
         private string userName;
         private string password;
 
@@ -33,34 +34,15 @@ namespace KanbanBoard.ViewModel
 
         public DelegateCommand LoginCommand { get; private set; }
 
-        public LoginViewModel()
+        public LoginViewModel(ILoginController loginController)
             : base()
         {
+            this.controller = loginController;
             LoginCommand = new DelegateCommand(() =>
             {
-                LoginOperation loginOp = WebContextBase.Current.Authentication.Login(new LoginParameters(UserName, Password));
-                loginOp.Completed += (s2, e2) =>
-                {
-                    if (loginOp.HasError)
-                    {
-                        ChangeView(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE,"MESSAGE",loginOp.Error.Message));
-                        loginOp.MarkErrorAsHandled();
-                        return;
-                    }
-                    else if (!loginOp.LoginSuccess)
-                    {
-                        ChangeView(RegionNames.MAIN_REGION, "ErrorView", string.Format(ERROR_TEMPLATE, "MESSAGE", "Incorrect username or password!"));
-                        return;
-                    }
-                    else
-                    {
-                        ChangeView(RegionNames.MAIN_REGION, "BoardsView");
-                        ChangeView(RegionNames.HEADER_REGION, "StatusView");
-                    }
-                };
+                LoginOperation loginOp = WebContextBase.Current.Authentication.Login(new LoginParameters(UserName, Password, true, ""),
+                    loginOperation => controller.OnLoginCompleted(loginOperation), null);
             });
-
-
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

@@ -316,7 +316,7 @@
         <Setter Property="MinHeight" Value="72" />
         <Setter Property="BorderThickness" Value="{StaticResource PhoneDefaultBorderThickness}"/>
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
-        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+        <Setter Property="FontSize" Value="28"/>
         <Setter Property="Padding" Value="10,0,10,5"/>
 
         <Setter Property="Template">
@@ -1365,7 +1365,8 @@
     <Style x:Key="PhoneHyperLinkButton" TargetType="HyperlinkButton">
         <Setter Property="MinHeight" Value="72" />
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
-        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+        <Setter Property="FontSize" Value="38"/>
+        <Setter Property="Foreground" Value="White" />
         <Setter Property="Padding" Value="10,0,10,5"/>
     </Style>
 
