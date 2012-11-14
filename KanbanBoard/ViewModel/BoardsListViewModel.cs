@@ -6,6 +6,8 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using KanbanBoard.Views.ChildWindows;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using KanbanBoard.Web;
+using System.ServiceModel.DomainServices.Client;
 namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
@@ -18,6 +20,7 @@ namespace KanbanBoard.ViewModel
         public DelegateCommand RemoveBoard { get; private set; }
         public DelegateCommand EditBoard { get; private set; }
         public DelegateCommand SelectBoard { get; private set; }
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();    
 
         public InteractionRequest<Confirmation> ConfirmDelete
         {
@@ -29,6 +32,13 @@ namespace KanbanBoard.ViewModel
         }
 
         public ObservableCollection<UserBoard> BoardsList { get; set; }
+        public EntitySet<Board> BoardsList
+        {
+            get
+            {
+                return kanbanBoardDomainContext.Boards;
+            }
+        }
 
         public BoardsListViewModel(IUnityContainer container)
             : base()
@@ -42,6 +52,7 @@ namespace KanbanBoard.ViewModel
             BoardsList.Add(new UserBoard { BoardID = 1, BoardName = "testName1" });
             BoardsList.Add(new UserBoard { BoardID = 2, BoardName = "testName2" });
             BoardsList.Add(new UserBoard { BoardID = 3, BoardName = "testName3" });
+            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
             RemoveBoard = new DelegateCommand(() =>
             {
@@ -58,6 +69,9 @@ namespace KanbanBoard.ViewModel
                         //NotifyPropertyChanged("BoardsList");
                     }
                 });
+                //BoardsList.
+                //BoardsList.RemoveAt(0); 
+                NotifyPropertyChanged("BoardsList");
             });
 
             AddNewBoard = new DelegateCommand(() =>
