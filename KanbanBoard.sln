@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Shell", "Kanban
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "KanbanBoardInstaller", "KanbanBoardInstaller\KanbanBoardInstaller.wixproj", "{4971E1EE-0696-4771-9318-D6113EC3641B}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "KanbanBoardDatabase", "KanbanBoardDatabase\KanbanBoardDatabase.sqlproj", "{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,20 @@ Global
 		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|x86.ActiveCfg = Release|x86
 		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|x86.Build.0 = Release|x86
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
+		{9C154C58-AE53-4AD9-9483-AA20DC81CE0F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

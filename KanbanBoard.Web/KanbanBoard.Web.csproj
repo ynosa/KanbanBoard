@@ -5,6 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>
+	8.0.50727
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4C1689C0-98C3-46FA-B77F-6E89FF7E899B}</ProjectGuid>
@@ -84,48 +85,20 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs">
-      <DependentUpon>KanbanData.tt</DependentUpon>
-    </Compile>
     <Compile Include="CustomMembershipProvider.cs" />
     <Compile Include="CustomRoleProvider.cs" />
     <Compile Include="KanbanBoardAuthenticationDomainService.cs" />
-    <Compile Include="KanbanData.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KanbanData.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="KanbanData.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KanbanData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="KanbanData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="KanbanBoardDataAccess.Designer.cs" />
+    <Compile Include="KanbanBoardDomainService.cs" />
+    <Compile Include="KanbanBoardDomainService.metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="KanbanData.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>KanbanData.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="KanbanData.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-      <LastGenOutput>KanbanData.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="KanbanData.edmx.diagram">
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-    </Content>
-    <Content Include="KanbanData.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-      <LastGenOutput>KanbanData.cs</LastGenOutput>
-    </Content>
     <Content Include="packages.config" />
+    <EntityDeploy Include="KanbanBoardDataAccess.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KanbanBoardDataAccess1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -3,30 +3,35 @@ using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.Commands;
 using KanbanBoard.Models;
 using Microsoft.Practices.Prism.Regions;
+using KanbanBoard.Web;
+using System.ServiceModel.DomainServices.Client;
 namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
     {
-        //TODO : Add implementation
-
         public DelegateCommand AddNewBoard { get; set; }
         public DelegateCommand RemoveBoard { get; private set; }
         public DelegateCommand EditBoard { get; private set; }
         public DelegateCommand SelectBoard { get; private set; }
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();    
 
-        public ObservableCollection<UserBoard> BoardsList { get; set; }
+        public EntitySet<Board> BoardsList
+        {
+            get
+            {
+                return kanbanBoardDomainContext.Boards;
+            }
+        }
 
         public BoardsListViewModel()
             : base()
         {
-            BoardsList = new ObservableCollection<UserBoard>();
-            BoardsList.Add(new UserBoard { BoardID = 1, BoardName = "testName1" });
-            BoardsList.Add(new UserBoard { BoardID = 2, BoardName = "testName2" });
-            BoardsList.Add(new UserBoard { BoardID = 3, BoardName = "testName3" });
+            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
             RemoveBoard = new DelegateCommand(() =>
             {
-                BoardsList.RemoveAt(0); 
+                //BoardsList.
+                //BoardsList.RemoveAt(0); 
                 NotifyPropertyChanged("BoardsList");
             });
         }
