@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Commands;
+﻿using KanbanBoard.Interfaces;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
 using System.ServiceModel.DomainServices.Client.ApplicationServices;
 
@@ -6,9 +7,10 @@ namespace KanbanBoard.ViewModel
 {
     public class StatusViewModel : BaseViewModel
     {
-        private string name = "";
-        
-        public string UserName 
+        private string name;
+        private readonly ILoginController controller;
+
+        public string UserName
         {
             get { return name; }
             set
@@ -20,22 +22,13 @@ namespace KanbanBoard.ViewModel
 
         public DelegateCommand LogOutCommand { get; private set; }
 
-        public StatusViewModel()
+        public StatusViewModel(ILoginController loginController)
             : base()
         {
-
-            UserName = WebContextBase.Current.Authentication.User.Identity.Name;
-
-            WebContextBase.Current.Authentication.LoggedOut += (s, e) =>
+            this.controller = loginController;
+            LogOutCommand = new DelegateCommand(() =>
             {
-                UserName = string.Empty;
-                ChangeView(RegionNames.MAIN_REGION, "LoginView");
-                DeactivateView(RegionNames.HEADER_REGION, "StatusView");
-            };
-
-            LogOutCommand = new DelegateCommand(() => 
-            {
-                WebContextBase.Current.Authentication.Logout(false);
+                WebContextBase.Current.Authentication.Logout(controller.OnLogoutCompleted, null);
             });
         }
     }

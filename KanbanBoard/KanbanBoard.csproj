@@ -105,18 +105,26 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Controller\ApplicationController.cs" />
+    <Compile Include="Controller\LoginController.cs" />
+    <Compile Include="Events\AuthenticationEvent.cs" />
+    <Compile Include="Helpers\ViewOrchestrator.cs" />
+    <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Models\UserBoard.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="ViewModel\BoardsListViewModel.cs" />
+    <Compile Include="ViewModel\BoardViewModel.cs" />
     <Compile Include="ViewModel\ErrorViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="Views\BoardsView.xaml.cs">
       <DependentUpon>BoardsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChildWindows\BoardChildWindow.xaml.cs">
+      <DependentUpon>BoardChildWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
@@ -130,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\BoardsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChildWindows\BoardChildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

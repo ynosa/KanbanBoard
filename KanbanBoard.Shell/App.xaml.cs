@@ -15,7 +15,6 @@ namespace KanbanBoard.Shell
 {
     public partial class App : Application
     {
-
         public App()
         {
             this.Startup += this.Application_Startup;
@@ -26,7 +25,7 @@ namespace KanbanBoard.Shell
 
             WebContext context = new WebContext();
             context.Authentication = new FormsAuthentication();
-            ApplicationLifetimeObjects.Add(context);
+            this.ApplicationLifetimeObjects.Add(context);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
