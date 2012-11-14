@@ -5,14 +5,8 @@
             <Component Id="cmpB858CE2E18560D80A25DD5CDB0A5283C" Guid="*">
                 <File Id="fil79099226B2DCD2C0949AD5125D7B864E" KeyPath="yes" Source="$(var.BasePath)\Default.html" />
             </Component>
-            <Component Id="cmp062D827E6F967F56DA36717E7FD4AAE7" Guid="*">
-                <File Id="fil33E1D4B177CA210AFB0D5EEFDA612799" KeyPath="yes" Source="$(var.BasePath)\KanbanData.Context.tt" />
-            </Component>
-            <Component Id="cmp0C6A536DF7E34B37A9894A9C5BC2A196" Guid="*">
-                <File Id="fil73F69B1AFB8FDE77292A1EC56D306D74" KeyPath="yes" Source="$(var.BasePath)\KanbanData.edmx.diagram" />
-            </Component>
-            <Component Id="cmp34DF1785D2D4F928F44C34710CDD8397" Guid="*">
-                <File Id="fil7066509FDC56ECC258E5F07B5B22F53B" KeyPath="yes" Source="$(var.BasePath)\KanbanData.tt" />
+            <Component Id="cmp3DE0E27CB4AD0EAD15733F20AB0760EF" Guid="*">
+                <File Id="filF804CBAD53A94E1BE2AB44FD5DF0AB63" KeyPath="yes" Source="$(var.BasePath)\packages.config" />
             </Component>
             <Component Id="cmpB245C55D22E277819AED2ED3D9694E42" Guid="*">
                 <File Id="filAFA20C57AAA13B36AAC4D673E711BA71" KeyPath="yes" Source="$(var.BasePath)\Silverlight.js" />
@@ -26,6 +20,9 @@
                 </Component>
                 <Component Id="cmp95D3A8C32BC803B75AE5D353519095F8" Guid="*">
                     <File Id="fil52FB17919797955EEDEE0BBE3A219DEC" KeyPath="yes" Source="$(var.BasePath)\bin\KanbanBoard.Web.dll" />
+                </Component>
+                <Component Id="cmp9B45B13543F806F7FD82CABFCE0D267E" Guid="*">
+                    <File Id="fil623BFC6AA5CFC02D4EB2727B58D15B9D" KeyPath="yes" Source="$(var.BasePath)\bin\KanbanBoard.Web.pdb" />
                 </Component>
             </Directory>
             <Directory Id="dirF9C88477F08677A1391D5A7F0C0300C1" Name="ClientBin">
@@ -41,13 +38,12 @@
     <Fragment>
         <ComponentGroup Id="KanbanBoard.Web_Project">
             <ComponentRef Id="cmpB858CE2E18560D80A25DD5CDB0A5283C" />
-            <ComponentRef Id="cmp062D827E6F967F56DA36717E7FD4AAE7" />
-            <ComponentRef Id="cmp0C6A536DF7E34B37A9894A9C5BC2A196" />
-            <ComponentRef Id="cmp34DF1785D2D4F928F44C34710CDD8397" />
+            <ComponentRef Id="cmp3DE0E27CB4AD0EAD15733F20AB0760EF" />
             <ComponentRef Id="cmpB245C55D22E277819AED2ED3D9694E42" />
             <ComponentRef Id="cmpCDB7F4EFDEF1E65C3B12BEBAD7E4D7EA" />
             <ComponentRef Id="cmp4795109627B83AD0BD4AE603B111DBF1" />
             <ComponentRef Id="cmp95D3A8C32BC803B75AE5D353519095F8" />
+            <ComponentRef Id="cmp9B45B13543F806F7FD82CABFCE0D267E" />
             <ComponentRef Id="cmpAE9299BD3D4477FF60E1105091572A87" />
             <ComponentRef Id="cmpFCEBF5B283B7922E11CC468C11122D64" />
         </ComponentGroup>

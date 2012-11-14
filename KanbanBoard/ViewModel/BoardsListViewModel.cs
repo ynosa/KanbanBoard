@@ -31,7 +31,6 @@ namespace KanbanBoard.ViewModel
             get { return boardDialog; }
         }
 
-        public ObservableCollection<UserBoard> BoardsList { get; set; }
         public EntitySet<Board> BoardsList
         {
             get
@@ -47,11 +46,7 @@ namespace KanbanBoard.ViewModel
             
             confirmDelete = new InteractionRequest<Confirmation>();
             boardDialog = new InteractionRequest<Confirmation>();
-            BoardsList = new ObservableCollection<UserBoard>();
-
-            BoardsList.Add(new UserBoard { BoardID = 1, BoardName = "testName1" });
-            BoardsList.Add(new UserBoard { BoardID = 2, BoardName = "testName2" });
-            BoardsList.Add(new UserBoard { BoardID = 3, BoardName = "testName3" });
+    
             kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
             RemoveBoard = new DelegateCommand(() =>

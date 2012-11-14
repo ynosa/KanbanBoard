@@ -100,19 +100,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>KanbanBoardDataAccess1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="KanbanData.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-      <LastGenOutput>KanbanData.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="KanbanData.edmx.diagram">
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-    </Content>
-    <Content Include="KanbanData.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>KanbanData.edmx</DependentUpon>
-      <LastGenOutput>KanbanData.cs</LastGenOutput>
-    </Content>
     <None Include="Properties\PublishProfiles\TempPublish.pubxml" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
