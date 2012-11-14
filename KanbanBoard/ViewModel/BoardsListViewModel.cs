@@ -17,7 +17,7 @@ namespace KanbanBoard.ViewModel
         private readonly InteractionRequest<Confirmation> boardDialog;
 
         public DelegateCommand AddNewBoard { get; set; }
-        public DelegateCommand RemoveBoard { get; private set; }
+        public DelegateCommand<Board> RemoveBoard { get; private set; }
         public DelegateCommand EditBoard { get; private set; }
         public DelegateCommand SelectBoard { get; private set; }
         private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();    
@@ -49,7 +49,7 @@ namespace KanbanBoard.ViewModel
     
             kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
-            RemoveBoard = new DelegateCommand(() =>
+            RemoveBoard = new DelegateCommand<Board>( (board) =>
             {
                 confirmDelete.Raise(new Confirmation()
                 {
@@ -59,14 +59,11 @@ namespace KanbanBoard.ViewModel
                 {
                     if (confirmation.Confirmed)
                     {
-                        // ToDo : Add implementation for removig the board from the list.
-                        //BoardsList.RemoveAt(0);
-                        //NotifyPropertyChanged("BoardsList");
+                        kanbanBoardDomainContext.Boards.Remove(board);
+                        kanbanBoardDomainContext.SubmitChanges();
+                        NotifyPropertyChanged("BoardsList");
                     }
                 });
-                //BoardsList.
-                //BoardsList.RemoveAt(0); 
-                NotifyPropertyChanged("BoardsList");
             });
 
             AddNewBoard = new DelegateCommand(() =>
