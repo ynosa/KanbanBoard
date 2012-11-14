@@ -105,6 +105,9 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\KanbanBoard.Shell\Generated_Code\KanbanBoard.Web.g.cs">
+      <Link>Generated_Code\KanbanBoard.Web.g.cs</Link>
+    </Compile>
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
