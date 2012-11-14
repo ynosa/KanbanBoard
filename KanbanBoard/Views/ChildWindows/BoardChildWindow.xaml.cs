@@ -5,9 +5,13 @@ namespace KanbanBoard.Views.ChildWindows
 {
     public partial class BoardChildWindow : ChildWindow
     {
-        public BoardChildWindow(BoardViewModel viewModel)
+        public BoardChildWindow()
         {
             InitializeComponent();
+        }
+        public BoardChildWindow(BoardViewModel viewModel)
+            : this()
+        {
             this.DataContext = viewModel;
         }
     }

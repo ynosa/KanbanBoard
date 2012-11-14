@@ -6,10 +6,30 @@
     xmlns:prism="http://www.codeplex.com/prism"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:local="clr-namespace:KanbanBoard.Views.ChildWindows">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="boardDialogDataTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock TextAlignment="Center">Board Name</TextBlock>
+                    <TextBox Width="308" Text="{Binding BoardTitle}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmDelete}">
             <prism:PopupChildWindowAction />
+        </prism:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding BoardDialog}">
+            <prism:PopupChildWindowAction ContentTemplate="{StaticResource boardDialogDataTemplate}"/>
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
     <StackPanel x:Name="LayoutRoot" Background="#333333">

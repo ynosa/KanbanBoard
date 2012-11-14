@@ -10,9 +10,9 @@ namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
     {
-        //TODO : Add implementation
         private readonly IUnityContainer container;
         private readonly InteractionRequest<Confirmation> confirmDelete;
+        private readonly InteractionRequest<Confirmation> boardDialog;
 
         public DelegateCommand AddNewBoard { get; set; }
         public DelegateCommand RemoveBoard { get; private set; }
@@ -23,6 +23,10 @@ namespace KanbanBoard.ViewModel
         {
             get { return confirmDelete; }
         }
+        public InteractionRequest<Confirmation> BoardDialog
+        {
+            get { return boardDialog; }
+        }
 
         public ObservableCollection<UserBoard> BoardsList { get; set; }
 
@@ -30,44 +34,48 @@ namespace KanbanBoard.ViewModel
             : base()
         {
             this.container = container;
+            
             confirmDelete = new InteractionRequest<Confirmation>();
-
+            boardDialog = new InteractionRequest<Confirmation>();
             BoardsList = new ObservableCollection<UserBoard>();
+
             BoardsList.Add(new UserBoard { BoardID = 1, BoardName = "testName1" });
             BoardsList.Add(new UserBoard { BoardID = 2, BoardName = "testName2" });
             BoardsList.Add(new UserBoard { BoardID = 3, BoardName = "testName3" });
 
             RemoveBoard = new DelegateCommand(() =>
             {
-                // ToDo : Add some logic for removing boards 
-                bool isUserConfirmed = false;
                 confirmDelete.Raise(new Confirmation()
                 {
                     Content = "Are you sure you want to remove this record?",
                     Title = "Confirm remove",
-                }, confirmation => 
+                }, confirmation =>
                 {
                     if (confirmation.Confirmed)
                     {
-                        BoardsList.RemoveAt(0);
-                        NotifyPropertyChanged("BoardsList");
+                        // ToDo : Add implementation for removig the board from the list.
+                        //BoardsList.RemoveAt(0);
+                        //NotifyPropertyChanged("BoardsList");
                     }
                 });
             });
 
             AddNewBoard = new DelegateCommand(() =>
             {
-                var boardView = this.container.Resolve<BoardChildWindow>();
-                boardView.Title = "Add new board";
-                boardView.Show();
+                // ToDo : Continue implementation and don't forget about parametr for the child window.
+                boardDialog.Raise(new Confirmation()
+                    {
+                        Title = "Add new board"
+                    },
+                    confirmation =>
+                    {
+                        
+                    });
             });
 
             EditBoard = new DelegateCommand(() =>
             {
-                // ToDo : Add parametr for the child window. Or make child window as confirmation dialog for delete operation
-                var boardView = this.container.Resolve<BoardChildWindow>();
-                boardView.Title = "Edit board";
-                boardView.Show();
+                // ToDo : Implement and don't forget about parametr for the child window.
             });
         }
     }
