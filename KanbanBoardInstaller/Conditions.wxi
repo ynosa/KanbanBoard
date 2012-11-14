@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Check that we have elevated permissions if installing -->
+  <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+  <Condition Message="!(loc.Administrator)">Installed OR (Privileged AND AdminUser)</Condition>
+
+  <!-- IIS Version 6 or higher check. -->
+  <PropertyRef Id="IISMAJORVERSION"/>
+  <Condition Message="!(loc.IISVersion)">IISMAJORVERSION &gt;= "#6"</Condition>
+
+  <!-- .NET 4 Version Check -->
+  <PropertyRef Id="NETFRAMEWORK40FULL"/>
+  <Condition Message="!(loc.DotNet4)">Installed OR NETFRAMEWORK40FULL</Condition>
+
+  <!-- RIA Services Check: Cannot just check key - need value, hence v1.0->InstallPath -->
+  <Property Id="RIASERVICES">
+    <RegistrySearch Id="RiaServices" Name="InstallPath" Root="HKLM"
+                    Key="SOFTWARE\Microsoft\WCFRIAServices" Type="raw" />
+  </Property>
+
+  <!--<Condition Message="!(loc.RiaServices)">Installed OR RIASERVICES</Condition>-->
+</Include>

@@ -1,5 +1,7 @@
 *_ReSharper.KanbanBoard/*
 *.pdb
+*.xap
+*.suo
 */Bin/Debug/*
 */obj/*
 */bin/*

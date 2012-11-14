@@ -10,7 +10,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Web", "KanbanBo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Shell", "KanbanBoard.Shell\KanbanBoard.Shell.csproj", "{832FE05C-3C7B-488C-B48B-241BE4E4BE92}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "KanbanBoardInstaller", "KanbanBoardInstaller\KanbanBoardInstaller.wixproj", "{4971E1EE-0696-4771-9318-D6113EC3641B}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "KanbanBoardInstaller", "KanbanBoardInstaller\KanbanBoardInstaller.wixproj", "{D7CBD6BB-3424-486F-A063-4FDF3B66584D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IISCA", "IISCA\IISCA.csproj", "{3FC7488F-C40E-49F3-AC61-3996A21E966B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,16 +54,26 @@ Global
 		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{832FE05C-3C7B-488C-B48B-241BE4E4BE92}.Release|x86.ActiveCfg = Release|Any CPU
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Debug|x86.ActiveCfg = Debug|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Debug|x86.Build.0 = Debug|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|Any CPU.ActiveCfg = Release|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|Mixed Platforms.Build.0 = Release|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|x86.ActiveCfg = Release|x86
-		{4971E1EE-0696-4771-9318-D6113EC3641B}.Release|x86.Build.0 = Release|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Debug|x86.ActiveCfg = Debug|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Debug|x86.Build.0 = Debug|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Release|Any CPU.ActiveCfg = Release|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Release|x86.ActiveCfg = Release|x86
+		{D7CBD6BB-3424-486F-A063-4FDF3B66584D}.Release|x86.Build.0 = Release|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Debug|x86.ActiveCfg = Debug|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Debug|x86.Build.0 = Debug|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Release|Any CPU.ActiveCfg = Release|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Release|x86.ActiveCfg = Release|x86
+		{3FC7488F-C40E-49F3-AC61-3996A21E966B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
