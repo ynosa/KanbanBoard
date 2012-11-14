@@ -2,6 +2,7 @@
 using KanbanBoard.Events;
 using KanbanBoard.Interfaces;
 using KanbanBoard.Views;
+using KanbanBoard.Views.ChildWindows;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
@@ -25,6 +26,7 @@ namespace KanbanBoard
             container.RegisterType<object, LoginView>("LoginView");
             container.RegisterType<object, BoardsView>("BoardsView");
             container.RegisterType<object, ErrorView>("ErrorView");
+            container.RegisterType<object, BoardChildWindow>("BoardChildWindow");
             container.RegisterType<ILoginController, LoginController>();
 
             container.Resolve<ILoginController>();
