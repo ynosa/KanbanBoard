@@ -9,27 +9,9 @@
     mc:Ignorable="d"
     xmlns:local="clr-namespace:KanbanBoard.Views.ChildWindows">
 
-    <UserControl.Resources>
-        <DataTemplate x:Key="boardDialogDataTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock TextAlignment="Center">Board Name</TextBlock>
-                    <TextBox Width="308" Text="{Binding BoardTitle}"/>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
-
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmDelete}">
             <prism:PopupChildWindowAction />
-        </prism:InteractionRequestTrigger>
-        <prism:InteractionRequestTrigger SourceObject="{Binding BoardDialog}">
-            <prism:PopupChildWindowAction ContentTemplate="{StaticResource boardDialogDataTemplate}"/>
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
     <StackPanel x:Name="LayoutRoot" Background="#333333">
@@ -39,7 +21,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="my boards"></TextBlock>
-            <Button Grid.Column="1" HorizontalAlignment="Right" Content="add new" Command="{Binding AddNewBoard}"/>
+            <Button Grid.Column="1" HorizontalAlignment="Right" Content="add new" Command="{Binding AddBoardCommand}"/>
         </Grid>
         <ListBox x:Name="BoardsListBox" ItemsSource="{Binding BoardsList}">
             <ListBox.ItemTemplate>
@@ -47,8 +29,8 @@
                     <Border>
                         <StackPanel Orientation="Horizontal" Margin="3">
                             <TextBlock x:Name="BoardName" MinWidth="300"  Text="{Binding BoardName, Mode=TwoWay}"/>
-                            <Button x:Name="ListBoxEditButton" Content="Edit"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoard, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
+                            <Button x:Name="ListBoxEditButton" Content="Edit" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
+                            <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
