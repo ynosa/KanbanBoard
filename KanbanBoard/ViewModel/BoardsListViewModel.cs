@@ -1,4 +1,5 @@
 ﻿
+using KanbanBoard.Views.ChildWindows;
 using KanbanBoard.Web;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
@@ -11,12 +12,22 @@ namespace KanbanBoard.ViewModel
         private readonly IUnityContainer container;
         private readonly InteractionRequest<Confirmation> confirmDelete;
         private readonly InteractionRequest<Confirmation> boardDialog;
+        private string boardTitle = "title";
 
-        public DelegateCommand AddNewBoard { get; set; }
-        public DelegateCommand RemoveBoard { get; private set; }
-        public DelegateCommand EditBoard { get; private set; }
-        public DelegateCommand SelectBoard { get; private set; }
-        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();    
+        public DelegateCommand AddBoardCommand { get; set; }
+        public DelegateCommand RemoveBoardCommand { get; private set; }
+        public DelegateCommand EditBoardCommand { get; private set; }
+        public DelegateCommand SelectBoardCommand { get; private set; }
+        public string BoardTitle
+        {
+            get { return boardTitle; }
+            set
+            {
+                boardTitle = value;
+                NotifyPropertyChanged("BoardTitle");
+            }
+        }
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
 
         public InteractionRequest<Confirmation> ConfirmDelete
         {
@@ -39,49 +50,55 @@ namespace KanbanBoard.ViewModel
             : base()
         {
             this.container = container;
-            
+
             confirmDelete = new InteractionRequest<Confirmation>();
             boardDialog = new InteractionRequest<Confirmation>();
-    
+
             kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
-            RemoveBoard = new DelegateCommand(() =>
-            {
-                confirmDelete.Raise(new Confirmation()
-                {
-                    Content = "Are you sure you want to remove this record?",
-                    Title = "Confirm remove",
-                }, confirmation =>
-                {
-                    if (confirmation.Confirmed)
-                    {
-                        // ToDo : Add implementation for removig the board from the list.
-                        //BoardsList.RemoveAt(0);
-                        //NotifyPropertyChanged("BoardsList");
-                    }
-                });
-                //BoardsList.
-                //BoardsList.RemoveAt(0); 
-                NotifyPropertyChanged("BoardsList");
-            });
+            AddBoardCommand = new DelegateCommand(() => AddBoard());
 
-            AddNewBoard = new DelegateCommand(() =>
-            {
-                // ToDo : Continue implementation and don't forget about parametr for the child window.
-                boardDialog.Raise(new Confirmation()
-                    {
-                        Title = "Add new board"
-                    },
-                    confirmation =>
-                    {
-                        
-                    });
-            });
+            EditBoardCommand = new DelegateCommand(() => EditBoard());
 
-            EditBoard = new DelegateCommand(() =>
-            {
-                // ToDo : Implement and don't forget about parametr for the child window.
-            });
+            RemoveBoardCommand = new DelegateCommand(() => RemoveBoard());
+
         }
+
+        private void AddBoard()
+        {
+            var dialog = this.container.Resolve<BoardChildWindow>();
+
+            dialog.Title = "Add new board"; // Don't forget about title!
+            dialog.Closed += (s, e) =>
+            {
+                if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
+                {
+                    // ToDo : Add implementation when board title isn't empty.
+                }
+            };
+            dialog.Show();
+        }
+
+        private void EditBoard()
+        {
+            // ToDo : Add implementation
+        }
+
+        private void RemoveBoard()
+        {
+            confirmDelete.Raise(new Confirmation()
+            {
+                Content = "Are you sure you want to remove this record?",
+                Title = "Confirm remove",
+            }, confirmation =>
+            {
+                if (confirmation.Confirmed)
+                {
+                    // ToDo : Add implementation for removig the board from the list.
+                }
+            });
+            NotifyPropertyChanged("BoardsList");
+        }
+
     }
 }

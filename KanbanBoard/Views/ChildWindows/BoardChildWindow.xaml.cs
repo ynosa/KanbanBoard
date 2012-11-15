@@ -8,11 +8,14 @@ namespace KanbanBoard.Views.ChildWindows
         public BoardChildWindow()
         {
             InitializeComponent();
+            this.oKButton.Click += (s, e) => this.DialogResult = true;
+            this.cancelButton.Click += (s, e) => this.DialogResult = false;
         }
-        public BoardChildWindow(BoardViewModel viewModel)
-            : this()
+
+        public string BoardName 
         {
-            this.DataContext = viewModel;
+            get { return this.boardName.Text; }
+            set { this.boardName.Text = value; }
         }
     }
 }
