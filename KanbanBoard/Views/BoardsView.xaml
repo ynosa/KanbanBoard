@@ -69,8 +69,8 @@
                             		<DropShadowEffect/>
                             	</TextBlock.Effect>                            
 							</TextBlock>
-                            <Button x:Name="ListBoxEditButton" Content="Edit" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
+                            <Button x:Name="ListBoxEditButton" Content="Edit" CommandParameter="{Binding}" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
+                            <Button x:Name="ListBoxRemoveButton" Content="Remove" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
