@@ -59,6 +59,45 @@ namespace KanbanBoard.Web
                 this.ObjectContext.Boards.DeleteObject(board);
             }
         }
+
+        // TODO:
+        // Consider constraining the results of your query method.  If you need additional input you can
+        // add parameters to this method or create additional query methods with different names.
+        // To support paging you will need to add ordering to the 'BoardItems' query.
+        public IQueryable<BoardItem> GetBoardItems()
+        {
+            return this.ObjectContext.BoardItems;
+        }
+
+        public void InsertBoardItem(BoardItem boardItem)
+        {
+            if ((boardItem.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardItem, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.BoardItems.AddObject(boardItem);
+            }
+        }
+
+        public void UpdateBoardItem(BoardItem currentBoardItem)
+        {
+            this.ObjectContext.BoardItems.AttachAsModified(currentBoardItem, this.ChangeSet.GetOriginal(currentBoardItem));
+        }
+
+        public void DeleteBoardItem(BoardItem boardItem)
+        {
+            if ((boardItem.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardItem, EntityState.Deleted);
+            }
+            else
+            {
+                this.ObjectContext.BoardItems.Attach(boardItem);
+                this.ObjectContext.BoardItems.DeleteObject(boardItem);
+            }
+        }
     }
 }
 

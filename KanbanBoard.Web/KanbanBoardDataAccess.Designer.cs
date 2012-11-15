@@ -17,6 +17,12 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.Board), "BoardItem", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(KanbanBoard.Web.BoardItem), true)]
+
+#endregion
+
 namespace KanbanBoard.Web
 {
     #region Contexts
@@ -80,6 +86,22 @@ namespace KanbanBoard.Web
             }
         }
         private ObjectSet<Board> _Boards;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<BoardItem> BoardItems
+        {
+            get
+            {
+                if ((_BoardItems == null))
+                {
+                    _BoardItems = base.CreateObjectSet<BoardItem>("BoardItems");
+                }
+                return _BoardItems;
+            }
+        }
+        private ObjectSet<BoardItem> _BoardItems;
 
         #endregion
 
@@ -91,6 +113,14 @@ namespace KanbanBoard.Web
         public void AddToBoards(Board board)
         {
             base.AddObject("Boards", board);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the BoardItems EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBoardItems(BoardItem boardItem)
+        {
+            base.AddObject("BoardItems", boardItem);
         }
 
         #endregion
@@ -208,6 +238,199 @@ namespace KanbanBoard.Web
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "BoardItem")]
+        public BoardItem BoardItem
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<BoardItem> BoardItemReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="KanbanBoardDatabaseModel", Name="BoardItem")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class BoardItem : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new BoardItem object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="boardId">Initial value of the BoardId property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static BoardItem CreateBoardItem(global::System.Int32 id, global::System.Guid boardId, global::System.String name)
+        {
+            BoardItem boardItem = new BoardItem();
+            boardItem.Id = id;
+            boardItem.BoardId = boardId;
+            boardItem.Name = name;
+            return boardItem;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                OnIdChanging(value);
+                ReportPropertyChanging("Id");
+                _Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Id");
+                OnIdChanged();
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid BoardId
+        {
+            get
+            {
+                return _BoardId;
+            }
+            set
+            {
+                if (_BoardId != value)
+                {
+                    OnBoardIdChanging(value);
+                    ReportPropertyChanging("BoardId");
+                    _BoardId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("BoardId");
+                    OnBoardIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _BoardId;
+        partial void OnBoardIdChanging(global::System.Guid value);
+        partial void OnBoardIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board")]
+        public Board Board
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Board> BoardReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
 
     #endregion
