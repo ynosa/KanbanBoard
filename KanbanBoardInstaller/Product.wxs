@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
-  
-	<Product Id="*" Name="!(loc.ProductName)" Language="!(loc.LANG)" Version="1.0.0.0" Manufacturer="!(loc.CompanyName)" UpgradeCode="06bf97e6-bf9f-41dc-8050-ca5b67337d50">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />		
-    
+	xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+	xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Product Id="*"
+					 Name="!(loc.ProductName)"
+					 Language="!(loc.LANG)"
+					 Version="1.0.0.0"
+					 Manufacturer="!(loc.CompanyName)"
+					 UpgradeCode="3d720011-4056-459d-ae12-a88199bbb730">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"
+						 Languages="!(loc.LANG)"
+             Manufacturer="!(loc.CompanyName)" Comments="!(loc.Comments)"
+             Description="!(loc.Description)" Keywords="!(loc.Keywords)"/>
+
     <?include Settings.wxi ?>
     <!-- Apply our settings -->
     <?include Conditions.wxi ?>
@@ -12,99 +22,94 @@
     <?include WebSites.wxi ?>
     <!-- Get our website properties defined/initialised -->
 
-    <MediaTemplate />    
-    
-    <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
-      <ComponentRef Id='WebVirtualDirComponent' />
-      <ComponentRef Id='EnableASPNet4Extension'/>
-      <ComponentGroupRef Id="KanbanBoard.Web_Project"/>
-      <ComponentRef Id="PersistWebSiteValues" />
-		</Feature>
+    <MediaTemplate />
 
-    
+    <CustomTable Id="AvailableWebSites" >
+      <Column Id="WebSiteID" Category="Identifier" PrimaryKey="yes" Type="int" Width="4" />
+      <Column Id="WebSiteDescription" Category="Text" Type="string" PrimaryKey="no"/>
+      <Column Id="WebSiteHeader" Category="Text" Type="string" PrimaryKey="no" Nullable="yes"/>
 
-    <iis:WebSite Id='SelectedWebSite' Description='SelectedWebSite'
-              Directory='INSTALLFOLDER' SiteId='SelectedWebSite'>
+      <Row>
+        <Data Column="WebSiteID">0</Data>
+        <Data Column="WebSiteDescription">Bogus</Data>
+        <Data Column="WebSiteHeader"></Data>
+      </Row>
+    </CustomTable>
+
+    <iis:WebSite Id='SelectedWebSite' Description='[WEBSITE_DESCRIPTION]'
+						 Directory='INSTALLFOLDER' SiteId='[WEBSITE_ID]'>
       <!-- This element has to be here or WiX does not compile. -->
       <iis:WebAddress Id="AllUnassigned" Port="80"/>
     </iis:WebSite>
 
-    <!-- Define our custom actions -->
-    <CustomAction Id="GetIISWebSites" BinaryKey="IISCA" DllEntry="GetWebSites"
-                    Execute="immediate" Return="check" />
-    <Binary Id="IISCA" SourceFile="$(var.IISCA.TargetDir)$(var.IISCA.TargetName).CA.dll" />
+    <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
+      <ComponentRef Id="WebVirtualDirComponent"/>
+      <ComponentRef Id="EnableASPNet4Extension"/>
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="KanbanBoard.Web_Project" />
+      <ComponentRef Id="PersistWebSiteValues" />
+    </Feature>
 
-    <!-- Install UI Sequence - allows us to schedule custom action -->
-    <InstallUISequence>
-      <Custom Action="GetIISWebSites" After="CostFinalize"
-              Overridable="yes">NOT Installed</Custom>
-    </InstallUISequence>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
+    <UIRef Id="WixUI_WebUI" />
+  </Product>
 
-    <CustomAction Id="SetApplicationRootDirectory" Directory="INSTALLFOLDER"
-                  Value="[WEBSITE_PATH]\[VD]" />
 
-    <CustomAction Id="UpdateWebAppMapping" Directory="INSTALLFOLDER" Return="asyncNoWait"
-              ExeCommand='[ASPNETREGIIS] -norestart -s "W3SVC/[WEBSITE_ID]/ROOT/[VD]"' />
-
-    <InstallExecuteSequence>
-      <Custom Action="UpdateWebAppMapping" After="InstallFinalize">ASPNETREGIIS AND NOT Installed</Custom>
-    </InstallExecuteSequence>
-
-    
-    
-  <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
-  <UIRef Id="WixUI_WebUI" />
-	</Product>
- 
   <Fragment>
-    <!-- Define the 'structure' for the installation -->
     <Directory Id='TARGETDIR' Name='SourceDir'>
       <Directory Id="IISMain" Name='inetpub'>
         <Directory Id="WWWMain" Name='wwwroot'
-                   ComponentGuidGenerationSeed='5dd7ac50-1d3f-48ef-9616-3fb72085488d'>
-          <Directory Id='INSTALLFOLDER' Name='!(loc.ProductName)'>
+									 ComponentGuidGenerationSeed='CA19CA4A-C69B-4CDB-BCBD-6C3C5E9A3EDC'>
+          <Directory Id='INSTALLFOLDER' Name="!(loc.ProductName)">
+            <!-- The component to define the Virtual Directory.-->
             <Component Id="WebVirtualDirComponent" Guid="A720C1C9-1D8D-4941-976D-FB1C5C9EF8BB">
 
               <!-- Define App Pool - identity if not set defaults to: ApplicationPoolIdentity -->
-              <iis:WebAppPool Id="AppPool" Name="[VD][WEBSITE_ID]" ManagedRuntimeVersion="v4.0"
-                              IdleTimeout="0" RecycleMinutes="0" ManagedPipelineMode="integrated">
+              <iis:WebAppPool Id="AppPool" Name="[VirtualDirectory][WEBSITE_ID]" ManagedRuntimeVersion="v4.0"
+															IdleTimeout="0" RecycleMinutes="0" ManagedPipelineMode="integrated">
               </iis:WebAppPool>
 
-              <iis:WebVirtualDir Id="VDir" Alias="[VD]"
-                                 Directory="INSTALLFOLDER"
-                                 WebSite="SelectedWebSite">
-                <iis:MimeMap Id="SilverlightMimeType" Extension=".xap"
-                             Type="application/x-silverlight-app" />
+              <iis:WebVirtualDir Id="VDir" Alias="[VirtualDirectory]"
+																 Directory="INSTALLFOLDER"
+																 WebSite="SelectedWebSite">
                 <iis:WebApplication Id="MyWebAppApplication" WebAppPool="AppPool"
-                                    Name="[VD][WEBSITE_ID]" />
+																		Name="[VirtualDirectory][WEBSITE_ID]" />
                 <iis:WebDirProperties Id="MyWebSite_Properties" AnonymousAccess="yes"
-                                      WindowsAuthentication="no" DefaultDocuments="Default.html" />
+																			WindowsAuthentication="no" DefaultDocuments="Default.aspx" />
               </iis:WebVirtualDir>
               <CreateFolder/>
               <!-- Need to have to ensure created -->
             </Component>
 
             <Component Id="EnableASPNet4Extension" Permanent="yes"
-                       Guid="C8CDAB96-5DDC-4B4C-AD7E-CD09B59F7813">
+											 Guid="C8CDAB96-5DDC-4B4C-AD7E-CD09B59F7813">
               <CreateFolder/>
               <!-- Need to have to ensure created -->
               <iis:WebServiceExtension Id="ASPNet4Extension" Group="ASP.NET v4.0.30319" Allow="yes"
-                                       File="[ASPNETISAPIDLL]" Description="ASP.NET v4.0.30319"
-                                       UIDeletable="no"/>
+																			 File="[ASPNETISAPIDLL]" Description="ASP.NET v4.0.30319"
+																			 UIDeletable="no"/>
             </Component>
             <Component Id="PersistWebSiteValues" Guid="C3DAE2E2-FB49-48ba-ACB0-B2B5B726AE65">
               <RegistryKey Action="create" Root="HKLM"
-                           Key="SOFTWARE\!(loc.CompanyName)\!(loc.ProductName)\Install">
+													 Key="SOFTWARE\!(loc.CompanyName)\!(loc.ProductName)\Install">
                 <RegistryValue Name="WebSiteDescription" Type="string" Value="[WEBSITE_DESCRIPTION]"/>
                 <RegistryValue Name="WebSiteID" Type="string" Value="[WEBSITE_ID]"/>
                 <RegistryValue Name="WebSitePath" Type="string" Value="[WEBSITE_PATH]"/>
-                <RegistryValue Name="WebSiteVD" Type="string" Value="[VD]"/>
+                <RegistryValue Name="WebSiteVD" Type="string" Value="[VirtualDirectory]"/>
               </RegistryKey>
             </Component>
           </Directory>
         </Directory>
       </Directory>
     </Directory>
-	</Fragment>
+  </Fragment>
 
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+    </ComponentGroup>
+  </Fragment>
 </Wix>
