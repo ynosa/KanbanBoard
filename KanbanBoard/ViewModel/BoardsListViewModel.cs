@@ -15,7 +15,7 @@ namespace KanbanBoard.ViewModel
         private string boardTitle = "title";
 
         public DelegateCommand AddBoardCommand { get; set; }
-        public DelegateCommand RemoveBoardCommand { get; private set; }
+        public DelegateCommand<Board> RemoveBoardCommand { get; private set; }
         public DelegateCommand EditBoardCommand { get; private set; }
         public DelegateCommand SelectBoardCommand { get; private set; }
         public string BoardTitle
@@ -60,7 +60,7 @@ namespace KanbanBoard.ViewModel
 
             EditBoardCommand = new DelegateCommand(() => EditBoard());
 
-            RemoveBoardCommand = new DelegateCommand(() => RemoveBoard());
+            RemoveBoardCommand = new DelegateCommand<Board>((board) => RemoveBoard(board));
 
         }
 
@@ -75,6 +75,10 @@ namespace KanbanBoard.ViewModel
                 {
                     // ToDo : Add implementation when board title isn't empty.
                     // Board name get from dialog.BoardName property!
+
+                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName=dialog.BoardName, UserName=string.Empty, Id=System.Guid.Empty});
+                    kanbanBoardDomainContext.SubmitChanges();
+                    NotifyPropertyChanged("BoardsList");
                 }
             };
             dialog.Show();
@@ -85,7 +89,7 @@ namespace KanbanBoard.ViewModel
             // ToDo : Add implementation
         }
 
-        private void RemoveBoard()
+        private void RemoveBoard(Board board)
         {
             confirmDelete.Raise(new Confirmation()
             {
@@ -95,10 +99,12 @@ namespace KanbanBoard.ViewModel
             {
                 if (confirmation.Confirmed)
                 {
-                    // ToDo : Add implementation for removig the board from the list.
+                    kanbanBoardDomainContext.Boards.Remove(board);
+                    kanbanBoardDomainContext.SubmitChanges();
+                    NotifyPropertyChanged("BoardsList");
                 }
             });
-            NotifyPropertyChanged("BoardsList");
+            
         }
 
     }

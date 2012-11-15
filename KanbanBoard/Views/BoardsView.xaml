@@ -30,7 +30,7 @@
                         <StackPanel Orientation="Horizontal" Margin="3">
                             <TextBlock x:Name="BoardName" MinWidth="300"  Text="{Binding BoardName, Mode=TwoWay}"/>
                             <Button x:Name="ListBoxEditButton" Content="Edit" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="Remove" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
+                            <Button x:Name="ListBoxRemoveButton" Content="Remove" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
