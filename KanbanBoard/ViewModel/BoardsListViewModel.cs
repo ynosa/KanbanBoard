@@ -16,7 +16,7 @@ namespace KanbanBoard.ViewModel
 
         public DelegateCommand AddBoardCommand { get; set; }
         public DelegateCommand<Board> RemoveBoardCommand { get; private set; }
-        public DelegateCommand EditBoardCommand { get; private set; }
+        public DelegateCommand<Board> EditBoardCommand { get; private set; }
         public DelegateCommand SelectBoardCommand { get; private set; }
         public string BoardTitle
         {
@@ -58,8 +58,7 @@ namespace KanbanBoard.ViewModel
 
             AddBoardCommand = new DelegateCommand(() => AddBoard());
 
-            EditBoardCommand = new DelegateCommand(() => EditBoard());
-
+            EditBoardCommand = new DelegateCommand<Board>((board) => EditBoard(board));
             RemoveBoardCommand = new DelegateCommand<Board>((board) => RemoveBoard(board));
 
         }
@@ -84,9 +83,21 @@ namespace KanbanBoard.ViewModel
             dialog.Show();
         }
 
-        private void EditBoard()
+        private void EditBoard(Board board)
         {
-            // ToDo : Add implementation
+            var dialog = this.container.Resolve<BoardChildWindow>();
+
+            dialog.Title = "Edit board"; // Don't forget about title!
+            dialog.Closed += (s, e) =>
+            {
+                if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
+                {
+                    board.BoardName = dialog.BoardName;
+                    kanbanBoardDomainContext.SubmitChanges();
+                    NotifyPropertyChanged("BoardsList");
+                }
+            };
+            dialog.Show();
         }
 
         private void RemoveBoard(Board board)
