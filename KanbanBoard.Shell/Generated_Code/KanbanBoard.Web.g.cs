@@ -93,6 +93,132 @@ namespace KanbanBoard.Web
     
     
     /// <summary>
+    /// The 'Board' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/KanbanBoard.Web")]
+    public sealed partial class Board : Entity
+    {
+        
+        private string _boardName;
+        
+        private Guid _id;
+        
+        private string _userName;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnBoardNameChanging(string value);
+        partial void OnBoardNameChanged();
+        partial void OnIdChanging(Guid value);
+        partial void OnIdChanged();
+        partial void OnUserNameChanging(string value);
+        partial void OnUserNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Board"/> class.
+        /// </summary>
+        public Board()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'BoardName' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        [StringLength(256)]
+        public string BoardName
+        {
+            get
+            {
+                return this._boardName;
+            }
+            set
+            {
+                if ((this._boardName != value))
+                {
+                    this.OnBoardNameChanging(value);
+                    this.RaiseDataMemberChanging("BoardName");
+                    this.ValidateProperty("BoardName", value);
+                    this._boardName = value;
+                    this.RaiseDataMemberChanged("BoardName");
+                    this.OnBoardNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Id' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid Id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIdChanging(value);
+                    this.ValidateProperty("Id", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("Id");
+                    this.OnIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'UserName' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        [StringLength(256)]
+        public string UserName
+        {
+            get
+            {
+                return this._userName;
+            }
+            set
+            {
+                if ((this._userName != value))
+                {
+                    this.OnUserNameChanging(value);
+                    this.RaiseDataMemberChanging("UserName");
+                    this.ValidateProperty("UserName", value);
+                    this._userName = value;
+                    this.RaiseDataMemberChanged("UserName");
+                    this.OnUserNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
     /// The DomainContext corresponding to the 'KanbanBoardAuthenticationDomainService' DomainService.
     /// </summary>
     public sealed partial class KanbanBoardAuthenticationDomainContext : global::System.ServiceModel.DomainServices.Client.ApplicationServices.AuthenticationDomainContextBase
@@ -287,6 +413,134 @@ namespace KanbanBoard.Web
             public KanbanBoardAuthenticationDomainContextEntityContainer()
             {
                 this.CreateEntitySet<User>(EntitySetOperations.Edit);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The DomainContext corresponding to the 'KanbanBoardDomainService' DomainService.
+    /// </summary>
+    public sealed partial class KanbanBoardDomainContext : DomainContext
+    {
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KanbanBoardDomainContext"/> class.
+        /// </summary>
+        public KanbanBoardDomainContext() : 
+                this(new WebDomainClient<IKanbanBoardDomainServiceContract>(new Uri("KanbanBoard-Web-KanbanBoardDomainService.svc", UriKind.Relative)))
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KanbanBoardDomainContext"/> class with the specified service URI.
+        /// </summary>
+        /// <param name="serviceUri">The KanbanBoardDomainService service URI.</param>
+        public KanbanBoardDomainContext(Uri serviceUri) : 
+                this(new WebDomainClient<IKanbanBoardDomainServiceContract>(serviceUri))
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KanbanBoardDomainContext"/> class with the specified <paramref name="domainClient"/>.
+        /// </summary>
+        /// <param name="domainClient">The DomainClient instance to use for this DomainContext.</param>
+        public KanbanBoardDomainContext(DomainClient domainClient) : 
+                base(domainClient)
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="Board"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
+        /// </summary>
+        public EntitySet<Board> Boards
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Board>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Board"/> entity instances using the 'GetBoards' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Board"/> entity instances.</returns>
+        public EntityQuery<Board> GetBoardsQuery()
+        {
+            this.ValidateMethod("GetBoardsQuery", null);
+            return base.CreateQuery<Board>("GetBoards", null, false, true);
+        }
+        
+        /// <summary>
+        /// Creates a new EntityContainer for this DomainContext's EntitySets.
+        /// </summary>
+        /// <returns>A new container instance.</returns>
+        protected override EntityContainer CreateEntityContainer()
+        {
+            return new KanbanBoardDomainContextEntityContainer();
+        }
+        
+        /// <summary>
+        /// Service contract for the 'KanbanBoardDomainService' DomainService.
+        /// </summary>
+        [ServiceContract()]
+        public interface IKanbanBoardDomainServiceContract
+        {
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetBoards' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/GetBoardsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/GetBoards", ReplyAction="http://tempuri.org/KanbanBoardDomainService/GetBoardsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetBoards(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetBoards'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetBoards'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetBoards' operation.</returns>
+            QueryResult<Board> EndGetBoards(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'SubmitChanges' operation.
+            /// </summary>
+            /// <param name="changeSet">The change-set to submit.</param>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/SubmitChangesDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/SubmitChanges", ReplyAction="http://tempuri.org/KanbanBoardDomainService/SubmitChangesResponse")]
+            IAsyncResult BeginSubmitChanges(IEnumerable<ChangeSetEntry> changeSet, AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginSubmitChanges'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginSubmitChanges'.</param>
+            /// <returns>The collection of change-set entry elements returned from 'SubmitChanges'.</returns>
+            IEnumerable<ChangeSetEntry> EndSubmitChanges(IAsyncResult result);
+        }
+        
+        internal sealed class KanbanBoardDomainContextEntityContainer : EntityContainer
+        {
+            
+            public KanbanBoardDomainContextEntityContainer()
+            {
+                this.CreateEntitySet<Board>(EntitySetOperations.All);
             }
         }
     }
