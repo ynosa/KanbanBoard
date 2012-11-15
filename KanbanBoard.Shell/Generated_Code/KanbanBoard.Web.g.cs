@@ -90,6 +90,7 @@ namespace KanbanBoard.Web
     using System.ServiceModel.DomainServices.Client;
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
     using System.ServiceModel.Web;
+    using System.Xml.Serialization;
     
     
     /// <summary>
@@ -98,6 +99,8 @@ namespace KanbanBoard.Web
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/KanbanBoard.Web")]
     public sealed partial class Board : Entity
     {
+        
+        private EntityRef<BoardItem> _boardItem;
         
         private string _boardName;
         
@@ -128,6 +131,42 @@ namespace KanbanBoard.Web
         public Board()
         {
             this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="BoardItem"/> entity.
+        /// </summary>
+        [Association("Board_BoardItem", "Id", "BoardId")]
+        [XmlIgnore()]
+        public BoardItem BoardItem
+        {
+            get
+            {
+                if ((this._boardItem == null))
+                {
+                    this._boardItem = new EntityRef<BoardItem>(this, "BoardItem", this.FilterBoardItem);
+                }
+                return this._boardItem.Entity;
+            }
+            set
+            {
+                BoardItem previous = this.BoardItem;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("BoardItem", value);
+                    if ((previous != null))
+                    {
+                        this._boardItem.Entity = null;
+                        previous.Board = null;
+                    }
+                    this._boardItem.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Board = this;
+                    }
+                    this.RaisePropertyChanged("BoardItem");
+                }
+            }
         }
         
         /// <summary>
@@ -208,6 +247,11 @@ namespace KanbanBoard.Web
             }
         }
         
+        private bool FilterBoardItem(BoardItem entity)
+        {
+            return (entity.BoardId == this.Id);
+        }
+        
         /// <summary>
         /// Computes a value from the key fields that uniquely identifies this entity instance.
         /// </summary>
@@ -215,6 +259,181 @@ namespace KanbanBoard.Web
         public override object GetIdentity()
         {
             return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'BoardItem' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/KanbanBoard.Web")]
+    public sealed partial class BoardItem : Entity
+    {
+        
+        private EntityRef<Board> _board;
+        
+        private Guid _boardId;
+        
+        private int _id;
+        
+        private string _name;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnBoardIdChanging(Guid value);
+        partial void OnBoardIdChanged();
+        partial void OnIdChanging(int value);
+        partial void OnIdChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoardItem"/> class.
+        /// </summary>
+        public BoardItem()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Board"/> entity.
+        /// </summary>
+        [Association("Board_BoardItem", "BoardId", "Id", IsForeignKey=true)]
+        [XmlIgnore()]
+        public Board Board
+        {
+            get
+            {
+                if ((this._board == null))
+                {
+                    this._board = new EntityRef<Board>(this, "Board", this.FilterBoard);
+                }
+                return this._board.Entity;
+            }
+            set
+            {
+                Board previous = this.Board;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Board", value);
+                    if ((previous != null))
+                    {
+                        this._board.Entity = null;
+                        previous.BoardItem = null;
+                    }
+                    if ((value != null))
+                    {
+                        this.BoardId = value.Id;
+                    }
+                    else
+                    {
+                        this.BoardId = default(Guid);
+                    }
+                    this._board.Entity = value;
+                    if ((value != null))
+                    {
+                        value.BoardItem = this;
+                    }
+                    this.RaisePropertyChanged("Board");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'BoardId' value.
+        /// </summary>
+        [DataMember()]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid BoardId
+        {
+            get
+            {
+                return this._boardId;
+            }
+            set
+            {
+                if ((this._boardId != value))
+                {
+                    this.OnBoardIdChanging(value);
+                    this.RaiseDataMemberChanging("BoardId");
+                    this.ValidateProperty("BoardId", value);
+                    this._boardId = value;
+                    this.RaiseDataMemberChanged("BoardId");
+                    this.OnBoardIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Id' value.
+        /// </summary>
+        [DataMember()]
+        public int Id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIdChanging(value);
+                    this.RaiseDataMemberChanging("Id");
+                    this.ValidateProperty("Id", value);
+                    this._id = value;
+                    this.RaiseDataMemberChanged("Id");
+                    this.OnIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        [StringLength(256)]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        private bool FilterBoard(Board entity)
+        {
+            return (entity.Id == this.BoardId);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._boardId;
         }
     }
     
@@ -462,6 +681,17 @@ namespace KanbanBoard.Web
         }
         
         /// <summary>
+        /// Gets the set of <see cref="BoardItem"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
+        /// </summary>
+        public EntitySet<BoardItem> BoardItems
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<BoardItem>();
+            }
+        }
+        
+        /// <summary>
         /// Gets the set of <see cref="Board"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
         /// </summary>
         public EntitySet<Board> Boards
@@ -470,6 +700,16 @@ namespace KanbanBoard.Web
             {
                 return base.EntityContainer.GetEntitySet<Board>();
             }
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="BoardItem"/> entity instances using the 'GetBoardItems' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="BoardItem"/> entity instances.</returns>
+        public EntityQuery<BoardItem> GetBoardItemsQuery()
+        {
+            this.ValidateMethod("GetBoardItemsQuery", null);
+            return base.CreateQuery<BoardItem>("GetBoardItems", null, false, true);
         }
         
         /// <summary>
@@ -497,6 +737,24 @@ namespace KanbanBoard.Web
         [ServiceContract()]
         public interface IKanbanBoardDomainServiceContract
         {
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetBoardItems' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/GetBoardItemsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/GetBoardItems", ReplyAction="http://tempuri.org/KanbanBoardDomainService/GetBoardItemsResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetBoardItems(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetBoardItems'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetBoardItems'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetBoardItems' operation.</returns>
+            QueryResult<BoardItem> EndGetBoardItems(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetBoards' operation.
@@ -541,6 +799,7 @@ namespace KanbanBoard.Web
             public KanbanBoardDomainContextEntityContainer()
             {
                 this.CreateEntitySet<Board>(EntitySetOperations.All);
+                this.CreateEntitySet<BoardItem>(EntitySetOperations.All);
             }
         }
     }
