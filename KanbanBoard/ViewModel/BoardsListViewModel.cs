@@ -74,6 +74,7 @@ namespace KanbanBoard.ViewModel
                 if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
                 {
                     // ToDo : Add implementation when board title isn't empty.
+                    // Board name get from dialog.BoardName property!
                 }
             };
             dialog.Show();
