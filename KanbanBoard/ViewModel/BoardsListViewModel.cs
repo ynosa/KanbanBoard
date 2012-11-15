@@ -1,12 +1,8 @@
 ﻿
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Prism.Commands;
-using KanbanBoard.Models;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
-using KanbanBoard.Views.ChildWindows;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using KanbanBoard.Web;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using Microsoft.Practices.Unity;
 using System.ServiceModel.DomainServices.Client;
 namespace KanbanBoard.ViewModel
 {

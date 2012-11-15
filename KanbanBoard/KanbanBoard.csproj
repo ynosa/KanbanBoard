@@ -97,7 +97,18 @@
       <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Controls" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\System.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit.Internals, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\Lib\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -108,6 +119,7 @@
     <Compile Include="..\KanbanBoard.Shell\Generated_Code\KanbanBoard.Web.g.cs">
       <Link>Generated_Code\KanbanBoard.Web.g.cs</Link>
     </Compile>
+    <Compile Include="Behaviors\DragAndDropBehavior.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
@@ -129,8 +141,19 @@
     <Compile Include="Views\ChildWindows\BoardChildWindow.xaml.cs">
       <DependentUpon>BoardChildWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\BoardControl.xaml.cs">
+      <DependentUpon>BoardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\BoardControlViewModel.cs" />
+    <Compile Include="Views\Controls\ColumnControl.xaml.cs">
+      <DependentUpon>ColumnControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ColumnControlViewModel.cs" />
     <Compile Include="Views\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectedBoardView.xaml.cs">
+      <DependentUpon>SelectedBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
@@ -148,9 +171,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\BoardControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\ColumnControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ErrorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectedBoardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\StatusView.xaml">
       <SubType>Designer</SubType>
