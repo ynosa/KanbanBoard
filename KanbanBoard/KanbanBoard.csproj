@@ -96,6 +96,7 @@
       <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\System.Windows.Controls.dll</HintPath>
@@ -121,9 +122,6 @@
     <Compile Include="Behaviors\DragAndDropBehavior.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
-    <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
-      <DependentUpon>DataStore.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Events\AuthenticationEvent.cs" />
     <Compile Include="Helpers\ViewOrchestrator.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
@@ -137,9 +135,6 @@
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
-    <Compile Include="Views\BoardNameControl.xaml.cs">
-      <DependentUpon>BoardNameControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BoardsView.xaml.cs">
       <DependentUpon>BoardsView.xaml</DependentUpon>
     </Compile>
@@ -168,19 +163,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="DataStore\DataStore\DataStore.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ProjectDataSources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <ContainsDataSources>True</ContainsDataSources>
-    </Page>
-    <Page Include="Views\BoardNameControl.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\BoardsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -215,7 +197,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <DesignTimeOnly Include="DataStore\DataStore\DataStore.xsd" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>

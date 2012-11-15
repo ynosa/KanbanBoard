@@ -7,6 +7,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     mc:Ignorable="d"
+    x:Class="KanbanBoard.Views.BoardsView"
     xmlns:local="clr-namespace:KanbanBoard.Views.ChildWindows">
 
     <i:Interaction.Triggers>
@@ -49,15 +50,15 @@
                     		</VisualStateGroup>
                     	</VisualStateManager.VisualStateGroups>
                     	<VisualStateManager.CustomVisualStateManager>
-                    		<ei:ExtendedVisualStateManager/>
+                    		<ie:ExtendedVisualStateManager/>
                     	</VisualStateManager.CustomVisualStateManager>
                         <StackPanel x:Name="stackPanel" Orientation="Horizontal" Margin="3">
                         	<i:Interaction.Triggers>
                         		<i:EventTrigger EventName="MouseEnter">
-                        			<ei:GoToStateAction StateName="Focused"/>
+                        			<ie:GoToStateAction StateName="Focused"/>
                         		</i:EventTrigger>
 								<i:EventTrigger EventName="MouseLeave">
-                        			<ei:GoToStateAction StateName="Unfocused"/>
+                        			<ie:GoToStateAction StateName="Unfocused"/>
                         		</i:EventTrigger>
                         	</i:Interaction.Triggers>                        	                       	
                             <TextBlock x:Name="BoardName"  MinWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
