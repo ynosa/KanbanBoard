@@ -135,7 +135,6 @@
     <Compile Include="RegionNames.cs" />
     <Compile Include="ViewModel\BoardsListViewModel.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />
-    <Compile Include="ViewModel\SelectedBoardViewModel.cs" />
     <Compile Include="ViewModel\ErrorViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />

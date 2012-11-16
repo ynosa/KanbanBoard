@@ -6,9 +6,9 @@
     xmlns:prism="http://www.codeplex.com/prism"
     mc:Ignorable="d">
 
-    <!--<UserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary Source="/KanbanBoard.Shell;component/Styles/Styles.xaml"/>
-    </UserControl.Resources>-->
+    </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Background="#666666">
         <Grid.RowDefinitions>
