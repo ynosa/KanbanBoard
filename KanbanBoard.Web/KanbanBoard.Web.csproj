@@ -91,6 +91,7 @@
     <Compile Include="KanbanBoardAuthenticationDomainService.cs" />
     <Compile Include="KanbanBoardDataAccess.Designer.cs" />
     <Compile Include="KanbanBoardDomainService.cs" />
+    <Compile Include="KanbanBoardDomainService.metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

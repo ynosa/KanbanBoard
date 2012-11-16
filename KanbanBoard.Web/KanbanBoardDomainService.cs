@@ -63,39 +63,78 @@ namespace KanbanBoard.Web
         // TODO:
         // Consider constraining the results of your query method.  If you need additional input you can
         // add parameters to this method or create additional query methods with different names.
-        // To support paging you will need to add ordering to the 'BoardItems' query.
-        public IQueryable<BoardItem> GetBoardItems()
+        // To support paging you will need to add ordering to the 'BoardColumns' query.
+        public IQueryable<BoardColumn> GetBoardColumns()
         {
-            return this.ObjectContext.BoardItems;
+            return this.ObjectContext.BoardColumns;
         }
 
-        public void InsertBoardItem(BoardItem boardItem)
+        public void InsertBoardColumn(BoardColumn boardColumn)
         {
-            if ((boardItem.EntityState != EntityState.Detached))
+            if ((boardColumn.EntityState != EntityState.Detached))
             {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardItem, EntityState.Added);
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardColumn, EntityState.Added);
             }
             else
             {
-                this.ObjectContext.BoardItems.AddObject(boardItem);
+                this.ObjectContext.BoardColumns.AddObject(boardColumn);
             }
         }
 
-        public void UpdateBoardItem(BoardItem currentBoardItem)
+        public void UpdateBoardColumn(BoardColumn currentBoardColumn)
         {
-            this.ObjectContext.BoardItems.AttachAsModified(currentBoardItem, this.ChangeSet.GetOriginal(currentBoardItem));
+            this.ObjectContext.BoardColumns.AttachAsModified(currentBoardColumn, this.ChangeSet.GetOriginal(currentBoardColumn));
         }
 
-        public void DeleteBoardItem(BoardItem boardItem)
+        public void DeleteBoardColumn(BoardColumn boardColumn)
         {
-            if ((boardItem.EntityState != EntityState.Detached))
+            if ((boardColumn.EntityState != EntityState.Detached))
             {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardItem, EntityState.Deleted);
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(boardColumn, EntityState.Deleted);
             }
             else
             {
-                this.ObjectContext.BoardItems.Attach(boardItem);
-                this.ObjectContext.BoardItems.DeleteObject(boardItem);
+                this.ObjectContext.BoardColumns.Attach(boardColumn);
+                this.ObjectContext.BoardColumns.DeleteObject(boardColumn);
+            }
+        }
+
+        // TODO:
+        // Consider constraining the results of your query method.  If you need additional input you can
+        // add parameters to this method or create additional query methods with different names.
+        // To support paging you will need to add ordering to the 'Tasks' query.
+        public IQueryable<Task> GetTasks()
+        {
+            return this.ObjectContext.Tasks;
+        }
+
+        public void InsertTask(Task task)
+        {
+            if ((task.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(task, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.Tasks.AddObject(task);
+            }
+        }
+
+        public void UpdateTask(Task currentTask)
+        {
+            this.ObjectContext.Tasks.AttachAsModified(currentTask, this.ChangeSet.GetOriginal(currentTask));
+        }
+
+        public void DeleteTask(Task task)
+        {
+            if ((task.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(task, EntityState.Deleted);
+            }
+            else
+            {
+                this.ObjectContext.Tasks.Attach(task);
+                this.ObjectContext.Tasks.DeleteObject(task);
             }
         }
     }

@@ -19,7 +19,8 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.Board), "BoardItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(KanbanBoard.Web.BoardItem), true)]
+[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_BoardColumn_Board", "Board", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.Board), "BoardColumn", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(KanbanBoard.Web.BoardColumn), true)]
+[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_Task_ToBoardColumn", "BoardColumn", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.BoardColumn), "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(KanbanBoard.Web.Task), true)]
 
 #endregion
 
@@ -90,18 +91,34 @@ namespace KanbanBoard.Web
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<BoardItem> BoardItems
+        public ObjectSet<BoardColumn> BoardColumns
         {
             get
             {
-                if ((_BoardItems == null))
+                if ((_BoardColumns == null))
                 {
-                    _BoardItems = base.CreateObjectSet<BoardItem>("BoardItems");
+                    _BoardColumns = base.CreateObjectSet<BoardColumn>("BoardColumns");
                 }
-                return _BoardItems;
+                return _BoardColumns;
             }
         }
-        private ObjectSet<BoardItem> _BoardItems;
+        private ObjectSet<BoardColumn> _BoardColumns;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Task> Tasks
+        {
+            get
+            {
+                if ((_Tasks == null))
+                {
+                    _Tasks = base.CreateObjectSet<Task>("Tasks");
+                }
+                return _Tasks;
+            }
+        }
+        private ObjectSet<Task> _Tasks;
 
         #endregion
 
@@ -116,11 +133,19 @@ namespace KanbanBoard.Web
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the BoardItems EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the BoardColumns EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToBoardItems(BoardItem boardItem)
+        public void AddToBoardColumns(BoardColumn boardColumn)
         {
-            base.AddObject("BoardItems", boardItem);
+            base.AddObject("BoardColumns", boardColumn);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Tasks EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTasks(Task task)
+        {
+            base.AddObject("Tasks", task);
         }
 
         #endregion
@@ -246,18 +271,18 @@ namespace KanbanBoard.Web
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "BoardItem")]
-        public EntityCollection<BoardItem> BoardItems
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardColumn_Board", "BoardColumn")]
+        public EntityCollection<BoardColumn> BoardColumns
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BoardColumn>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "BoardColumn");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BoardColumn>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "BoardColumn", value);
                 }
             }
         }
@@ -269,26 +294,28 @@ namespace KanbanBoard.Web
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="KanbanBoardDatabaseModel", Name="BoardItem")]
+    [EdmEntityTypeAttribute(NamespaceName="KanbanBoardDatabaseModel", Name="BoardColumn")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class BoardItem : EntityObject
+    public partial class BoardColumn : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new BoardItem object.
+        /// Create a new BoardColumn object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="boardId">Initial value of the BoardId property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static BoardItem CreateBoardItem(global::System.Guid id, global::System.Guid boardId, global::System.String name)
+        /// <param name="position">Initial value of the Position property.</param>
+        public static BoardColumn CreateBoardColumn(global::System.Guid id, global::System.Guid boardId, global::System.String name, global::System.Int16 position)
         {
-            BoardItem boardItem = new BoardItem();
-            boardItem.Id = id;
-            boardItem.BoardId = boardId;
-            boardItem.Name = name;
-            return boardItem;
+            BoardColumn boardColumn = new BoardColumn();
+            boardColumn.Id = id;
+            boardColumn.BoardId = boardId;
+            boardColumn.Name = name;
+            boardColumn.Position = position;
+            return boardColumn;
         }
 
         #endregion
@@ -369,6 +396,30 @@ namespace KanbanBoard.Web
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 Position
+        {
+            get
+            {
+                return _Position;
+            }
+            set
+            {
+                OnPositionChanging(value);
+                ReportPropertyChanging("Position");
+                _Position = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Position");
+                OnPositionChanged();
+            }
+        }
+        private global::System.Int16 _Position;
+        partial void OnPositionChanging(global::System.Int16 value);
+        partial void OnPositionChanged();
 
         #endregion
 
@@ -381,16 +432,16 @@ namespace KanbanBoard.Web
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board")]
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardColumn_Board", "Board")]
         public Board Board
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "Board").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "Board").Value = value;
             }
         }
         /// <summary>
@@ -402,13 +453,238 @@ namespace KanbanBoard.Web
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "Board");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "Board", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Board>("KanbanBoardDatabaseModel.FK_BoardColumn_Board", "Board", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_Task_ToBoardColumn", "Task")]
+        public EntityCollection<Task> Tasks
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Task>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "Task");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Task>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "Task", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="KanbanBoardDatabaseModel", Name="Task")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Task : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Task object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="boardColumnId">Initial value of the BoardColumnId property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        /// <param name="position">Initial value of the Position property.</param>
+        public static Task CreateTask(global::System.Guid id, global::System.Guid boardColumnId, global::System.String name, global::System.String description, global::System.Int16 position)
+        {
+            Task task = new Task();
+            task.Id = id;
+            task.BoardColumnId = boardColumnId;
+            task.Name = name;
+            task.Description = description;
+            task.Position = position;
+            return task;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid BoardColumnId
+        {
+            get
+            {
+                return _BoardColumnId;
+            }
+            set
+            {
+                OnBoardColumnIdChanging(value);
+                ReportPropertyChanging("BoardColumnId");
+                _BoardColumnId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BoardColumnId");
+                OnBoardColumnIdChanged();
+            }
+        }
+        private global::System.Guid _BoardColumnId;
+        partial void OnBoardColumnIdChanging(global::System.Guid value);
+        partial void OnBoardColumnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 Position
+        {
+            get
+            {
+                return _Position;
+            }
+            set
+            {
+                OnPositionChanging(value);
+                ReportPropertyChanging("Position");
+                _Position = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Position");
+                OnPositionChanged();
+            }
+        }
+        private global::System.Int16 _Position;
+        partial void OnPositionChanging(global::System.Int16 value);
+        partial void OnPositionChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_Task_ToBoardColumn", "BoardColumn")]
+        public BoardColumn BoardColumn
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardColumn>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "BoardColumn").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardColumn>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "BoardColumn").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<BoardColumn> BoardColumnReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardColumn>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "BoardColumn");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BoardColumn>("KanbanBoardDatabaseModel.FK_Task_ToBoardColumn", "BoardColumn", value);
                 }
             }
         }
