@@ -23,15 +23,15 @@
         </EntityType>
         <EntityType Name="BoardItem">
           <Key>
-            <PropertyRef Name="BoardId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BoardId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="256" />
         </EntityType>
         <Association Name="FK_BoardItem_Board">
           <End Role="Board" Type="KanbanBoardDatabaseModel.Store.Board" Multiplicity="1" />
-          <End Role="BoardItem" Type="KanbanBoardDatabaseModel.Store.BoardItem" Multiplicity="0..1" />
+          <End Role="BoardItem" Type="KanbanBoardDatabaseModel.Store.BoardItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Board">
               <PropertyRef Name="Id" />
@@ -57,23 +57,23 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
-          <Property Name="BoardName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="BoardItem" Relationship="KanbanBoardDatabaseModel.FK_BoardItem_Board" FromRole="Board" ToRole="BoardItem" />
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BoardName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BoardItems" Relationship="KanbanBoardDatabaseModel.FK_BoardItem_Board" FromRole="Board" ToRole="BoardItem" />
         </EntityType>
         <EntityType Name="BoardItem">
           <Key>
-            <PropertyRef Name="BoardId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="BoardId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Board" Relationship="KanbanBoardDatabaseModel.FK_BoardItem_Board" FromRole="BoardItem" ToRole="Board" />
         </EntityType>
         <Association Name="FK_BoardItem_Board">
           <End Type="KanbanBoardDatabaseModel.Board" Role="Board" Multiplicity="1" />
-          <End Type="KanbanBoardDatabaseModel.BoardItem" Role="BoardItem" Multiplicity="0..1" />
+          <End Type="KanbanBoardDatabaseModel.BoardItem" Role="BoardItem" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Board">
               <PropertyRef Name="Id" />
@@ -92,9 +92,9 @@
           <EntitySetMapping Name="Boards">
             <EntityTypeMapping TypeName="KanbanBoardDatabaseModel.Board">
               <MappingFragment StoreEntitySet="Board">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="BoardName" ColumnName="BoardName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -128,12 +128,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="KanbanBoardDataAccess">
-        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.Board" Width="1.5" PointX="0.75" PointY="0.75" Height="1.4531054091453552" IsExpanded="true" />
-        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.BoardItem" Width="1.5" PointX="3" PointY="3.875" Height="1.6216438106695819" />
+        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.Board" Width="1.5" PointX="0.75" PointY="0.875" Height="1.621643810669581" />
+        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.BoardItem" Width="1.5" PointX="3" PointY="0.875" Height="1.62164381066958" />
         <AssociationConnector Association="KanbanBoardDatabaseModel.FK_BoardItem_Board" >
-          <ConnectorPoint PointX="1.5" PointY="2.3716438106695814" />
-          <ConnectorPoint PointX="1.5" PointY="4.6858219053347909" />
-          <ConnectorPoint PointX="3" PointY="4.6858219053347909" />
+          <ConnectorPoint PointX="2.25" PointY="1.68582190533479" />
+          <ConnectorPoint PointX="3" PointY="1.68582190533479" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

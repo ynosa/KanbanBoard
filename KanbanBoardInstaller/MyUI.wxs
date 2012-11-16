@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
-    <WixVariable Id="WixUIBannerBmp" Value="Images\ps_wix_banner.jpg" />
-    <WixVariable Id="WixUIDialogBmp" Value="Images\ps_wix_welcome.jpg" />
-    <WixVariable Id="WixUILicenseRtf" Value="Docs\End User License Agreement.rtf" />
+    <!--<WixVariable Id="WixUIBannerBmp" Value="Images\ps_wix_banner.jpg" />
+		<WixVariable Id="WixUIDialogBmp" Value="Images\ps_wix_welcome.jpg" />
+		<WixVariable Id="WixUILicenseRtf" Value="End User License Agreement.rtf" />-->
 
     <UI Id="WixUI_WebUI">
       <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
@@ -42,7 +42,6 @@
       <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog"
                Value="InstallationAddress">LicenseAccepted = "1"</Publish>
 
-      <!-- Custom: Select existing web site, and specify VD name -->
       <Publish Dialog="InstallationAddress" Control="Back" Event="NewDialog"
                Value="LicenseAgreementDlg" Order="1">1</Publish>
       <Publish Dialog="InstallationAddress" Control="Next" Event="DoAction"
