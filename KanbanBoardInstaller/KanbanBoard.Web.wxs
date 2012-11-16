@@ -5,6 +5,18 @@
             <Component Id="cmpB858CE2E18560D80A25DD5CDB0A5283C" Guid="*">
                 <File Id="fil79099226B2DCD2C0949AD5125D7B864E" KeyPath="yes" Source="$(var.BasePath)\Default.html" />
             </Component>
+            <Component Id="cmpA6E415E79B536963416B2A5358A6AD26" Guid="*">
+                <File Id="fil32A845E8AAA6613D26F3AAA2E1C5292B" KeyPath="yes" Source="$(var.BasePath)\KanbanBoard.ShellTestPage.aspx" />
+            </Component>
+            <Component Id="cmp2015EAF93E06C42C48FF34595F12F2D6" Guid="*">
+                <File Id="fil89CF3BD5A2AEDA78D3E47BEA5788830B" KeyPath="yes" Source="$(var.BasePath)\KanbanBoard.ShellTestPage.html" />
+            </Component>
+            <Component Id="cmp217B69A95F109B2756B1BC4C1CAB10C1" Guid="*">
+                <File Id="fil76CD9C0CCE7EC7E634DE9794C12391E6" KeyPath="yes" Source="$(var.BasePath)\KanbanBoardTestPage.aspx" />
+            </Component>
+            <Component Id="cmp767A9D7D82F9B95CF52E2714A6B28A87" Guid="*">
+                <File Id="fil24F7A24014A098C60B36C8A83C20AFBB" KeyPath="yes" Source="$(var.BasePath)\KanbanBoardTestPage.html" />
+            </Component>
             <Component Id="cmp3DE0E27CB4AD0EAD15733F20AB0760EF" Guid="*">
                 <File Id="filF804CBAD53A94E1BE2AB44FD5DF0AB63" KeyPath="yes" Source="$(var.BasePath)\packages.config" />
             </Component>
@@ -38,6 +50,10 @@
     <Fragment>
         <ComponentGroup Id="KanbanBoard.Web_Project">
             <ComponentRef Id="cmpB858CE2E18560D80A25DD5CDB0A5283C" />
+            <ComponentRef Id="cmpA6E415E79B536963416B2A5358A6AD26" />
+            <ComponentRef Id="cmp2015EAF93E06C42C48FF34595F12F2D6" />
+            <ComponentRef Id="cmp217B69A95F109B2756B1BC4C1CAB10C1" />
+            <ComponentRef Id="cmp767A9D7D82F9B95CF52E2714A6B28A87" />
             <ComponentRef Id="cmp3DE0E27CB4AD0EAD15733F20AB0760EF" />
             <ComponentRef Id="cmpB245C55D22E277819AED2ED3D9694E42" />
             <ComponentRef Id="cmpCDB7F4EFDEF1E65C3B12BEBAD7E4D7EA" />

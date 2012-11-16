@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="en-us"
-  xmlns="http://schemas.microsoft.com/wix/2006/localization">
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="LANG">1033</String>
   <String Id="Comments">MyWebApp Comments</String>
   <String Id="Description">MyWebApp Description</String>
@@ -15,5 +14,5 @@
   <String Id="Site">Site</String>
   <String Id="VirtualDirectory">Virtual Directory</String>
   <String Id="Info1"></String>
-  <String Id="Info2"></String>  
+  <String Id="Info2"></String>
 </WixLocalization>
