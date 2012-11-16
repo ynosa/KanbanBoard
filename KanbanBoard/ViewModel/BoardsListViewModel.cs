@@ -76,7 +76,11 @@ namespace KanbanBoard.ViewModel
                 {
                     // ToDo : Add implementation when board title isn't empty.
                     // Board name get from dialog.BoardName property!
-                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName = dialog.BoardName, UserName = WebContextBase.Current.Authentication.User.Identity.Name, Id=Guid.NewGuid() });
+                    Board board = new Board() { BoardName = dialog.BoardName, UserName = WebContextBase.Current.Authentication.User.Identity.Name, Id = Guid.NewGuid() };
+                    //kanbanBoardDomainContext.BoardItems.Add(new BoardItem() { Board = board, Name = "item1", Id = 1 });
+                    //kanbanBoardDomainContext.
+
+                    kanbanBoardDomainContext.Boards.Add(board);
                     kanbanBoardDomainContext.SubmitChanges();
                     NotifyPropertyChanged("BoardsList");
                 }

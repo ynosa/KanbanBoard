@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.Board), "BoardItem", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(KanbanBoard.Web.BoardItem), true)]
+[assembly: EdmRelationshipAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "Board", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(KanbanBoard.Web.Board), "BoardItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(KanbanBoard.Web.BoardItem), true)]
 
 #endregion
 
@@ -247,33 +247,17 @@ namespace KanbanBoard.Web
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("KanbanBoardDatabaseModel", "FK_BoardItem_Board", "BoardItem")]
-        public BoardItem BoardItem
+        public EntityCollection<BoardItem> BoardItems
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<BoardItem> BoardItemReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BoardItem>("KanbanBoardDatabaseModel.FK_BoardItem_Board", "BoardItem", value);
                 }
             }
         }
@@ -298,7 +282,7 @@ namespace KanbanBoard.Web
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="boardId">Initial value of the BoardId property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static BoardItem CreateBoardItem(global::System.Int32 id, global::System.Guid boardId, global::System.String name)
+        public static BoardItem CreateBoardItem(global::System.Guid id, global::System.Guid boardId, global::System.String name)
         {
             BoardItem boardItem = new BoardItem();
             boardItem.Id = id;
@@ -314,9 +298,9 @@ namespace KanbanBoard.Web
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Id
+        public global::System.Guid Id
         {
             get
             {
@@ -324,21 +308,24 @@ namespace KanbanBoard.Web
             }
             set
             {
-                OnIdChanging(value);
-                ReportPropertyChanging("Id");
-                _Id = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Id");
-                OnIdChanged();
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
             }
         }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Guid BoardId
         {
@@ -348,14 +335,11 @@ namespace KanbanBoard.Web
             }
             set
             {
-                if (_BoardId != value)
-                {
-                    OnBoardIdChanging(value);
-                    ReportPropertyChanging("BoardId");
-                    _BoardId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("BoardId");
-                    OnBoardIdChanged();
-                }
+                OnBoardIdChanging(value);
+                ReportPropertyChanging("BoardId");
+                _BoardId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BoardId");
+                OnBoardIdChanged();
             }
         }
         private global::System.Guid _BoardId;

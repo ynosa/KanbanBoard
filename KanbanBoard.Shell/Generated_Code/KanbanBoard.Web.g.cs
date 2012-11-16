@@ -100,7 +100,7 @@ namespace KanbanBoard.Web
     public sealed partial class Board : Entity
     {
         
-        private EntityRef<BoardItem> _boardItem;
+        private EntityCollection<BoardItem> _boardItems;
         
         private string _boardName;
         
@@ -134,38 +134,19 @@ namespace KanbanBoard.Web
         }
         
         /// <summary>
-        /// Gets or sets the associated <see cref="BoardItem"/> entity.
+        /// Gets the collection of associated <see cref="BoardItem"/> entity instances.
         /// </summary>
         [Association("Board_BoardItem", "Id", "BoardId")]
         [XmlIgnore()]
-        public BoardItem BoardItem
+        public EntityCollection<BoardItem> BoardItems
         {
             get
             {
-                if ((this._boardItem == null))
+                if ((this._boardItems == null))
                 {
-                    this._boardItem = new EntityRef<BoardItem>(this, "BoardItem", this.FilterBoardItem);
+                    this._boardItems = new EntityCollection<BoardItem>(this, "BoardItems", this.FilterBoardItems, this.AttachBoardItems, this.DetachBoardItems);
                 }
-                return this._boardItem.Entity;
-            }
-            set
-            {
-                BoardItem previous = this.BoardItem;
-                if ((previous != value))
-                {
-                    this.ValidateProperty("BoardItem", value);
-                    if ((previous != null))
-                    {
-                        this._boardItem.Entity = null;
-                        previous.Board = null;
-                    }
-                    this._boardItem.Entity = value;
-                    if ((value != null))
-                    {
-                        value.Board = this;
-                    }
-                    this.RaisePropertyChanged("BoardItem");
-                }
+                return this._boardItems;
             }
         }
         
@@ -247,7 +228,17 @@ namespace KanbanBoard.Web
             }
         }
         
-        private bool FilterBoardItem(BoardItem entity)
+        private void AttachBoardItems(BoardItem entity)
+        {
+            entity.Board = this;
+        }
+        
+        private void DetachBoardItems(BoardItem entity)
+        {
+            entity.Board = null;
+        }
+        
+        private bool FilterBoardItems(BoardItem entity)
         {
             return (entity.BoardId == this.Id);
         }
@@ -273,7 +264,7 @@ namespace KanbanBoard.Web
         
         private Guid _boardId;
         
-        private int _id;
+        private Guid _id;
         
         private string _name;
         
@@ -286,7 +277,7 @@ namespace KanbanBoard.Web
         partial void OnCreated();
         partial void OnBoardIdChanging(Guid value);
         partial void OnBoardIdChanged();
-        partial void OnIdChanging(int value);
+        partial void OnIdChanging(Guid value);
         partial void OnIdChanged();
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
@@ -326,7 +317,7 @@ namespace KanbanBoard.Web
                     if ((previous != null))
                     {
                         this._board.Entity = null;
-                        previous.BoardItem = null;
+                        previous.BoardItems.Remove(this);
                     }
                     if ((value != null))
                     {
@@ -339,7 +330,7 @@ namespace KanbanBoard.Web
                     this._board.Entity = value;
                     if ((value != null))
                     {
-                        value.BoardItem = this;
+                        value.BoardItems.Add(this);
                     }
                     this.RaisePropertyChanged("Board");
                 }
@@ -350,7 +341,6 @@ namespace KanbanBoard.Web
         /// Gets or sets the 'BoardId' value.
         /// </summary>
         [DataMember()]
-        [Key()]
         [RoundtripOriginal()]
         public Guid BoardId
         {
@@ -376,7 +366,10 @@ namespace KanbanBoard.Web
         /// Gets or sets the 'Id' value.
         /// </summary>
         [DataMember()]
-        public int Id
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid Id
         {
             get
             {
@@ -387,10 +380,9 @@ namespace KanbanBoard.Web
                 if ((this._id != value))
                 {
                     this.OnIdChanging(value);
-                    this.RaiseDataMemberChanging("Id");
                     this.ValidateProperty("Id", value);
                     this._id = value;
-                    this.RaiseDataMemberChanged("Id");
+                    this.RaisePropertyChanged("Id");
                     this.OnIdChanged();
                 }
             }
@@ -433,7 +425,7 @@ namespace KanbanBoard.Web
         /// <returns>An object instance that uniquely identifies this entity instance.</returns>
         public override object GetIdentity()
         {
-            return this._boardId;
+            return this._id;
         }
     }
     
