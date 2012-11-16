@@ -5,6 +5,8 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using Microsoft.Practices.Unity;
 using System.ServiceModel.DomainServices.Client;
+using System.ServiceModel.DomainServices.Client.ApplicationServices;
+using System;
 namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
@@ -74,8 +76,7 @@ namespace KanbanBoard.ViewModel
                 {
                     // ToDo : Add implementation when board title isn't empty.
                     // Board name get from dialog.BoardName property!
-
-                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName=dialog.BoardName, UserName=string.Empty, Id=System.Guid.Empty});
+                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName = dialog.BoardName, UserName = WebContextBase.Current.Authentication.User.Identity.Name, Id=Guid.NewGuid() });
                     kanbanBoardDomainContext.SubmitChanges();
                     NotifyPropertyChanged("BoardsList");
                 }
@@ -88,6 +89,7 @@ namespace KanbanBoard.ViewModel
             var dialog = this.container.Resolve<BoardChildWindow>();
 
             dialog.Title = "Edit board"; // Don't forget about title!
+            dialog.BoardName = board.BoardName;
             dialog.Closed += (s, e) =>
             {
                 if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
