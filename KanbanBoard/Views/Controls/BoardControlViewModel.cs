@@ -9,54 +9,57 @@ namespace KanbanBoard.Views.Controls
     public class BoardControlViewModel : BaseViewModel
     {
         private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
-        private readonly InteractionRequest<Confirmation> columnDialog;
 
-        public ObservableCollection<UserControl> ColumnCollection { get; set; }
+        public ObservableCollection<UserControl> ColumnsCollection { get; set; }
 
-        public DelegateCommand AddColumn { get; set; }
-        public DelegateCommand EditColumn { get; set; }
-        public DelegateCommand RemoveColumn { get; set; }
+        public DelegateCommand AddColumnCommand { get; set; }
+        public DelegateCommand EditColumnCommand { get; set; }
+        public DelegateCommand RemoveColumnCommand { get; set; }
 
         public BoardControlViewModel()
             : base()
         {
             confirmDeleteColumn = new InteractionRequest<Confirmation>();
-            columnDialog = new InteractionRequest<Confirmation>();
-            InitializeCommands();
+
+            AddColumnCommand = new DelegateCommand(() => AddColumn());
+            EditColumnCommand = new DelegateCommand(() => EditColumn());
+            RemoveColumnCommand = new DelegateCommand(() => RemoveColumn());
+
+            ColumnsCollection = new ObservableCollection<UserControl>();
+            ColumnsCollection.Add(new ColumnControl());
+            ColumnsCollection.Add(new ColumnControl());
+            ColumnsCollection.Add(new ColumnControl());
         }
 
         public BoardControlViewModel(int columnCount)
             : this()
         {
-            ColumnCollection = new ObservableCollection<UserControl>();
+           
         }
 
-        private void InitializeCommands()
+        private void AddColumn()
         {
-            AddColumn = new DelegateCommand(() =>
-            {
-                // ToDo : Add implementation on adding new column.
-            });
+            // ToDo :  Add implementation
+        }
 
-            EditColumn = new DelegateCommand(() =>
-            {
-                // ToDo : Add implementation on editing column.
-            });
+        private void EditColumn()
+        {
+            // ToDo :  Add implementation
+        }
 
-            RemoveColumn = new DelegateCommand(() =>
+        private void RemoveColumn()
+        {
+            confirmDeleteColumn.Raise(new Confirmation()
             {
-                confirmDeleteColumn.Raise(new Confirmation()
+                Content = "Are you sure you want remove column?",
+                Title = "Confirmation"
+            },
+            confirmation =>
+            {
+                if (confirmation.Confirmed)
                 {
-                    Content = "Are you sure you want remove column?",
-                    Title = "Confirmation"
-                },
-                    confirmation =>
-                    {
-                        if (confirmation.Confirmed)
-                        {
-                            // ToDo : Add implementation on removing column.
-                        }
-                    });
+                    // ToDo : Add implementation on removing column.
+                }
             });
         }
     }
