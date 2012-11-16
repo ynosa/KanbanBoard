@@ -122,7 +122,9 @@
     <Compile Include="Behaviors\DragAndDropBehavior.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
+    <Compile Include="ViewNames.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
+    <Compile Include="Events\BoardSelectedEvent.cs" />
     <Compile Include="Helpers\ViewOrchestrator.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Models\UserBoard.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="RegionNames.cs" />
     <Compile Include="ViewModel\BoardsListViewModel.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />
+    <Compile Include="ViewModel\SelectedBoardViewModel.cs" />
     <Compile Include="ViewModel\ErrorViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />

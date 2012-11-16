@@ -9,6 +9,10 @@ using System.ServiceModel.DomainServices.Client.ApplicationServices;
 using System;
 namespace KanbanBoard.ViewModel
 {
+    using KanbanBoard.Events;
+
+    using Microsoft.Practices.Prism.Events;
+
     public class BoardsListViewModel : BaseViewModel
     {
         private readonly IUnityContainer container;
@@ -20,6 +24,8 @@ namespace KanbanBoard.ViewModel
         public DelegateCommand<Board> RemoveBoardCommand { get; private set; }
         public DelegateCommand<Board> EditBoardCommand { get; private set; }
         public DelegateCommand SelectBoardCommand { get; private set; }
+        public DelegateCommand <Board> ManageBoardCommand { get; private set; }
+
         public string BoardTitle
         {
             get { return boardTitle; }
@@ -30,6 +36,8 @@ namespace KanbanBoard.ViewModel
             }
         }
         private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
+
+        private IEventAggregator eventAggregator;
 
         public InteractionRequest<Confirmation> ConfirmDelete
         {
@@ -48,20 +56,20 @@ namespace KanbanBoard.ViewModel
             }
         }
 
-        public BoardsListViewModel(IUnityContainer container)
-            : base()
+        public BoardsListViewModel(IUnityContainer container, IEventAggregator eventAggregator)
         {
             this.container = container;
+            this.eventAggregator = eventAggregator;
 
             confirmDelete = new InteractionRequest<Confirmation>();
             boardDialog = new InteractionRequest<Confirmation>();
 
             kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 
-            AddBoardCommand = new DelegateCommand(() => AddBoard());
-
-            EditBoardCommand = new DelegateCommand<Board>((board) => EditBoard(board));
-            RemoveBoardCommand = new DelegateCommand<Board>((board) => RemoveBoard(board));
+            AddBoardCommand = new DelegateCommand(this.AddBoard);
+            EditBoardCommand = new DelegateCommand<Board>(this.EditBoard);            
+            RemoveBoardCommand = new DelegateCommand<Board>(this.RemoveBoard);
+            ManageBoardCommand = new DelegateCommand<Board>(this.ManageBoard);
 
         }
 
@@ -100,6 +108,11 @@ namespace KanbanBoard.ViewModel
                 }
             };
             dialog.Show();
+        }
+
+        private void ManageBoard(Board board)
+        {
+            this.eventAggregator.GetEvent<BoardSelectedEvent>().Publish(board);
         }
 
         private void RemoveBoard(Board board)

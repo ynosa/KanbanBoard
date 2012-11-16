@@ -62,6 +62,11 @@
                         		</i:EventTrigger>
                         	</i:Interaction.Triggers>                        	                       	
                             <TextBlock x:Name="BoardName"  MinWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
+                            	<i:Interaction.Triggers>
+                            		<i:EventTrigger EventName="MouseLeftButtonDown">
+                            			<i:InvokeCommandAction CommandParameter="{Binding}" Command="{Binding DataContext.ManageBoardCommand, ElementName=LayoutRoot}" />
+                            		</i:EventTrigger>
+                            	</i:Interaction.Triggers>
                             	<TextBlock.RenderTransform>
                             		<CompositeTransform/>
                             	</TextBlock.RenderTransform>
