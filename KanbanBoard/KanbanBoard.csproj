@@ -122,7 +122,9 @@
     <Compile Include="Behaviors\DragAndDropBehavior.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
+    <Compile Include="Enums\State.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
+    <Compile Include="Events\RequestChangeStateEvent.cs" />
     <Compile Include="Helpers\ViewOrchestrator.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Models\UserBoard.cs" />
@@ -152,8 +154,8 @@
     <Compile Include="Views\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectedBoardView.xaml.cs">
-      <DependentUpon>SelectedBoardView.xaml</DependentUpon>
+    <Compile Include="Views\BoardView.xaml.cs">
+      <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
@@ -164,8 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\BoardsView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ChildWindows\BoardChildWindow.xaml">
       <SubType>Designer</SubType>
@@ -183,7 +185,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SelectedBoardView.xaml">
+    <Page Include="Views\BoardView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -199,9 +201,7 @@
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,32 +1,30 @@
 ﻿
+using KanbanBoard.Helpers;
 using KanbanBoard.Views.ChildWindows;
 using KanbanBoard.Web;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using System;
 using System.ServiceModel.DomainServices.Client;
 namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
     {
+        private const string BOARD_VIEW = "BoardView";
+        private const string BOARD_PARAMS_TEMPLATE = "BOARD_ID:{0}";
+
+
         private readonly IUnityContainer container;
         private readonly InteractionRequest<Confirmation> confirmDelete;
         private readonly InteractionRequest<Confirmation> boardDialog;
-        private string boardTitle = "title";
+        private readonly ViewOrchestrator viewOrchestrator;
 
         public DelegateCommand AddBoardCommand { get; set; }
         public DelegateCommand<Board> RemoveBoardCommand { get; private set; }
         public DelegateCommand EditBoardCommand { get; private set; }
         public DelegateCommand SelectBoardCommand { get; private set; }
-        public string BoardTitle
-        {
-            get { return boardTitle; }
-            set
-            {
-                boardTitle = value;
-                NotifyPropertyChanged("BoardTitle");
-            }
-        }
         private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
 
         public InteractionRequest<Confirmation> ConfirmDelete
@@ -46,10 +44,11 @@ namespace KanbanBoard.ViewModel
             }
         }
 
-        public BoardsListViewModel(IUnityContainer container)
+        public BoardsListViewModel(IUnityContainer container, ViewOrchestrator viewOrchestrator)
             : base()
         {
             this.container = container;
+            this.viewOrchestrator = viewOrchestrator;
 
             confirmDelete = new InteractionRequest<Confirmation>();
             boardDialog = new InteractionRequest<Confirmation>();
@@ -61,6 +60,8 @@ namespace KanbanBoard.ViewModel
             EditBoardCommand = new DelegateCommand(() => EditBoard());
 
             RemoveBoardCommand = new DelegateCommand<Board>((board) => RemoveBoard(board));
+
+            SelectBoardCommand = new DelegateCommand(() => SelectBoard());
 
         }
 
@@ -76,9 +77,8 @@ namespace KanbanBoard.ViewModel
                     // ToDo : Add implementation when board title isn't empty.
                     // Board name get from dialog.BoardName property!
 
-                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName=dialog.BoardName, UserName=string.Empty, Id=System.Guid.Empty});
+                    kanbanBoardDomainContext.Boards.Add(new Board() { BoardName = dialog.BoardName, UserName = string.Empty, Id = System.Guid.Empty });
                     kanbanBoardDomainContext.SubmitChanges();
-                    NotifyPropertyChanged("BoardsList");
                 }
             };
             dialog.Show();
@@ -104,8 +104,12 @@ namespace KanbanBoard.ViewModel
                     NotifyPropertyChanged("BoardsList");
                 }
             });
-            
+
         }
 
+        private void SelectBoard()
+        {
+            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, BOARD_VIEW, string.Format(BOARD_PARAMS_TEMPLATE, 1));
+        }
     }
 }
