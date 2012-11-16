@@ -80,10 +80,6 @@
     <Content Include="ClientBin\KanbanBoard.Shell.xap" />
     <Content Include="ClientBin\KanbanBoard.xap" />
     <Content Include="Default.html" />
-    <Content Include="KanbanBoard.ShellTestPage.aspx" />
-    <Content Include="KanbanBoard.ShellTestPage.html" />
-    <Content Include="KanbanBoardTestPage.aspx" />
-    <Content Include="KanbanBoardTestPage.html" />
     <Content Include="Silverlight.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
