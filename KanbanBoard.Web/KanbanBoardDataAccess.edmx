@@ -7,10 +7,15 @@
     <Schema Namespace="KanbanBoardDatabaseModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="KanbanBoardDatabaseModelStoreContainer">
           <EntitySet Name="Board" EntityType="KanbanBoardDatabaseModel.Store.Board" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BoardItem" EntityType="KanbanBoardDatabaseModel.Store.BoardItem" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_BoardItem_Board" Association="KanbanBoardDatabaseModel.Store.FK_BoardItem_Board">
+          <EntitySet Name="BoardColumn" EntityType="KanbanBoardDatabaseModel.Store.BoardColumn" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Task" EntityType="KanbanBoardDatabaseModel.Store.Task" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_BoardColumn_Board" Association="KanbanBoardDatabaseModel.Store.FK_BoardColumn_Board">
             <End Role="Board" EntitySet="Board" />
-            <End Role="BoardItem" EntitySet="BoardItem" />
+            <End Role="BoardColumn" EntitySet="BoardColumn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_ToBoardColumn" Association="KanbanBoardDatabaseModel.Store.FK_Task_ToBoardColumn">
+            <End Role="BoardColumn" EntitySet="BoardColumn" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Board">
@@ -21,23 +26,46 @@
           <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
           <Property Name="BoardName" Type="nvarchar" Nullable="false" MaxLength="256" />
         </EntityType>
-        <EntityType Name="BoardItem">
+        <EntityType Name="BoardColumn">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BoardId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Position" Type="smallint" Nullable="false" />
         </EntityType>
-        <Association Name="FK_BoardItem_Board">
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BoardColumnId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Position" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BoardColumn_Board">
           <End Role="Board" Type="KanbanBoardDatabaseModel.Store.Board" Multiplicity="1" />
-          <End Role="BoardItem" Type="KanbanBoardDatabaseModel.Store.BoardItem" Multiplicity="*" />
+          <End Role="BoardColumn" Type="KanbanBoardDatabaseModel.Store.BoardColumn" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Board">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BoardItem">
+            <Dependent Role="BoardColumn">
               <PropertyRef Name="BoardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_ToBoardColumn">
+          <End Role="BoardColumn" Type="KanbanBoardDatabaseModel.Store.BoardColumn" Multiplicity="1" />
+          <End Role="Task" Type="KanbanBoardDatabaseModel.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BoardColumn">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="BoardColumnId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -47,10 +75,15 @@
       <Schema Namespace="KanbanBoardDatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="KanbanBoardDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Boards" EntityType="KanbanBoardDatabaseModel.Board" />
-          <EntitySet Name="BoardItems" EntityType="KanbanBoardDatabaseModel.BoardItem" />
-          <AssociationSet Name="FK_BoardItem_Board" Association="KanbanBoardDatabaseModel.FK_BoardItem_Board">
+          <EntitySet Name="BoardColumns" EntityType="KanbanBoardDatabaseModel.BoardColumn" />
+          <EntitySet Name="Tasks" EntityType="KanbanBoardDatabaseModel.Task" />
+          <AssociationSet Name="FK_BoardColumn_Board" Association="KanbanBoardDatabaseModel.FK_BoardColumn_Board">
             <End Role="Board" EntitySet="Boards" />
-            <End Role="BoardItem" EntitySet="BoardItems" />
+            <End Role="BoardColumn" EntitySet="BoardColumns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_ToBoardColumn" Association="KanbanBoardDatabaseModel.FK_Task_ToBoardColumn">
+            <End Role="BoardColumn" EntitySet="BoardColumns" />
+            <End Role="Task" EntitySet="Tasks" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Board">
@@ -60,30 +93,55 @@
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="BoardName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BoardItems" Relationship="KanbanBoardDatabaseModel.FK_BoardItem_Board" FromRole="Board" ToRole="BoardItem" />
+          <NavigationProperty Name="BoardColumns" Relationship="KanbanBoardDatabaseModel.FK_BoardColumn_Board" FromRole="Board" ToRole="BoardColumn" />
         </EntityType>
-        <EntityType Name="BoardItem">
+        <EntityType Name="BoardColumn">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="BoardId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Board" Relationship="KanbanBoardDatabaseModel.FK_BoardItem_Board" FromRole="BoardItem" ToRole="Board" />
+          <Property Type="Int16" Name="Position" Nullable="false" />
+          <NavigationProperty Name="Board" Relationship="KanbanBoardDatabaseModel.FK_BoardColumn_Board" FromRole="BoardColumn" ToRole="Board" />
+          <NavigationProperty Name="Tasks" Relationship="KanbanBoardDatabaseModel.FK_Task_ToBoardColumn" FromRole="BoardColumn" ToRole="Task" />
         </EntityType>
-        <Association Name="FK_BoardItem_Board">
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="BoardColumnId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="Position" Nullable="false" />
+          <NavigationProperty Name="BoardColumn" Relationship="KanbanBoardDatabaseModel.FK_Task_ToBoardColumn" FromRole="Task" ToRole="BoardColumn" />
+        </EntityType>
+        <Association Name="FK_BoardColumn_Board">
           <End Type="KanbanBoardDatabaseModel.Board" Role="Board" Multiplicity="1" />
-          <End Type="KanbanBoardDatabaseModel.BoardItem" Role="BoardItem" Multiplicity="*" />
+          <End Type="KanbanBoardDatabaseModel.BoardColumn" Role="BoardColumn" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Board">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BoardItem">
+            <Dependent Role="BoardColumn">
               <PropertyRef Name="BoardId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_Task_ToBoardColumn">
+          <End Type="KanbanBoardDatabaseModel.BoardColumn" Role="BoardColumn" Multiplicity="1" />
+          <End Type="KanbanBoardDatabaseModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BoardColumn">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="BoardColumnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -98,11 +156,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BoardItems">
-            <EntityTypeMapping TypeName="KanbanBoardDatabaseModel.BoardItem">
-              <MappingFragment StoreEntitySet="BoardItem">
+          <EntitySetMapping Name="BoardColumns">
+            <EntityTypeMapping TypeName="KanbanBoardDatabaseModel.BoardColumn">
+              <MappingFragment StoreEntitySet="BoardColumn">
+                <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="BoardId" ColumnName="BoardId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="KanbanBoardDatabaseModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BoardColumnId" ColumnName="BoardColumnId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -128,11 +198,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="KanbanBoardDataAccess">
-        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.Board" Width="1.5" PointX="0.75" PointY="0.875" Height="1.621643810669581" />
-        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.BoardItem" Width="1.5" PointX="3" PointY="0.875" Height="1.62164381066958" />
-        <AssociationConnector Association="KanbanBoardDatabaseModel.FK_BoardItem_Board" >
-          <ConnectorPoint PointX="2.25" PointY="1.68582190533479" />
-          <ConnectorPoint PointX="3" PointY="1.68582190533479" />
+        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.Board" Width="1.5" PointX="0.75" PointY="1.125" Height="1.6216438106695819" />
+        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.BoardColumn" Width="1.5" PointX="3" PointY="0.875" Height="1.9587206137180324" />
+        <EntityTypeShape EntityType="KanbanBoardDatabaseModel.Task" Width="1.5" PointX="5.25" PointY="0.875" Height="1.9587206137180324" />
+        <AssociationConnector Association="KanbanBoardDatabaseModel.FK_BoardColumn_Board" >
+          <ConnectorPoint PointX="2.25" PointY="1.9358219053347909" />
+          <ConnectorPoint PointX="3" PointY="1.9358219053347909" />
+        </AssociationConnector>
+        <AssociationConnector Association="KanbanBoardDatabaseModel.FK_Task_ToBoardColumn" >
+          <ConnectorPoint PointX="4.5" PointY="1.8543603068590162" />
+          <ConnectorPoint PointX="5.25" PointY="1.8543603068590162" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

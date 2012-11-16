@@ -109,7 +109,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Interactivity">
+    <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
@@ -123,6 +124,7 @@
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
     <Compile Include="Enums\State.cs" />
+    <Compile Include="Events\ShowBoardsEvent.cs" />
     <Compile Include="ViewNames.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
     <Compile Include="Events\BoardSelectedEvent.cs" />

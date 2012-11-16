@@ -100,7 +100,7 @@ namespace KanbanBoard.Web
     public sealed partial class Board : Entity
     {
         
-        private EntityCollection<BoardItem> _boardItems;
+        private EntityCollection<BoardColumn> _boardColumns;
         
         private string _boardName;
         
@@ -134,19 +134,19 @@ namespace KanbanBoard.Web
         }
         
         /// <summary>
-        /// Gets the collection of associated <see cref="BoardItem"/> entity instances.
+        /// Gets the collection of associated <see cref="BoardColumn"/> entity instances.
         /// </summary>
-        [Association("Board_BoardItem", "Id", "BoardId")]
+        [Association("Board_BoardColumn", "Id", "BoardId")]
         [XmlIgnore()]
-        public EntityCollection<BoardItem> BoardItems
+        public EntityCollection<BoardColumn> BoardColumns
         {
             get
             {
-                if ((this._boardItems == null))
+                if ((this._boardColumns == null))
                 {
-                    this._boardItems = new EntityCollection<BoardItem>(this, "BoardItems", this.FilterBoardItems, this.AttachBoardItems, this.DetachBoardItems);
+                    this._boardColumns = new EntityCollection<BoardColumn>(this, "BoardColumns", this.FilterBoardColumns, this.AttachBoardColumns, this.DetachBoardColumns);
                 }
-                return this._boardItems;
+                return this._boardColumns;
             }
         }
         
@@ -228,17 +228,17 @@ namespace KanbanBoard.Web
             }
         }
         
-        private void AttachBoardItems(BoardItem entity)
+        private void AttachBoardColumns(BoardColumn entity)
         {
             entity.Board = this;
         }
         
-        private void DetachBoardItems(BoardItem entity)
+        private void DetachBoardColumns(BoardColumn entity)
         {
             entity.Board = null;
         }
         
-        private bool FilterBoardItems(BoardItem entity)
+        private bool FilterBoardColumns(BoardColumn entity)
         {
             return (entity.BoardId == this.Id);
         }
@@ -254,10 +254,10 @@ namespace KanbanBoard.Web
     }
     
     /// <summary>
-    /// The 'BoardItem' entity class.
+    /// The 'BoardColumn' entity class.
     /// </summary>
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/KanbanBoard.Web")]
-    public sealed partial class BoardItem : Entity
+    public sealed partial class BoardColumn : Entity
     {
         
         private EntityRef<Board> _board;
@@ -267,6 +267,10 @@ namespace KanbanBoard.Web
         private Guid _id;
         
         private string _name;
+        
+        private short _position;
+        
+        private EntityCollection<Task> _tasks;
         
         #region Extensibility Method Definitions
 
@@ -281,14 +285,16 @@ namespace KanbanBoard.Web
         partial void OnIdChanged();
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
+        partial void OnPositionChanging(short value);
+        partial void OnPositionChanged();
 
         #endregion
         
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoardItem"/> class.
+        /// Initializes a new instance of the <see cref="BoardColumn"/> class.
         /// </summary>
-        public BoardItem()
+        public BoardColumn()
         {
             this.OnCreated();
         }
@@ -296,7 +302,7 @@ namespace KanbanBoard.Web
         /// <summary>
         /// Gets or sets the associated <see cref="Board"/> entity.
         /// </summary>
-        [Association("Board_BoardItem", "BoardId", "Id", IsForeignKey=true)]
+        [Association("Board_BoardColumn", "BoardId", "Id", IsForeignKey=true)]
         [XmlIgnore()]
         public Board Board
         {
@@ -317,7 +323,7 @@ namespace KanbanBoard.Web
                     if ((previous != null))
                     {
                         this._board.Entity = null;
-                        previous.BoardItems.Remove(this);
+                        previous.BoardColumns.Remove(this);
                     }
                     if ((value != null))
                     {
@@ -330,7 +336,7 @@ namespace KanbanBoard.Web
                     this._board.Entity = value;
                     if ((value != null))
                     {
-                        value.BoardItems.Add(this);
+                        value.BoardColumns.Add(this);
                     }
                     this.RaisePropertyChanged("Board");
                 }
@@ -414,9 +420,65 @@ namespace KanbanBoard.Web
             }
         }
         
+        /// <summary>
+        /// Gets or sets the 'Position' value.
+        /// </summary>
+        [DataMember()]
+        public short Position
+        {
+            get
+            {
+                return this._position;
+            }
+            set
+            {
+                if ((this._position != value))
+                {
+                    this.OnPositionChanging(value);
+                    this.RaiseDataMemberChanging("Position");
+                    this.ValidateProperty("Position", value);
+                    this._position = value;
+                    this.RaiseDataMemberChanged("Position");
+                    this.OnPositionChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="Task"/> entity instances.
+        /// </summary>
+        [Association("BoardColumn_Task", "Id", "BoardColumnId")]
+        [XmlIgnore()]
+        public EntityCollection<Task> Tasks
+        {
+            get
+            {
+                if ((this._tasks == null))
+                {
+                    this._tasks = new EntityCollection<Task>(this, "Tasks", this.FilterTasks, this.AttachTasks, this.DetachTasks);
+                }
+                return this._tasks;
+            }
+        }
+        
         private bool FilterBoard(Board entity)
         {
             return (entity.Id == this.BoardId);
+        }
+        
+        private void AttachTasks(Task entity)
+        {
+            entity.BoardColumn = this;
+        }
+        
+        private void DetachTasks(Task entity)
+        {
+            entity.BoardColumn = null;
+        }
+        
+        private bool FilterTasks(Task entity)
+        {
+            return (entity.BoardColumnId == this.Id);
         }
         
         /// <summary>
@@ -673,13 +735,13 @@ namespace KanbanBoard.Web
         }
         
         /// <summary>
-        /// Gets the set of <see cref="BoardItem"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
+        /// Gets the set of <see cref="BoardColumn"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
         /// </summary>
-        public EntitySet<BoardItem> BoardItems
+        public EntitySet<BoardColumn> BoardColumns
         {
             get
             {
-                return base.EntityContainer.GetEntitySet<BoardItem>();
+                return base.EntityContainer.GetEntitySet<BoardColumn>();
             }
         }
         
@@ -695,13 +757,24 @@ namespace KanbanBoard.Web
         }
         
         /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="BoardItem"/> entity instances using the 'GetBoardItems' query.
+        /// Gets the set of <see cref="Task"/> entity instances that have been loaded into this <see cref="KanbanBoardDomainContext"/> instance.
         /// </summary>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="BoardItem"/> entity instances.</returns>
-        public EntityQuery<BoardItem> GetBoardItemsQuery()
+        public EntitySet<Task> Tasks
         {
-            this.ValidateMethod("GetBoardItemsQuery", null);
-            return base.CreateQuery<BoardItem>("GetBoardItems", null, false, true);
+            get
+            {
+                return base.EntityContainer.GetEntitySet<Task>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="BoardColumn"/> entity instances using the 'GetBoardColumns' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="BoardColumn"/> entity instances.</returns>
+        public EntityQuery<BoardColumn> GetBoardColumnsQuery()
+        {
+            this.ValidateMethod("GetBoardColumnsQuery", null);
+            return base.CreateQuery<BoardColumn>("GetBoardColumns", null, false, true);
         }
         
         /// <summary>
@@ -712,6 +785,16 @@ namespace KanbanBoard.Web
         {
             this.ValidateMethod("GetBoardsQuery", null);
             return base.CreateQuery<Board>("GetBoards", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="Task"/> entity instances using the 'GetTasks' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Task"/> entity instances.</returns>
+        public EntityQuery<Task> GetTasksQuery()
+        {
+            this.ValidateMethod("GetTasksQuery", null);
+            return base.CreateQuery<Task>("GetTasks", null, false, true);
         }
         
         /// <summary>
@@ -731,22 +814,22 @@ namespace KanbanBoard.Web
         {
             
             /// <summary>
-            /// Asynchronously invokes the 'GetBoardItems' operation.
+            /// Asynchronously invokes the 'GetBoardColumns' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/GetBoardItemsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/GetBoardItems", ReplyAction="http://tempuri.org/KanbanBoardDomainService/GetBoardItemsResponse")]
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/GetBoardColumnsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/GetBoardColumns", ReplyAction="http://tempuri.org/KanbanBoardDomainService/GetBoardColumnsResponse")]
             [WebGet()]
-            IAsyncResult BeginGetBoardItems(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetBoardColumns(AsyncCallback callback, object asyncState);
             
             /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetBoardItems'.
+            /// Completes the asynchronous operation begun by 'BeginGetBoardColumns'.
             /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetBoardItems'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetBoardItems' operation.</returns>
-            QueryResult<BoardItem> EndGetBoardItems(IAsyncResult result);
+            /// <param name="result">The IAsyncResult returned from 'BeginGetBoardColumns'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetBoardColumns' operation.</returns>
+            QueryResult<BoardColumn> EndGetBoardColumns(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetBoards' operation.
@@ -765,6 +848,24 @@ namespace KanbanBoard.Web
             /// <param name="result">The IAsyncResult returned from 'BeginGetBoards'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetBoards' operation.</returns>
             QueryResult<Board> EndGetBoards(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetTasks' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/KanbanBoardDomainService/GetTasksDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/KanbanBoardDomainService/GetTasks", ReplyAction="http://tempuri.org/KanbanBoardDomainService/GetTasksResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetTasks(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetTasks'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetTasks'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetTasks' operation.</returns>
+            QueryResult<Task> EndGetTasks(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'SubmitChanges' operation.
@@ -791,8 +892,242 @@ namespace KanbanBoard.Web
             public KanbanBoardDomainContextEntityContainer()
             {
                 this.CreateEntitySet<Board>(EntitySetOperations.All);
-                this.CreateEntitySet<BoardItem>(EntitySetOperations.All);
+                this.CreateEntitySet<BoardColumn>(EntitySetOperations.All);
+                this.CreateEntitySet<Task>(EntitySetOperations.All);
             }
+        }
+    }
+    
+    /// <summary>
+    /// The 'Task' entity class.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/KanbanBoard.Web")]
+    public sealed partial class Task : Entity
+    {
+        
+        private EntityRef<BoardColumn> _boardColumn;
+        
+        private Guid _boardColumnId;
+        
+        private string _description;
+        
+        private Guid _id;
+        
+        private string _name;
+        
+        private short _position;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnBoardColumnIdChanging(Guid value);
+        partial void OnBoardColumnIdChanged();
+        partial void OnDescriptionChanging(string value);
+        partial void OnDescriptionChanged();
+        partial void OnIdChanging(Guid value);
+        partial void OnIdChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        partial void OnPositionChanging(short value);
+        partial void OnPositionChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Task"/> class.
+        /// </summary>
+        public Task()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="BoardColumn"/> entity.
+        /// </summary>
+        [Association("BoardColumn_Task", "BoardColumnId", "Id", IsForeignKey=true)]
+        [XmlIgnore()]
+        public BoardColumn BoardColumn
+        {
+            get
+            {
+                if ((this._boardColumn == null))
+                {
+                    this._boardColumn = new EntityRef<BoardColumn>(this, "BoardColumn", this.FilterBoardColumn);
+                }
+                return this._boardColumn.Entity;
+            }
+            set
+            {
+                BoardColumn previous = this.BoardColumn;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("BoardColumn", value);
+                    if ((previous != null))
+                    {
+                        this._boardColumn.Entity = null;
+                        previous.Tasks.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.BoardColumnId = value.Id;
+                    }
+                    else
+                    {
+                        this.BoardColumnId = default(Guid);
+                    }
+                    this._boardColumn.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Tasks.Add(this);
+                    }
+                    this.RaisePropertyChanged("BoardColumn");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'BoardColumnId' value.
+        /// </summary>
+        [DataMember()]
+        [RoundtripOriginal()]
+        public Guid BoardColumnId
+        {
+            get
+            {
+                return this._boardColumnId;
+            }
+            set
+            {
+                if ((this._boardColumnId != value))
+                {
+                    this.OnBoardColumnIdChanging(value);
+                    this.RaiseDataMemberChanging("BoardColumnId");
+                    this.ValidateProperty("BoardColumnId", value);
+                    this._boardColumnId = value;
+                    this.RaiseDataMemberChanged("BoardColumnId");
+                    this.OnBoardColumnIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Description' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                if ((this._description != value))
+                {
+                    this.OnDescriptionChanging(value);
+                    this.RaiseDataMemberChanging("Description");
+                    this.ValidateProperty("Description", value);
+                    this._description = value;
+                    this.RaiseDataMemberChanged("Description");
+                    this.OnDescriptionChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Id' value.
+        /// </summary>
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        [RoundtripOriginal()]
+        public Guid Id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIdChanging(value);
+                    this.ValidateProperty("Id", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("Id");
+                    this.OnIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Name' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        [StringLength(256)]
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                if ((this._name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.RaiseDataMemberChanging("Name");
+                    this.ValidateProperty("Name", value);
+                    this._name = value;
+                    this.RaiseDataMemberChanged("Name");
+                    this.OnNameChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Position' value.
+        /// </summary>
+        [DataMember()]
+        public short Position
+        {
+            get
+            {
+                return this._position;
+            }
+            set
+            {
+                if ((this._position != value))
+                {
+                    this.OnPositionChanging(value);
+                    this.RaiseDataMemberChanging("Position");
+                    this.ValidateProperty("Position", value);
+                    this._position = value;
+                    this.RaiseDataMemberChanged("Position");
+                    this.OnPositionChanged();
+                }
+            }
+        }
+        
+        private bool FilterBoardColumn(BoardColumn entity)
+        {
+            return (entity.Id == this.BoardColumnId);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
         }
     }
     
