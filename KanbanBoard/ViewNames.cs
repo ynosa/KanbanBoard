@@ -7,6 +7,6 @@ namespace KanbanBoard
 
     public static class ViewNames
     {
-        public static string SelectedBoardView = typeof(SelectedBoardView).Name;
+        public static string SelectedBoardView = typeof(BoardView).Name;
     }
 }
