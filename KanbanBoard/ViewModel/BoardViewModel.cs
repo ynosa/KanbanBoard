@@ -1,43 +1,38 @@
-﻿using Microsoft.Practices.Prism.Commands;
-
+﻿
+using KanbanBoard.Interfaces;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Unity;
+using System.ServiceModel.DomainServices.Client.ApplicationServices;
 namespace KanbanBoard.ViewModel
 {
-    public class BoardViewModel : BaseViewModel
-    {
-        private bool? dialogResult;
-        private string windowTitle;
+    using System;
 
-        public string WindowTitle
-        {
-            get { return windowTitle; }
-            set
-            {
-                windowTitle = value;
-                NotifyPropertyChanged("WindowTitle");
-            }
-        }
-        public bool? DialogResult
-        {
-            get { return dialogResult; }
-            set
-            {
-                dialogResult = value;
-                NotifyPropertyChanged("DialogResult");
-            }
-        }
+    public class BoardViewModel : BaseViewModel, INavigationAware
+    {       
+        public static string  BoardIdParam = "BoardId";
 
-        public DelegateCommand ApplyCommand { get; set; }
-        public DelegateCommand CancelCommand { get; set; }
-
+        private Guid BoardId;
+        
         public BoardViewModel()
             : base()
         {
-            CancelCommand = new DelegateCommand(() => 
-            {
-                // ToDo : Add implementation when dialog result is false.
-                DialogResult = false;
-            });
-            // ToDo : Add implementation for other component.
+            
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);
         }
     }
 }

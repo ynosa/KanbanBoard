@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="textBlock" Grid.Column="0" Text="my boards">            	</TextBlock>
-            <Button Grid.Column="1" HorizontalAlignment="Right" Command="{Binding DataContext.AddBoardCommand, ElementName=LayoutRoot}" Content="add new"/>
+            <Button Grid.Column="1" HorizontalAlignment="Right" Content="add new" Command="{Binding AddBoardCommand}"/>
         </Grid>
         <ListBox x:Name="BoardsListBox" ItemsSource="{Binding BoardsList}">
             <ListBox.ItemTemplate>

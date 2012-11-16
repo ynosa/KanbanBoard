@@ -9,17 +9,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using KanbanBoard.ViewModel;
 
 namespace KanbanBoard.Views
 {
-    
-
-    public partial class SelectedBoardView : UserControl
+    public partial class BoardView : UserControl
     {
-        public SelectedBoardView(SelectedBoardViewModel viewModel)
+        public BoardView()
         {
-            this.DataContext = viewModel;
             InitializeComponent();
         }
     }
