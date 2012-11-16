@@ -6,10 +6,17 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400"
     xmlns:controls="clr-namespace:KanbanBoard.Views.Controls" >
-    
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock/>
+
+    <Grid x:Name="LayoutRoot" Background="#333333">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <!--ToDo : Add control panel for managing columns-->
-        <controls:BoardControl/>
+        <controls:BoardControl Grid.Column="0"/>
+        <StackPanel Grid.Column="1">
+            <Button x:Name="NewColumnButton" Content="new column"/>
+            
+        </StackPanel>
     </Grid>
 </UserControl>

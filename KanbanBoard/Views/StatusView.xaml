@@ -6,6 +6,8 @@
     mc:Ignorable="d">
     <StackPanel x:Name="qwerty" Orientation="Horizontal">
         <TextBlock x:Name="UserName" Text="{Binding UserName, Mode=OneWay}" />
+        <Button x:Name="BoardsButton" Content="show boards" Command="{Binding ShowBoardsCommand}"/>
+        <Button x:Name="SettingsButton" Content="settings"/>
         <HyperlinkButton x:Name="LogOutButton" Content="logout" Command="{Binding LogOutCommand}"/>
     </StackPanel>
 </UserControl>

@@ -27,7 +27,7 @@
         <ListBox x:Name="BoardsListBox" ItemsSource="{Binding BoardsList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border x:Name="border" BorderBrush="Black">
+                    <Border x:Name="border" BorderBrush="Black" MinWidth="200">
                     	<VisualStateManager.VisualStateGroups>
                     		<VisualStateGroup x:Name="VisualStateGroup">
                     			<VisualStateGroup.Transitions>
@@ -61,7 +61,7 @@
                         			<ie:GoToStateAction StateName="Unfocused"/>
                         		</i:EventTrigger>
                         	</i:Interaction.Triggers>                        	                       	
-                            <TextBlock x:Name="BoardName"  MinWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
+                            <TextBlock x:Name="BoardName"  MaxWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
                             	<i:Interaction.Triggers>
                             		<i:EventTrigger EventName="MouseLeftButtonDown">
                             			<i:InvokeCommandAction CommandParameter="{Binding}" Command="{Binding DataContext.ManageBoardCommand, ElementName=LayoutRoot}" />

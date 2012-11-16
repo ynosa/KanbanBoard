@@ -26,11 +26,17 @@ namespace KanbanBoard.Controller
         private void RegisterSubcriptions()
         {
             this.eventAggregator.GetEvent<BoardSelectedEvent>().Subscribe(this.OnBoardSelectedForManaging, true);
+            this.eventAggregator.GetEvent<ShowBoardsEvent>().Subscribe(this.OnBoardsSelectedForManaging, true);
         }
 
         public void OnBoardSelectedForManaging(Board board)
         {
             viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, ViewNames.SelectedBoardView, string.Format(viewOrchestrator.ParametrTemplate, BoardViewModel.BoardIdParam, board.Id));
+        }
+
+        public void OnBoardsSelectedForManaging(int i)
+        {
+            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, ViewNames.BoardsListView);
         }
     }
 }

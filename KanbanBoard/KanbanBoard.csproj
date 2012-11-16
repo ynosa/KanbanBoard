@@ -124,6 +124,7 @@
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
     <Compile Include="Enums\State.cs" />
+    <Compile Include="Events\ShowBoardsEvent.cs" />
     <Compile Include="ViewNames.cs" />
     <Compile Include="Events\AuthenticationEvent.cs" />
     <Compile Include="Events\BoardSelectedEvent.cs" />

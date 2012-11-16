@@ -29,7 +29,7 @@ namespace KanbanBoard.Controller
             {
                 // implement switch to views
                 viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, "BoardsView");
-                viewOrchestrator.ChangeView(RegionNames.HEADER_REGION, "StatusView");
+                viewOrchestrator.ChangeView(RegionNames.HEADER_REGION, "StatusView", string.Format(viewOrchestrator.ParametrTemplate, "USERNAME", operation.User.Identity.Name));
             }
             else
             {
@@ -54,7 +54,7 @@ namespace KanbanBoard.Controller
             else
             {
                 viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, "BoardsView");
-                viewOrchestrator.ChangeView(RegionNames.HEADER_REGION, "StatusView");
+                viewOrchestrator.ChangeView(RegionNames.HEADER_REGION, "StatusView", string.Format(viewOrchestrator.ParametrTemplate, "USERNAME", operation.User.Identity.Name));
             }
         }
 
