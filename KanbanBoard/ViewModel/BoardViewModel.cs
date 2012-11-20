@@ -15,7 +15,11 @@ namespace KanbanBoard.ViewModel
     using System.Diagnostics;
     using System.Linq;
     using System.ServiceModel.DomainServices.Client;
-
+    
+    public class BoardViewModel : BaseViewModel, INavigationAware
+    {
+        public DelegateCommand AddNewColumnCommand { get; set; }
+        public DelegateCommand RemoveColumnCommand { get; set; }
         public DelegateCommand AddNewTaskCommand { get; set; }
         public DelegateCommand RemoveTaskCommand { get; set; }
 
