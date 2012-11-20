@@ -76,7 +76,8 @@ namespace KanbanBoard.Web
             public string Name { get; set; }
 
             public short Position { get; set; }
-
+            
+            [Include]
             public EntityCollection<Task> Tasks { get; set; }
         }
     }

@@ -66,7 +66,7 @@ namespace KanbanBoard.Web
         // To support paging you will need to add ordering to the 'BoardColumns' query.
         public IQueryable<BoardColumn> GetBoardColumns()
         {
-            return this.ObjectContext.BoardColumns;
+            return this.ObjectContext.BoardColumns.Include("Tasks");
         }
 
         public void InsertBoardColumn(BoardColumn boardColumn)

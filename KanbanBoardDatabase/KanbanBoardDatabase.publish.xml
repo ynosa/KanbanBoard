@@ -4,7 +4,11 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>KanbanBoardDatabase</TargetDatabaseName>
     <DeployScriptFileName>KanbanBoardDatabase.sql</DeployScriptFileName>
+<<<<<<< HEAD
     <TargetConnectionString>Data Source=DOLIAN\SQLSERVER;Integrated Security=True;Pooling=False</TargetConnectionString>
+=======
+    <TargetConnectionString>Data Source=.\SQLEXPRESS;Integrated Security=True;Pooling=False</TargetConnectionString>
+>>>>>>> 8212fec93c48c4de8de3d49eef8789abeaaee423
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
 </Project>

@@ -60,7 +60,7 @@ namespace KanbanBoard.ViewModel
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            //throw new System.NotImplementedException();
+          
         }
     }
 }

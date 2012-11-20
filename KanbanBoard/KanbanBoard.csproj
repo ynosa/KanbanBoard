@@ -151,10 +151,6 @@
       <DependentUpon>BoardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\BoardControlViewModel.cs" />
-    <Compile Include="Views\Controls\ColumnControl.xaml.cs">
-      <DependentUpon>ColumnControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\ColumnControlViewModel.cs" />
     <Compile Include="Views\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
@@ -178,10 +174,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\BoardControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Controls\ColumnControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

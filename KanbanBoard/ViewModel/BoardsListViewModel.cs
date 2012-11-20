@@ -15,7 +15,6 @@ namespace KanbanBoard.ViewModel
     {
         private readonly IUnityContainer container;
         private readonly InteractionRequest<Confirmation> confirmDelete;
-        private readonly InteractionRequest<Confirmation> boardDialog;
 
         public DelegateCommand AddBoardCommand { get; set; }
         public DelegateCommand<Board> RemoveBoardCommand { get; private set; }
@@ -29,10 +28,6 @@ namespace KanbanBoard.ViewModel
         public InteractionRequest<Confirmation> ConfirmDelete
         {
             get { return confirmDelete; }
-        }
-        public InteractionRequest<Confirmation> BoardDialog
-        {
-            get { return boardDialog; }
         }
 
         public EntitySet<Board> BoardsList
@@ -49,7 +44,6 @@ namespace KanbanBoard.ViewModel
             this.eventAggregator = eventAggregator;
 
             confirmDelete = new InteractionRequest<Confirmation>();
-            boardDialog = new InteractionRequest<Confirmation>();
 
             kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardsQuery());
 

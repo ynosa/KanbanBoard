@@ -1,4 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace KanbanBoard.Views.Controls
 {
@@ -7,12 +11,7 @@ namespace KanbanBoard.Views.Controls
         public BoardControl()
         {
             InitializeComponent();
-            this.DataContext = new BoardControlViewModel(); ;
-        }
-        public BoardControl(BoardControlViewModel viewModel)
-            : this()
-        {
-            
+
         }
     }
 }

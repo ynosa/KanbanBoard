@@ -9,10 +9,9 @@ namespace KanbanBoard.Behaviors
         protected override void OnAttached()
         {
             this.AssociatedObject.AllowDrop = true;
-            //this.AssociatedObject.DragEnter += AssociatedObject_DragEnter;
-            //this.AssociatedObject.DragLeave += AssociatedObject_DragLeave;
-            //this.AssociatedObject.DragOver += AssociatedObject_DragOver;
-            //this.AssociatedObject.MouseEnter += AssociatedObject_MouseEnter;
+            this.AssociatedObject.DragEnter += AssociatedObject_DragEnter;
+            this.AssociatedObject.DragLeave += AssociatedObject_DragLeave;
+            this.AssociatedObject.DragOver += AssociatedObject_DragOver;
         }
 
         void AssociatedObject_DragOver(object sender, DragEventArgs e)

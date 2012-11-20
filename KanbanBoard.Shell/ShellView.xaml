@@ -6,21 +6,21 @@
     xmlns:prism="http://www.codeplex.com/prism"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <ResourceDictionary Source="/KanbanBoard.Shell;component/Styles/Styles.xaml"/>
-    </UserControl.Resources>
+    <!--<UserControl.Resources>
+        <ResourceDictionary Source="/KanbanBoard.Shell;component/Styles/Style.xaml"/>
+    </UserControl.Resources>-->
 
-    <Grid x:Name="LayoutRoot" Background="#666666">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0">
-            <ContentControl x:Name="HeaderRegion" prism:RegionManager.RegionName="HeaderRegion" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Border Grid.Row="0"  Background="#333333">
+            <ContentControl Background="#FF414141" x:Name="HeaderRegion" prism:RegionManager.RegionName="HeaderRegion" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         </Border>
 
-        <Border Grid.Row="1">
+        <Border Grid.Row="1" Background="#666666">
             <ContentControl x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
     </Grid>
