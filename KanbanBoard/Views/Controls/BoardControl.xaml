@@ -13,5 +13,35 @@
                 <StackPanel Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Border Background="#333333" Margin="5">
+                    <StackPanel x:Name="LayoutRoot">
+                        <Border CornerRadius="5" BorderThickness="2" BorderBrush="White">
+                            <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding ColumnTitle}" Foreground="White"/>
+                        </Border>
+                        <toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">
+                            <ListBox Style="{Binding Null}" x:Name="listBox" Height="600" Width="255" ItemsSource="{Binding Tasks, Mode=TwoWay}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderThickness="2" CornerRadius="5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="TaskTitle" Width="150" Text="{Binding TaskTitle}"></TextBlock>
+                                                <Button x:Name="CategorizeTaskButton" Style="{StaticResource CategorizeButton}">Category</Button>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </toolkit:ListBoxDragDropTarget>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
     </ItemsControl>
 </UserControl>

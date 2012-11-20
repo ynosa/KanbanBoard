@@ -9,10 +9,10 @@ namespace KanbanBoard.Views.Controls
             InitializeComponent();
             this.DataContext = new BoardControlViewModel(); ;
         }
-        public BoardControl(BoardControlViewModel viewModel)
-            : this()
-        {
+        //public BoardControl(BoardControlViewModel viewModel)
+        //    : this()
+        //{
             
-        }
+        //}
     }
 }

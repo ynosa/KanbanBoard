@@ -1,4 +1,5 @@
 ﻿using KanbanBoard.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -9,6 +10,7 @@ namespace KanbanBoard.Views.Controls
     {
         private ObservableCollection<TEntity> entityList;
         private string columnTitle;
+        private Guid columnId;
 
         public string ColumnTitle
         {

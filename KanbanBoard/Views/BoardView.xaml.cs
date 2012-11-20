@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KanbanBoard.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,9 +15,10 @@ namespace KanbanBoard.Views
 {
     public partial class BoardView : UserControl
     {
-        public BoardView()
+        public BoardView(BoardViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }

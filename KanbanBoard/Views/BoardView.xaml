@@ -13,7 +13,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <!--ToDo : Add control panel for managing columns-->
-        <controls:BoardControl Grid.Column="0"/>
+        <controls:BoardControl Grid.Column="0" />
         <StackPanel Grid.Column="1">
             <Button x:Name="NewColumnButton" Content="new column"/>
             
