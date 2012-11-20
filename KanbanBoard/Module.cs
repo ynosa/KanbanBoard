@@ -28,6 +28,8 @@ namespace KanbanBoard
             container.RegisterType<object, BoardsView>("BoardsView");
             container.RegisterType<object, ErrorView>("ErrorView");
             container.RegisterType<object, BoardChildWindow>("BoardChildWindow");
+            container.RegisterType<object, TaskChildWindow>("TaskChildWindow");
+            container.RegisterType<object, ColumnChildWindow>("ColumnChildWindow");
             container.RegisterType<object, BoardView>("BoardView");
 
             container.RegisterType<object, BoardControl>("BoardControl");

@@ -1,7 +1,10 @@
 ﻿
+using KanbanBoard.Views.ChildWindows;
 using KanbanBoard.Web;
 using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.ObjectModel;
 using System.ServiceModel.DomainServices.Client;
@@ -11,47 +14,120 @@ namespace KanbanBoard.ViewModel
     public class BoardViewModel : BaseViewModel, INavigationAware
     {
         public DelegateCommand AddNewColumnCommand { get; set; }
-        public DelegateCommand RemoveColumnCommand { get; set; }
+        public DelegateCommand<BoardColumn> RemoveColumnCommand { get; set; }
 
-        public DelegateCommand AddNewTaskCommand { get; set; }
-        public DelegateCommand RemoveTaskCommand { get; set; }
+        public DelegateCommand<BoardColumn> AddNewTaskCommand { get; set; }
+        public DelegateCommand<Task> RemoveTaskCommand { get; set; }
+
+        public InteractionRequest<Confirmation> ConfirmDeleteColumn
+        {
+            get { return confirmDeleteColumn; }
+        }
+
+        public InteractionRequest<Confirmation> ConfirmDeleteTask
+        {
+            get { return confirmDeleteTask; }
+        }
 
         public static string BoardIdParam = "BoardId";
 
+        private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
+        private readonly InteractionRequest<Confirmation> confirmDeleteTask;
+
         private Guid BoardId;
+
+        private readonly IUnityContainer container;
 
         public ObservableCollection<BoardColumn> BoardColumns { get; set; }
 
         private readonly KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
 
-        public BoardViewModel()
+        public BoardViewModel(IUnityContainer container)
             : base()
         {
+            this.container = container;
             AddNewColumnCommand = new DelegateCommand(AddNewColumn);
-            RemoveColumnCommand = new DelegateCommand(RemoveColumn);
+            RemoveColumnCommand = new DelegateCommand<BoardColumn>(RemoveColumn);
 
-            AddNewTaskCommand = new DelegateCommand(AddNewTask);
-            RemoveTaskCommand = new DelegateCommand(RemoveTask);
+            AddNewTaskCommand = new DelegateCommand<BoardColumn>(AddNewTask);
+            RemoveTaskCommand = new DelegateCommand<Task>(RemoveTask);
+
+            confirmDeleteColumn = new InteractionRequest<Confirmation>();
+            confirmDeleteTask = new InteractionRequest<Confirmation>();
         }
 
         private void AddNewColumn()
         {
-            throw new NotImplementedException();
+            var childWindow = container.Resolve<ColumnChildWindow>();
+            childWindow.Title = "add new column";
+            childWindow.Closed += (s, e) =>
+            {
+                if (childWindow.DialogResult == true)
+                {
+                    var task = new BoardColumn()
+                        {
+                            BoardId = BoardId,
+                            Name = childWindow.ColumnName
+                        };
+                    // ToDo: Add implementation of the adding new column functionality
+                    //kanbanBoardDomainContext.Tasks.Add(task);
+                    //kanbanBoardDomainContext.SubmitChanges();
+                }
+            };
+            childWindow.Show();
         }
 
-        private void RemoveColumn()
+        private void RemoveColumn(BoardColumn column)
         {
-            throw new NotImplementedException();
+            confirmDeleteColumn.Raise(new Confirmation()
+                {
+                    Content = "Are you sure you want to remove this column?"
+
+                }, confirmation =>
+                    {
+                        if (confirmation.Confirmed)
+                        {
+                            kanbanBoardDomainContext.BoardColumns.Remove(column);
+                            kanbanBoardDomainContext.SubmitChanges();
+                        }
+                    });
         }
 
-        private void AddNewTask()
+        private void AddNewTask(BoardColumn column)
         {
-            throw new NotImplementedException();
+            var childWindow = container.Resolve<TaskChildWindow>();
+            childWindow.Title = "add new task";
+            childWindow.Closed += (s, e) =>
+                {
+                    if (childWindow.DialogResult == true)
+                    {
+                        var task = new Task()
+                            {
+                                BoardColumnId = column.Id,
+                                Name = childWindow.TaskName
+                            };
+                        // ToDo: Add implementation of the adding new task functionality
+                        //kanbanBoardDomainContext.Tasks.Add(task);
+                        //kanbanBoardDomainContext.SubmitChanges();
+                    }
+                };
+            childWindow.Show();
         }
 
-        private void RemoveTask()
+        private void RemoveTask(Task task)
         {
-            throw new NotImplementedException();
+            confirmDeleteTask.Raise(new Confirmation()
+                {
+                    Content = "Are you sure you want to remove this task?"
+                }, confirmation =>
+                    {
+                        if (confirmation.Confirmed)
+                        {
+                            // kanbanBoardDomainContext.Tasks.Remove(task);
+                            // kanbanBoardDomainContext.SubmitChanges();
+                        }
+                    }
+                );
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

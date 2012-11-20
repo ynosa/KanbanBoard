@@ -147,6 +147,12 @@
     <Compile Include="Views\ChildWindows\BoardChildWindow.xaml.cs">
       <DependentUpon>BoardChildWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ChildWindows\ColumnChildWindow.xaml.cs">
+      <DependentUpon>ColumnChildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChildWindows\TaskChildWindow.xaml.cs">
+      <DependentUpon>TaskChildWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\BoardControl.xaml.cs">
       <DependentUpon>BoardControl.xaml</DependentUpon>
     </Compile>
@@ -170,6 +176,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ChildWindows\BoardChildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChildWindows\ColumnChildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChildWindows\TaskChildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
