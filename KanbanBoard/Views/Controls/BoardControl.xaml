@@ -6,8 +6,8 @@
     xmlns:controls="clr-namespace:KanbanBoard.Views.Controls"             
     xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" x:Class="KanbanBoard.Views.Controls.BoardControl"             
     mc:Ignorable="d">
-    <toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">
-        <ListBox ItemsSource="{Binding ColumnsCollection}" Background="#333333">
+    <!--<toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">-->
+        <ListBox Background="#333333">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -16,10 +16,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Background="#333333" Margin="5">
-                        <StackPanel x:Name="LayoutRoot">
+                        <StackPanel>
                             <Border CornerRadius="5" BorderThickness="2" BorderBrush="White">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding ColumnTitle}" Foreground="White"/>
+                                    <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding Name}" Foreground="White"/>
                                     <Button x:Name="RemoveColumnBotton" Content="X"/>
                                 </StackPanel>
                             </Border>
@@ -34,7 +34,7 @@
                                         <DataTemplate>
                                             <Border BorderThickness="2" CornerRadius="5">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock x:Name="TaskTitle" Width="150" Text="{Binding TaskTitle}"/>
+                                                    <TextBlock x:Name="TaskTitle" Width="150" Text="{Binding Name}"/>
                                                     <!--<Button x:Name="CategorizeTaskButton" Style="{StaticResource CategorizeButton}" Content="Category"/>-->
                                                     <Button x:Name="RemoveTaskButton" Content="X"/>
                                                 </StackPanel>
@@ -52,5 +52,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </toolkit:ListBoxDragDropTarget>
+    <!--</toolkit:ListBoxDragDropTarget>-->
 </UserControl>
