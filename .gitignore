@@ -6,4 +6,5 @@
 */obj/*
 */bin/*
 *.xap
-/*.suo
+*.dbmdl
+*.suo

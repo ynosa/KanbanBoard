@@ -9,6 +9,7 @@ namespace KanbanBoard.ViewModel
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
     using System.ServiceModel.DomainServices.Client;
@@ -21,7 +22,7 @@ namespace KanbanBoard.ViewModel
 
         private Guid BoardId;
 
-        public IEnumerable<BoardColumn> BoardColumns { get; set; }
+        public ObservableCollection<BoardColumn> BoardColumns { get; set; }
 
         private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
 
@@ -43,16 +44,18 @@ namespace KanbanBoard.ViewModel
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);            
-            this.BoardColumns = kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId), Processed,null).Entities;   
+            BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);
+            this.ProcessBoardItems();           
         }
 
-        private void Processed(LoadOperation<BoardColumn> obj)
+        public void ProcessBoardItems()
         {
-            var a = obj.Entities.Skip(1).First();
-            var b = a.Tasks.First();
+            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId), this.OnProcessed, null);   
+        }
 
-            Debug.WriteLine(a.Tasks.Count);
+        public virtual void OnProcessed(LoadOperation<BoardColumn> operation)
+        {
+             this.BoardColumns=new ObservableCollection<BoardColumn>(operation.Entities);            
         }
     }
 }
