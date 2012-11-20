@@ -31,7 +31,6 @@ namespace KanbanBoard
             container.RegisterType<object, BoardView>("BoardView");
 
             container.RegisterType<object, BoardControl>("BoardControl");
-            container.RegisterType<object, ColumnControl>("ColumnControl");
             
             container.Resolve<ApplicationController>();
             container.RegisterType<ILoginController, LoginController>();

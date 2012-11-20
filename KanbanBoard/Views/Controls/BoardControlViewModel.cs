@@ -4,9 +4,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.ServiceModel.DomainServices.Client;
-using System.Windows.Controls;
 
 namespace KanbanBoard.Views.Controls
 {
@@ -30,21 +27,16 @@ namespace KanbanBoard.Views.Controls
             EditColumnCommand = new DelegateCommand(EditColumn);
             RemoveColumnCommand = new DelegateCommand(RemoveColumn);
 
+            ColumnsCollection = new ObservableCollection<Column>();
+            ColumnsCollection.Add(new Column { ColumnTitle = "T1", Tasks = new ObservableCollection<Task1> { new Task1 { TaskTitle = "Task title" } } });
+            ColumnsCollection.Add(new Column { ColumnTitle = "T1", Tasks = new ObservableCollection<Task1> { new Task1 { TaskTitle = "Task title" } } });
+            ColumnsCollection.Add(new Column { ColumnTitle = "T1", Tasks = new ObservableCollection<Task1> { new Task1 { TaskTitle = "Task title" } } });
         }
 
         public BoardControlViewModel(int columnCount)
             : this()
         {
 
-        }
-
-        public BoardControlViewModel(IEnumerable<BoardColumn> columns)
-            : this()
-        {
-            foreach (var item in columns)
-            {
-                //ColumnsCollection.Add(new ColumnControl(new ColumnControlViewModel<Task>(item.Name)));
-            }
         }
 
         private void InitBoardColumns()
@@ -81,11 +73,11 @@ namespace KanbanBoard.Views.Controls
 
     public class Column
     {
-        public EntityCollection<Task> Tasks { get; set; }
         public string ColumnTitle { get; set; }
+        public ObservableCollection<Task1> Tasks { get; set; }
     }
 
-    public class Task
+    public class Task1
     {
         public string TaskTitle { get; set; }
     }

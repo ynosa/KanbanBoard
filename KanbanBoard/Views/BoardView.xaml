@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400"
     xmlns:controls="clr-namespace:KanbanBoard.Views.Controls" >
 
     <Grid x:Name="LayoutRoot" Background="#333333">
@@ -15,8 +15,10 @@
         <!--ToDo : Add control panel for managing columns-->
         <controls:BoardControl Grid.Column="0" />
         <StackPanel Grid.Column="1">
-            <Button x:Name="NewColumnButton" Content="new column"/>
-            
+            <Button x:Name="NewColumnBotton" Content="New Column"></Button>
+            <toolkit:DragDecorator AllowDrop="True">
+                <Grid Height="148" Width="78" Background="White"></Grid>
+            </toolkit:DragDecorator>
         </StackPanel>
     </Grid>
 </UserControl>
