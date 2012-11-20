@@ -8,10 +8,13 @@ using System.ServiceModel.DomainServices.Client;
 
 namespace KanbanBoard.ViewModel
 {
-    public class BoardViewModel : BaseViewModel, INavigationAware
-    {
-        public DelegateCommand AddNewColumnCommand { get; set; }
-        public DelegateCommand RemoveColumnCommand { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.ServiceModel.DomainServices.Client;
 
         public DelegateCommand AddNewTaskCommand { get; set; }
         public DelegateCommand RemoveTaskCommand { get; set; }
@@ -20,9 +23,22 @@ namespace KanbanBoard.ViewModel
 
         private Guid BoardId;
 
-        public ObservableCollection<BoardColumn> BoardColumns { get; set; }
+        private ObservableCollection<BoardColumn> _boardsColumns;
 
-        private readonly KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
+        public ObservableCollection<BoardColumn> BoardsColumns
+        {
+            get
+            {
+                return this._boardsColumns;
+            }
+            set
+            {
+                this._boardsColumns = value;
+                this.NotifyPropertyChanged("BoardsColumns");
+            }
+        }
+
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
 
         public BoardViewModel()
             : base()
@@ -57,7 +73,7 @@ namespace KanbanBoard.ViewModel
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
-        }
+        }        
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
@@ -77,9 +93,36 @@ namespace KanbanBoard.ViewModel
 
         public virtual void OnProcessed(LoadOperation<BoardColumn> operation)
         {
-            this.BoardColumns = new ObservableCollection<BoardColumn>(operation.Entities);
-            NotifyPropertyChanged("BoardColumns");
+             this._boardsColumns=new ObservableCollection<BoardColumn>(operation.Entities.OrderBy(obj=>obj.Position));
+             this._boardsColumns.CollectionChanged += this.BoardColumnsCollectionChanged;             
         }
 
+        void BoardColumnsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {            
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    {
+                        foreach (var columnItem in e.NewItems.OfType<BoardColumn>())
+                        {
+                            columnItem.BoardId = BoardId;
+                            kanbanBoardDomainContext.BoardColumns.Add(columnItem);
+                        }
+                        break;
+                    }
+                    
+
+                case NotifyCollectionChangedAction.Remove:
+                    {
+                        foreach (var columnItem in e.OldItems.OfType<BoardColumn>())
+                        {     
+                            kanbanBoardDomainContext.BoardColumns.Remove(columnItem);
+                        }
+                        break;
+                    }                
+            }
+            
+            kanbanBoardDomainContext.SubmitChanges();
+        }
     }
 }
