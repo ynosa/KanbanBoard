@@ -12,10 +12,13 @@ using System.Windows.Shapes;
 
 namespace KanbanBoard.Views
 {
+    using KanbanBoard.ViewModel;
+
     public partial class BoardView : UserControl
     {
-        public BoardView()
+        public BoardView(BoardViewModel dataContext)
         {
+            this.DataContext = dataContext;
             InitializeComponent();
         }
     }

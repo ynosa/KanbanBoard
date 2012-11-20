@@ -54,8 +54,8 @@ DELETE;
 MERGE INTO [dbo].[BoardColumn] as Target
 USING (VALUES
   (@column11, @board1, N'Board 1 Column1',0),
-  (@column12, @board1, N'Board 1 Column1',1),
-  (@column21, @board2, N'Board 1 Column1',0)
+  (@column12, @board1, N'Board 1 Column2',1),
+  (@column21, @board2, N'Board 2 Column1',0)
 )
 AS Source (Id,BoardId,Name,Position)
 ON Target.Id = Source.Id
@@ -78,7 +78,7 @@ USING (VALUES
   (@task113, @column11, N'Board 1 Column1 Task3',N'',2),
   (@task114, @column11, N'Board 1 Column1 Task4',N'',3),
   (@task121, @column12, N'Board 1 Column2 Task1',N'',0),
-  (@task122, @column12, N'Board 1 Column1 Task2',N'',1),
+  (@task122, @column12, N'Board 1 Column2 Task2',N'',1),
   (@task211, @column21, N'Board 2 Column1 Task1',N'',0),
   (@task212, @column21, N'Board 2 Column1 Task2',N'',1)
 )
