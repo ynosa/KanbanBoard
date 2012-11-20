@@ -17,7 +17,7 @@ namespace KanbanBoard
 
         public Module(IUnityContainer container, IEventAggregator eventAggregator)
         {
-            this.container = container;
+            this.container =    container;
             this.eventAggregator = eventAggregator;
         }
 
