@@ -80,6 +80,5 @@ namespace KanbanBoard.ViewModel
             this.BoardColumns = new ObservableCollection<BoardColumn>(operation.Entities);
             NotifyPropertyChanged("BoardColumns");
         }
-
     }
 }
