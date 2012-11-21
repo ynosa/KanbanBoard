@@ -18,7 +18,7 @@ namespace KanbanBoard.ViewModel
     using System.Diagnostics;
     using System.Linq;
     using System.ServiceModel.DomainServices.Client;
-    
+
     public class BoardViewModel : BaseViewModel, INavigationAware
     {
         private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
@@ -26,7 +26,7 @@ namespace KanbanBoard.ViewModel
         private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
         private Guid BoardId;
         private readonly IUnityContainer container;
-        private ObservableCollection<BoardColumn> _boardsColumns;
+        private ObservableCollection<Container<BoardColumn, Task>> _boardsColumns;
 
         public static string BoardIdParam = "BoardId";
 
@@ -46,7 +46,7 @@ namespace KanbanBoard.ViewModel
         }
 
 
-        public ObservableCollection<BoardColumn> BoardsColumns
+        public ObservableCollection<Container<BoardColumn, Task>> BoardsColumns
         {
             get
             {
@@ -150,7 +150,7 @@ namespace KanbanBoard.ViewModel
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
-        }        
+        }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
@@ -160,21 +160,21 @@ namespace KanbanBoard.ViewModel
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);
-            this.ProcessBoardItems();
+            this.LoadBoardItems();
         }
 
-        public void ProcessBoardItems()
+        public void LoadBoardItems()
         {
-            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId), this.OnProcessed, null);
+            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId), this.OnLoadBoardItemsCompleted, null);
         }
 
-        public virtual void OnProcessed(LoadOperation<BoardColumn> operation)
+        public virtual void OnLoadBoardItemsCompleted(LoadOperation<BoardColumn> operation)
         {
-             this._boardsColumns=new ObservableCollection<BoardColumn>(operation.Entities.OrderBy(obj=>obj.Position));
-             this._boardsColumns.CollectionChanged += this.BoardColumnsCollectionChanged;             
+            this._boardsColumns = new ObservableCollection<Container<BoardColumn, Task>>(operation.Entities.Select(obj => new Container<BoardColumn, Task>(obj, new ObservableCollection<Task>(obj.Tasks))));
+            this._boardsColumns.CollectionChanged += this.BoardColumnsCollectionChanged;
         }
         void BoardColumnsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {            
+        {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -186,19 +186,32 @@ namespace KanbanBoard.ViewModel
                         }
                         break;
                     }
-                    
+
 
                 case NotifyCollectionChangedAction.Remove:
                     {
                         foreach (var columnItem in e.OldItems.OfType<BoardColumn>())
-                        {     
+                        {
                             kanbanBoardDomainContext.BoardColumns.Remove(columnItem);
                         }
                         break;
-                    }                
+                    }
             }
-            
+
             kanbanBoardDomainContext.SubmitChanges();
+        }
+    }
+
+    public class Container<TU, TV>
+    {
+        public TU Item { get; set; }
+
+        public ObservableCollection<TV> Children { get; set; }
+
+        public Container(TU item, ObservableCollection<TV> children)
+        {
+            Item = item;
+            Children = children;
         }
     }
 }
