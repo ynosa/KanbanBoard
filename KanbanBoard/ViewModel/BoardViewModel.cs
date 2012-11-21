@@ -21,6 +21,15 @@ namespace KanbanBoard.ViewModel
     
     public class BoardViewModel : BaseViewModel, INavigationAware
     {
+        private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
+        private readonly InteractionRequest<Confirmation> confirmDeleteTask;
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
+        private Guid BoardId;
+        private readonly IUnityContainer container;
+        private ObservableCollection<BoardColumn> _boardsColumns;
+
+        public static string BoardIdParam = "BoardId";
+
         public DelegateCommand AddNewColumnCommand { get; set; }
         public DelegateCommand<BoardColumn> RemoveColumnCommand { get; set; }
         public DelegateCommand<BoardColumn> AddNewTaskCommand { get; set; }
@@ -36,16 +45,6 @@ namespace KanbanBoard.ViewModel
             get { return confirmDeleteTask; }
         }
 
-        public static string BoardIdParam = "BoardId";
-
-        private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
-        private readonly InteractionRequest<Confirmation> confirmDeleteTask;
-
-        private Guid BoardId;
-
-        private readonly IUnityContainer container;
-
-        public ObservableCollection<BoardColumn> BoardColumns { get; set; }
 
         public ObservableCollection<BoardColumn> BoardsColumns
         {
