@@ -1,12 +1,17 @@
 ﻿<ResourceDictionary  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
                      xmlns:system="clr-namespace:System;assembly=mscorlib"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--Colors-->
     <Color x:Key="BackgroundColor">#333333</Color>
     <Color x:Key="ForegroundColor">White</Color>
     <Color x:Key="TextBoxColor">#FFBFBFBF</Color>
+    <!--Colors-->
 
+    <!--Brushes-->
     <SolidColorBrush x:Key="TransparentBrush" Color="Transparent"/>
-
+    <!--Brushes-->
+    
     <Thickness x:Key="DefaultBorderThickness">3</Thickness>
 
     <system:Double x:Key="FontSizeSmall">18.667</system:Double>
@@ -17,7 +22,7 @@
     <system:Double x:Key="FontSizeExtraLarge">42.667</system:Double>
     <system:Double x:Key="FontSizeExtraExtraLarge">72</system:Double>
 
-    <FontFamily x:Key="FontFamilySemiBold">Fonts/Fonts.zip#Segoe WP Semibold</FontFamily>
+    <!--<FontFamily x:Key="FontFamilySemiBold">Fonts/Fonts.zip#Segoe WP Semibold</FontFamily>-->
 
     <Style x:Key="ButtonBase" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
@@ -25,7 +30,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
         <Setter Property="MinHeight" Value="72" />
         <Setter Property="BorderThickness" Value="{StaticResource DefaultBorderThickness}"/>
-        <Setter Property="FontFamily" Value="{StaticResource FontFamilySemiBold}"/>
+        <!--<Setter Property="FontFamily" Value="{StaticResource FontFamilySemiBold}"/>-->
         <Setter Property="FontSize" Value="28"/>
         <Setter Property="Padding" Value="10,0,10,5"/>
         <Setter Property="Template">
