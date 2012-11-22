@@ -1019,7 +1019,7 @@ namespace KanbanBoard.Web
         /// Gets or sets the 'Description' value.
         /// </summary>
         [DataMember()]
-        [Required()]
+        [Required(AllowEmptyStrings=true)]
         public string Description
         {
             get

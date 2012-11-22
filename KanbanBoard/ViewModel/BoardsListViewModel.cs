@@ -9,6 +9,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.ServiceModel.DomainServices.Client;
 using System.ServiceModel.DomainServices.Client.ApplicationServices;
+using System.Text;
 namespace KanbanBoard.ViewModel
 {
     public class BoardsListViewModel : BaseViewModel
@@ -65,17 +66,46 @@ namespace KanbanBoard.ViewModel
                     // ToDo : Add implementation when board title isn't empty.
                     // Board name get from dialog.BoardName property!
                     Board board = new Board() { BoardName = dialog.BoardName, UserName = WebContextBase.Current.Authentication.User.Identity.Name, Id = Guid.NewGuid() };
+
                     //BoardColumn bc = new BoardColumn() { Board = board, Name = "bc", Position = 0, Id=Guid.NewGuid() };
                     //Task tk = new Task() { BoardColumn = bc, Description = "Descr", Name = "nm", Position = 0, Id = Guid.NewGuid() };
-
                     //bc.Tasks.Add(tk);
                     //board.BoardColumns.Add(bc);
+
+                    if (HasValidationErrors(board))
+                    {
+                        dialog.Show();
+                        return;
+                    }
+
 
                     kanbanBoardDomainContext.Boards.Add(board);
                     kanbanBoardDomainContext.SubmitChanges();
                 }
             };
             dialog.Show();
+        }
+
+        private static bool HasValidationErrors(Board board)
+        {
+            if (board.HasValidationErrors)
+            {
+                StringBuilder builder = new StringBuilder();
+
+                foreach (var error in board.ValidationErrors)
+                {
+                    if (builder.Length > 0)
+                        builder.AppendLine();
+
+                    builder.Append(error.ErrorMessage);
+                }
+
+                builder.Insert(0, "There are some validation error(s). Please fix error(s) to proceed: \r\n\r\n");
+
+                System.Windows.MessageBox.Show(builder.ToString(), "Validation errors", System.Windows.MessageBoxButton.OK);
+            }
+
+            return board.HasValidationErrors;
         }
 
         private void EditBoard(Board board)
@@ -89,6 +119,13 @@ namespace KanbanBoard.ViewModel
                 if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
                 {
                     board.BoardName = dialog.BoardName;
+
+                    if (HasValidationErrors(board))
+                    {
+                        dialog.Show();
+                        return;
+                    }
+
                     kanbanBoardDomainContext.SubmitChanges();
                     NotifyPropertyChanged("BoardsList");
                 }

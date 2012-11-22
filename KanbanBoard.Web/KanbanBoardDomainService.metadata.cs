@@ -109,6 +109,7 @@ namespace KanbanBoard.Web
 
             public Guid BoardColumnId { get; set; }
 
+            [Required(AllowEmptyStrings = true)]
             public string Description { get; set; }
 
             public Guid Id { get; set; }
