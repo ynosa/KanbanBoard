@@ -111,6 +111,7 @@
         {
             kanbanBoardDomainContext.Load(
                 kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId),
+                LoadBehavior.MergeIntoCurrent,
                 this.OnLoadBoardItemsCompleted,
                 null);
         }
@@ -187,8 +188,15 @@
                 {
                     if (childWindow.DialogResult == true)
                     {
-                        var column = new BoardColumn() { BoardId = BoardId, Name = childWindow.ColumnName };
-                        kanbanBoardDomainContext.BoardColumns.Add(column);
+                        var column = new BoardColumn
+                            {
+                                Id = Guid.NewGuid(),
+                                BoardId = BoardId,
+                                Name = childWindow.ColumnName,
+                                Position = (short)(this.BoardColumns.Max(obj=>obj.Item.Position)+1)
+                            };
+                        
+                        kanbanBoardDomainContext.BoardColumns.Add(column);                        
                         kanbanBoardDomainContext.SubmitChanges(operation => LoadBoardItems(), null);
                     }
                 };
@@ -203,41 +211,21 @@
                 {
                     if (childWindow.DialogResult == true)
                     {
-                        var task = new Task() { BoardColumnId = column.Id, Name = childWindow.TaskName };
+                        var task = new Task
+                            {
+                                 BoardColumnId = column.Id,
+                                 Name = childWindow.TaskName,
+                                 Description = "",
+                                 Id = Guid.NewGuid(),
+                                 Position = (short)(column.Tasks.Max(obj=>obj.Position)+1)
+                            };
+                        
                         kanbanBoardDomainContext.Tasks.Add(task);
                         kanbanBoardDomainContext.SubmitChanges(operation => LoadBoardItems(), null);
                     }
                 };
             childWindow.Show();
-        }
-
-        private void BoardColumnsCollectionChanged(
-            object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    {
-                        foreach (var columnItem in e.NewItems.OfType<BoardColumn>())
-                        {
-                            columnItem.BoardId = BoardId;
-                            kanbanBoardDomainContext.BoardColumns.Add(columnItem);
-                        }
-                        break;
-                    }
-
-                case NotifyCollectionChangedAction.Remove:
-                    {
-                        foreach (var columnItem in e.OldItems.OfType<BoardColumn>())
-                        {
-                            kanbanBoardDomainContext.BoardColumns.Remove(columnItem);
-                        }
-                        break;
-                    }
-            }
-
-            kanbanBoardDomainContext.SubmitChanges();
-        }
+        }       
 
         private void RemoveColumn(BoardColumn column)
         {
@@ -247,7 +235,7 @@
                 {
                     if (confirmation.Confirmed)
                     {
-                        kanbanBoardDomainContext.BoardColumns.Remove(column);
+                        kanbanBoardDomainContext.BoardColumns.Remove(column);                        
                         kanbanBoardDomainContext.SubmitChanges();
                     }
                 });
