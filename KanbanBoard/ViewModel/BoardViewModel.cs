@@ -24,7 +24,7 @@
         #region Constants and Fields
 
         //Subject<> 
-        
+
         public static string BoardIdParam = "BoardId";
 
         private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
@@ -111,6 +111,7 @@
         {
             kanbanBoardDomainContext.Load(
                 kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId),
+                LoadBehavior.MergeIntoCurrent,
                 this.OnLoadBoardItemsCompleted,
                 null);
         }
@@ -120,7 +121,7 @@
             this.BoardColumns =
                 new ObservableCollection<Container<BoardColumn, Task>>
                     (
-                        operation.Entities.Null(new ObservableCollection<BoardColumn>()).Select(board => new Container<BoardColumn, Task>(board, board.Tasks.AsEnumerable().Null(new Task[0]).OrderBy(obj=>obj.Position), this.TasksCollectionChanged )).OrderBy(obj=>obj.Item.Position)
+                        operation.Entities.Null(new ObservableCollection<BoardColumn>()).Select(board => new Container<BoardColumn, Task>(board, board.Tasks.AsEnumerable().Null(new Task[0]).OrderBy(obj => obj.Position), this.TasksCollectionChanged)).OrderBy(obj => obj.Item.Position)
                     );
         }
 
@@ -138,31 +139,31 @@
                         }
 
                         SyncTasksPositionInColumn(boardColumn);
-                        
-                        kanbanBoardDomainContext.SubmitChanges(this.OnSubmitChangesCompleted, null );
 
-                        break;                        
+                        kanbanBoardDomainContext.SubmitChanges(this.OnSubmitChangesCompleted, null);
+
+                        break;
                     }
                 case NotifyCollectionChangedAction.Remove:
-                    {            
+                    {
                         SyncTasksPositionInColumn(boardColumn);
                         break;
                     }
-            }            
+            }
         }
 
-        private void SyncTasksPositionInColumn(Container<BoardColumn,Task> boardColumn)
+        private void SyncTasksPositionInColumn(Container<BoardColumn, Task> boardColumn)
         {
 
             foreach (var syncItem in boardColumn.Children.Select((obj, i) => new { Element = obj, Position = i }).Where(obj => obj.Position != obj.Element.Position))
             {
                 syncItem.Element.Position = (short)syncItem.Position;
-            }                       
+            }
         }
 
         private void OnSubmitChangesCompleted(SubmitOperation submitOperation)
         {
-            var a=submitOperation.EntitiesInError;
+            var a = submitOperation.EntitiesInError;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
@@ -187,10 +188,16 @@
                 {
                     if (childWindow.DialogResult == true)
                     {
-                        var task = new BoardColumn() { BoardId = BoardId, Name = childWindow.ColumnName };
-                        // ToDo: Add implementation of the adding new column functionality
-                        //kanbanBoardDomainContext.Tasks.Add(task);
-                        //kanbanBoardDomainContext.SubmitChanges();
+                        var column = new BoardColumn
+                            {
+                                Id = Guid.NewGuid(),
+                                BoardId = BoardId,
+                                Name = childWindow.ColumnName,
+                                Position = (short)(this.BoardColumns.Max(obj=>obj.Item.Position)+1)
+                            };
+                        
+                        kanbanBoardDomainContext.BoardColumns.Add(column);                        
+                        kanbanBoardDomainContext.SubmitChanges(operation => LoadBoardItems(), null);
                     }
                 };
             childWindow.Show();
@@ -204,55 +211,34 @@
                 {
                     if (childWindow.DialogResult == true)
                     {
-                        var task = new Task() { BoardColumnId = column.Id, Name = childWindow.TaskName };
-                        // ToDo: Add implementation of the adding new task functionality
-                        //kanbanBoardDomainContext.Tasks.Add(task);
-                        //kanbanBoardDomainContext.SubmitChanges();
+                        var task = new Task
+                            {
+                                 BoardColumnId = column.Id,
+                                 Name = childWindow.TaskName,
+                                 Description = "",
+                                 Id = Guid.NewGuid(),
+                                 Position = (short)(column.Tasks.Max(obj=>obj.Position)+1)
+                            };
+                        
+                        kanbanBoardDomainContext.Tasks.Add(task);
+                        kanbanBoardDomainContext.SubmitChanges(operation => LoadBoardItems(), null);
                     }
                 };
             childWindow.Show();
-        }
-
-        private void BoardColumnsCollectionChanged(
-            object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    {
-                        foreach (var columnItem in e.NewItems.OfType<BoardColumn>())
-                        {
-                            columnItem.BoardId = BoardId;
-                            kanbanBoardDomainContext.BoardColumns.Add(columnItem);
-                        }
-                        break;
-                    }
-
-                case NotifyCollectionChangedAction.Remove:
-                    {
-                        foreach (var columnItem in e.OldItems.OfType<BoardColumn>())
-                        {
-                            kanbanBoardDomainContext.BoardColumns.Remove(columnItem);
-                        }
-                        break;
-                    }
-            }
-
-            kanbanBoardDomainContext.SubmitChanges();
-        }
+        }       
 
         private void RemoveColumn(BoardColumn column)
         {
             confirmDeleteColumn.Raise(
                 new Confirmation() { Content = "Are you sure you want to remove this column?" },
                 confirmation =>
+                {
+                    if (confirmation.Confirmed)
                     {
-                        if (confirmation.Confirmed)
-                        {
-                            kanbanBoardDomainContext.BoardColumns.Remove(column);
-                            kanbanBoardDomainContext.SubmitChanges();
-                        }
-                    });
+                        kanbanBoardDomainContext.BoardColumns.Remove(column);                        
+                        kanbanBoardDomainContext.SubmitChanges();
+                    }
+                });
         }
 
         private void RemoveTask(Task task)
@@ -260,13 +246,13 @@
             confirmDeleteTask.Raise(
                 new Confirmation() { Content = "Are you sure you want to remove this task?" },
                 confirmation =>
+                {
+                    if (confirmation.Confirmed)
                     {
-                        if (confirmation.Confirmed)
-                        {
-                            // kanbanBoardDomainContext.Tasks.Remove(task);
-                            // kanbanBoardDomainContext.SubmitChanges();
-                        }
-                    });
+                        // kanbanBoardDomainContext.Tasks.Remove(task);
+                        // kanbanBoardDomainContext.SubmitChanges();
+                    }
+                });
         }
 
         #endregion
@@ -276,7 +262,7 @@
     {
         #region Constructors and Destructors
 
-        public Container(TU item, IEnumerable<TV> children,NotifyCollectionChangedEventHandler handler)
+        public Container(TU item, IEnumerable<TV> children, NotifyCollectionChangedEventHandler handler)
         {
             Item = item;
             Children = new ObservableCollection<TV>(children);
