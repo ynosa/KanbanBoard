@@ -48,6 +48,8 @@ namespace KanbanBoard.Shell
                 {
                     System.Windows.MessageBox.Show("Your session has expired please login.", "Session expired", MessageBoxButton.OK);
                     WebContextBase.Current.Authentication.Logout(null, null);
+                    e.Handled = true;
+                    return;
                 }
             }
 
