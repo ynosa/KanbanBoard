@@ -3,12 +3,6 @@
              x:Class="KanbanBoard.Shell.App"
              >
     <Application.Resources>
-        
-    	<ResourceDictionary>
-    		<ResourceDictionary.MergedDictionaries>
-    			<ResourceDictionary Source="Styles/Style.xaml"/>
-    		</ResourceDictionary.MergedDictionaries>
-    	</ResourceDictionary>
-        
+            <ResourceDictionary Source="/KanbanBoard.Shell;component/Styles/Style.xaml"/>
     </Application.Resources>
 </Application>

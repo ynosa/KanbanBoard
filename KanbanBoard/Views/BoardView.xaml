@@ -1,14 +1,13 @@
-﻿<UserControl x:Class="KanbanBoard.Views.BoardView"
+﻿<UserControl
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:prism="http://www.codeplex.com/prism"
+    x:Class="KanbanBoard.Views.BoardView"
     mc:Ignorable="d">
-
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmDeleteTask}">
             <prism:PopupChildWindowAction />
@@ -18,59 +17,83 @@
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
 
-    <Grid x:Name="LayoutRoot" Background="#333333">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundColor2}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Background="#333333" ItemsSource="{Binding BoardColumns}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="inner project"/>
+        <ListBox Grid.Column="0" Grid.Row="1"  ItemsSource="{Binding BoardColumns}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
+                    <StackPanel Margin="10" Orientation="Horizontal" Background="{StaticResource BackgroundColor1}"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="#333333" Margin="5">
-                        <StackPanel>
-                            <Border CornerRadius="5" BorderThickness="2" BorderBrush="White">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding Item.Name}" Foreground="White"/>
-                                    <Button x:Name="RemoveColumnBotton" Content="X" CommandParameter="{Binding Item}" Command="{Binding DataContext.RemoveColumnCommand, ElementName=LayoutRoot}"/>
-                                </StackPanel>
-                            </Border>
-                            <toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">
-
-                                <ListBox Style="{Binding Null}" x:Name="listBox" Height="600" Width="255" ItemsSource="{Binding Children, Mode=TwoWay}">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel/>
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderThickness="2" CornerRadius="5">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock x:Name="TaskTitle" Width="150" Text="{Binding Name}"/>
-                                                    <!--<Button x:Name="CategorizeTaskButton" Style="{StaticResource CategorizeButton}" Content="Category"/>-->
-                                                    <Button x:Name="RemoveTaskButton" Content="X" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveTaskCommand, ElementName=LayoutRoot}"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </toolkit:ListBoxDragDropTarget>
-                            <Button Content="Add Task" CommandParameter="{Binding Item}" Command="{Binding DataContext.AddNewTaskCommand, ElementName=LayoutRoot}"/>
-                        </StackPanel>
-                    </Border>
+                    <StackPanel>
+                        <Grid Background="{StaticResource BackgroundColor2}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="ColumnTitle"
+                                               Grid.Column="0"
+                                               Style="{x:Null}"
+                                               Text="{Binding Item.Name}"
+                                               Foreground="White"
+                                               FontSize="29.333"/>
+                            <Button x:Name="RemoveColumnBotton"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            Content="X"
+                                            CommandParameter="{Binding Item}"
+                                            Command="{Binding DataContext.RemoveColumnCommand, ElementName=LayoutRoot}"
+                                            Style="{x:Null}"/>
+                        </Grid>
+                        <toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">
+                            <ListBox x:Name="listBox" Height="600" Width="255" ItemsSource="{Binding Children, Mode=TwoWay}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Background="{StaticResource BackgroundColor2}"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Background="White"
+                                                        Orientation="Horizontal"
+                                                        Width="240" Height="50"
+                                                        Margin="0,5,0,5">
+                                            <TextBlock HorizontalAlignment="Left"
+                                                           Style="{Binding Null}"
+                                                           x:Name="TaskTitle"
+                                                           Text="{Binding Name}"/>
+                                            <Button HorizontalAlignment="Right"
+                                                        Style="{Binding Null}"
+                                                        x:Name="RemoveTaskButton"
+                                                        Content="X"
+                                                        CommandParameter="{Binding}" Command="{Binding DataContext.RemoveTaskCommand, ElementName=LayoutRoot}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </toolkit:ListBoxDragDropTarget>
+                        <Button Content="Add Task"
+                                    CommandParameter="{Binding Item}"
+                                    Command="{Binding DataContext.AddNewTaskCommand, ElementName=LayoutRoot}"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Column="1">
-            <Button x:Name="NewColumnBotton" Content="New Column" Command="{Binding AddNewColumnCommand}"></Button>
-            <!--<toolkit:DragDecorator AllowDrop="True">
-                <Grid Height="148" Width="78" Background="White"></Grid>
-            </toolkit:DragDecorator>-->
+        <StackPanel Grid.Column="1" Grid.RowSpan="2">
+            <Button Content="add column"  Command="{Binding AddNewColumnCommand}"/>
+            <toolkit:PanelDragDropTarget Background="Violet">
+                
+            </toolkit:PanelDragDropTarget>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -5,23 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://www.codeplex.com/prism"
     mc:Ignorable="d">
-
-    <!--<UserControl.Resources>
-        <ResourceDictionary Source="/KanbanBoard.Shell;component/Styles/Style.xaml"/>
-    </UserControl.Resources>-->
-
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundColor1}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
-
-        <Border Grid.Row="0"  Background="#333333">
-            <ContentControl Background="#FF414141" x:Name="HeaderRegion" prism:RegionManager.RegionName="HeaderRegion" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        </Border>
-
-        <Border Grid.Row="1" Background="#666666">
-            <ContentControl x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Border>
+        <ContentControl Grid.Row="0" x:Name="HeaderRegion" Width="Auto" Height="Auto" prism:RegionManager.RegionName="HeaderRegion" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Grid Grid.Row="1" x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </UserControl>

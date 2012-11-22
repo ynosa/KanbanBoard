@@ -6,10 +6,14 @@
     <Color x:Key="BackgroundColor">#333333</Color>
     <Color x:Key="ForegroundColor">White</Color>
     <Color x:Key="TextBoxColor">#FFBFBFBF</Color>
+    <Color x:Key="MainColor1">#00475D</Color>
+    <Color x:Key="MainColor2">#5D5D5D</Color>
     <!--Colors-->
 
     <!--Brushes-->
     <SolidColorBrush x:Key="TransparentBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="BackgroundColor1" Color="{StaticResource MainColor1}"/>
+    <SolidColorBrush x:Key="BackgroundColor2" Color="{StaticResource MainColor2}"/>
     <!--Brushes-->
     
     <Thickness x:Key="DefaultBorderThickness">3</Thickness>
@@ -28,10 +32,10 @@
         <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ForegroundColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
-        <Setter Property="MinHeight" Value="72" />
+        <Setter Property="MinHeight" Value="52" />
         <Setter Property="BorderThickness" Value="{StaticResource DefaultBorderThickness}"/>
         <!--<Setter Property="FontFamily" Value="{StaticResource FontFamilySemiBold}"/>-->
-        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontSize" Value="22"/>
         <Setter Property="Padding" Value="10,0,10,5"/>
         <Setter Property="Template">
             <Setter.Value>

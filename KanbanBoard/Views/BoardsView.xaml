@@ -8,7 +8,8 @@
     xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     mc:Ignorable="d"
     x:Class="KanbanBoard.Views.BoardsView"
-    xmlns:local="clr-namespace:KanbanBoard.Views.ChildWindows">
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
 
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmDelete}">
@@ -21,62 +22,69 @@
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="textBlock" Grid.Column="0" Text="my boards">            	</TextBlock>
+            <TextBlock x:Name="textBlock" Grid.Column="0" Text="my boards"></TextBlock>
             <Button Grid.Column="1" HorizontalAlignment="Right" Content="add new" Command="{Binding AddBoardCommand}"/>
         </Grid>
         <ListBox x:Name="BoardsListBox" ItemsSource="{Binding BoardsList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border x:Name="border" BorderBrush="Black" MinWidth="200">
-                    	<VisualStateManager.VisualStateGroups>
-                    		<VisualStateGroup x:Name="VisualStateGroup">
-                    			<VisualStateGroup.Transitions>
-                    				<VisualTransition GeneratedDuration="0:0:0.3"/>
-                    			</VisualStateGroup.Transitions>
-                    			<VisualState x:Name="Focused">
-                    				<Storyboard>
-                    					<ColorAnimation Duration="0" To="#FF32517B" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="border" d:IsOptimized="True"/>
-                    					<DoubleAnimation Duration="0" To="8" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>                    					
-                    					<DoubleAnimation Duration="0" To="1.05" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
-                    					<DoubleAnimation Duration="0" To="1.05" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>                    					
-                    				</Storyboard>
-                    			</VisualState>
-                    			<VisualState x:Name="Unfocused">
-                    				<Storyboard>
-                    					<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
-                    					<DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
-                    				</Storyboard>
-                    			</VisualState>
-                    		</VisualStateGroup>
-                    	</VisualStateManager.VisualStateGroups>
-                    	<VisualStateManager.CustomVisualStateManager>
-                    		<ie:ExtendedVisualStateManager/>
-                    	</VisualStateManager.CustomVisualStateManager>
-                        <StackPanel x:Name="stackPanel" Orientation="Horizontal" Margin="3">
-                        	<i:Interaction.Triggers>
-                        		<i:EventTrigger EventName="MouseEnter">
-                        			<ie:GoToStateAction StateName="Focused"/>
-                        		</i:EventTrigger>
-								<i:EventTrigger EventName="MouseLeave">
-                        			<ie:GoToStateAction StateName="Unfocused"/>
-                        		</i:EventTrigger>
-                        	</i:Interaction.Triggers>                        	                       	
-                            <TextBlock x:Name="BoardName"  MaxWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="VisualStateGroup">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.3"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#FF32517B" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="border" d:IsOptimized="True"/>
+                                        <DoubleAnimation Duration="0" To="8" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
+                                        <DoubleAnimation Duration="0" To="1.05" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
+                                        <DoubleAnimation Duration="0" To="1.05" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
+                                        <DoubleAnimation Duration="0" To="0.7" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="BoardName" d:IsOptimized="True"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <VisualStateManager.CustomVisualStateManager>
+                            <ie:ExtendedVisualStateManager/>
+                        </VisualStateManager.CustomVisualStateManager>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <ie:GoToStateAction StateName="Focused"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <ie:GoToStateAction StateName="Unfocused"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <TextBlock  Style="{Binding Null}" HorizontalAlignment="Left" x:Name="BoardName"  MaxWidth="300"  Text="{Binding BoardName}" RenderTransformOrigin="0,0.5">
                             	<i:Interaction.Triggers>
                             		<i:EventTrigger EventName="MouseLeftButtonDown">
                             			<i:InvokeCommandAction CommandParameter="{Binding}" Command="{Binding DataContext.ManageBoardCommand, ElementName=LayoutRoot}" />
                             		</i:EventTrigger>
                             	</i:Interaction.Triggers>
-                            	<TextBlock.RenderTransform>
-                            		<CompositeTransform/>
-                            	</TextBlock.RenderTransform>
-                            	<TextBlock.Effect>
-                            		<DropShadowEffect/>
-                            	</TextBlock.Effect>                            
-							</TextBlock>
-                            <Button x:Name="ListBoxEditButton" Content="Edit" CommandParameter="{Binding}" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
-                            <Button x:Name="ListBoxRemoveButton" Content="Remove" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
-                        </StackPanel>
+                                <TextBlock.RenderTransform>
+                                    <CompositeTransform/>
+                                </TextBlock.RenderTransform>
+                                <TextBlock.Effect>
+                                    <DropShadowEffect/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="ListBoxEditButton" Content="Edit" CommandParameter="{Binding}" Command="{Binding DataContext.EditBoardCommand, ElementName=LayoutRoot}"/>
+                                <Button x:Name="ListBoxRemoveButton" Content="Remove" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveBoardCommand, ElementName=LayoutRoot}" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
