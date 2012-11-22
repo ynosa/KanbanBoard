@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel.DomainServices.Client;
 using System.ServiceModel.DomainServices.Client.ApplicationServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +42,15 @@ namespace KanbanBoard.Shell
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (e.ExceptionObject is DomainOperationException)
+            {
+                if (((DomainOperationException)e.ExceptionObject).Status == OperationErrorStatus.Unauthorized)
+                {
+                    System.Windows.MessageBox.Show("Your session has expired please login.", "Session expired", MessageBoxButton.OK);
+                    WebContextBase.Current.Authentication.Logout(null, null);
+                }
+            }
+
             // If the app is running outside of the debugger then report the exception using
             // the browser's exception mechanism. On IE this will display it a yellow alert 
             // icon in the status bar and Firefox will display a script error.
