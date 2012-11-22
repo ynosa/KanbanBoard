@@ -166,10 +166,6 @@
     <Compile Include="Views\ChildWindows\TaskChildWindow.xaml.cs">
       <DependentUpon>TaskChildWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\BoardControl.xaml.cs">
-      <DependentUpon>BoardControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\BoardControlViewModel.cs" />
     <Compile Include="Views\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
@@ -199,10 +195,6 @@
     <Page Include="Views\ChildWindows\TaskChildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Controls\BoardControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ErrorView.xaml">
       <SubType>Designer</SubType>

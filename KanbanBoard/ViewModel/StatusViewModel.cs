@@ -7,7 +7,7 @@ using System.ServiceModel.DomainServices.Client.ApplicationServices;
 
 namespace KanbanBoard.ViewModel
 {
-    public class StatusViewModel : BaseViewModel,INavigationAware
+    public class StatusViewModel : BaseViewModel, INavigationAware
     {
         private string name;
         private readonly ILoginController controller;
@@ -33,7 +33,7 @@ namespace KanbanBoard.ViewModel
             this.eventAggregator = eventAggregator;
             LogOutCommand = new DelegateCommand(() =>
             {
-                WebContextBase.Current.Authentication.Logout(controller.OnLogoutCompleted, null);
+                WebContextBase.Current.Authentication.Logout(null, null);
             });
 
             ShowBoardsCommand = new DelegateCommand(ShowBoards);
@@ -55,7 +55,7 @@ namespace KanbanBoard.ViewModel
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            UserName = string.Format("Hi, {0}!",navigationContext.Parameters["USERNAME"]);
+            UserName = string.Format("Hi, {0}!", navigationContext.Parameters["USERNAME"]);
         }
     }
 }

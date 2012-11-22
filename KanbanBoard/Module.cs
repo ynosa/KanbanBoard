@@ -3,7 +3,6 @@ using KanbanBoard.Events;
 using KanbanBoard.Interfaces;
 using KanbanBoard.Views;
 using KanbanBoard.Views.ChildWindows;
-using KanbanBoard.Views.Controls;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
@@ -31,14 +30,13 @@ namespace KanbanBoard
             container.RegisterType<object, TaskChildWindow>("TaskChildWindow");
             container.RegisterType<object, ColumnChildWindow>("ColumnChildWindow");
             container.RegisterType<object, BoardView>("BoardView");
+            container.RegisterType<ILoginController, LoginController>(new ContainerControlledLifetimeManager());
+            container.Resolve<ILoginController>();
 
-            container.RegisterType<object, BoardControl>("BoardControl");
-            
             container.Resolve<ApplicationController>();
-            container.RegisterType<ILoginController, LoginController>();
+
 
             container.Resolve<ILoginController>();
-            
             
             // Raise event
             eventAggregator.GetEvent<AuthenticationEvent>().Publish(0);

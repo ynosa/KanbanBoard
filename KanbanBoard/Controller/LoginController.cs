@@ -16,6 +16,15 @@ namespace KanbanBoard.Controller
             this.eventAggregator = eventAggregator;
             this.viewOrchestrator = orchestrator;
             this.eventAggregator.GetEvent<AuthenticationEvent>().Subscribe(RaiseAuthentification, true);
+
+            // Temporary added subscription on logout
+            WebContextBase.Current.Authentication.LoggedOut += Authentication_LoggedOut;
+        }
+
+        void Authentication_LoggedOut(object sender, AuthenticationEventArgs e)
+        {
+            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, "LoginView");
+            viewOrchestrator.DeactivateView(RegionNames.HEADER_REGION, "StatusView");
         }
 
         private void RaiseAuthentification(int a)
@@ -58,10 +67,5 @@ namespace KanbanBoard.Controller
             }
         }
 
-        public void OnLogoutCompleted(LogoutOperation operation)
-        {
-            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, "LoginView");
-            viewOrchestrator.DeactivateView(RegionNames.HEADER_REGION, "StatusView");
-        }
     }
 }
