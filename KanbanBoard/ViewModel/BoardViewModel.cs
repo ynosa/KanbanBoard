@@ -1,63 +1,47 @@
-﻿
-using KanbanBoard.Views.ChildWindows;
-using KanbanBoard.Web;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
-using System;
-using System.Collections.ObjectModel;
-using System.ServiceModel.DomainServices.Client;
-
-namespace KanbanBoard.ViewModel
+﻿namespace KanbanBoard.ViewModel
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Linq;
     using System.ServiceModel.DomainServices.Client;
 
+    using KanbanBoard.Views.ChildWindows;
+    using KanbanBoard.Web;
+
+    using Microsoft.Practices.Prism.Commands;
+    using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+    using Microsoft.Practices.Prism.Regions;
+    using Microsoft.Practices.Unity;
+
+    #endregion
+
     public class BoardViewModel : BaseViewModel, INavigationAware
     {
-        private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
-        private readonly InteractionRequest<Confirmation> confirmDeleteTask;
-        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
-        private Guid BoardId;
-        private readonly IUnityContainer container;
-        private ObservableCollection<Container<BoardColumn, Task>> _boardsColumns;
+        #region Constants and Fields
 
+        //Subject<> 
+        
         public static string BoardIdParam = "BoardId";
 
-        public DelegateCommand AddNewColumnCommand { get; set; }
-        public DelegateCommand<BoardColumn> RemoveColumnCommand { get; set; }
-        public DelegateCommand<BoardColumn> AddNewTaskCommand { get; set; }
-        public DelegateCommand<Task> RemoveTaskCommand { get; set; }
+        private readonly InteractionRequest<Confirmation> confirmDeleteColumn;
 
-        public InteractionRequest<Confirmation> ConfirmDeleteColumn
-        {
-            get { return confirmDeleteColumn; }
-        }
+        private readonly InteractionRequest<Confirmation> confirmDeleteTask;
 
-        public InteractionRequest<Confirmation> ConfirmDeleteTask
-        {
-            get { return confirmDeleteTask; }
-        }
+        private readonly IUnityContainer container;
 
+        private Guid BoardId;
 
-        public ObservableCollection<Container<BoardColumn, Task>> BoardsColumns
-        {
-            get
-            {
-                return this._boardsColumns;
-            }
-            set
-            {
-                this._boardsColumns = value;
-                this.NotifyPropertyChanged("BoardsColumns");
-            }
-        }
+        private ObservableCollection<Container<BoardColumn, Task>> _boardColumns;
+
+        private KanbanBoardDomainContext kanbanBoardDomainContext = new KanbanBoardDomainContext();
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public BoardViewModel(IUnityContainer container)
             : base()
@@ -73,41 +57,143 @@ namespace KanbanBoard.ViewModel
             confirmDeleteTask = new InteractionRequest<Confirmation>();
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public DelegateCommand AddNewColumnCommand { get; set; }
+
+        public DelegateCommand<BoardColumn> AddNewTaskCommand { get; set; }
+
+        public ObservableCollection<Container<BoardColumn, Task>> BoardColumns
+        {
+            get
+            {
+                return this._boardColumns;
+            }
+            set
+            {
+                this._boardColumns = value;
+                this.NotifyPropertyChanged("BoardColumns");
+            }
+        }
+
+        public InteractionRequest<Confirmation> ConfirmDeleteColumn
+        {
+            get
+            {
+                return confirmDeleteColumn;
+            }
+        }
+
+        public InteractionRequest<Confirmation> ConfirmDeleteTask
+        {
+            get
+            {
+                return confirmDeleteTask;
+            }
+        }
+
+        public DelegateCommand<BoardColumn> RemoveColumnCommand { get; set; }
+
+        public DelegateCommand<Task> RemoveTaskCommand { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void LoadBoardItems()
+        {
+            kanbanBoardDomainContext.Load(
+                kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId),
+                this.OnLoadBoardItemsCompleted,
+                null);
+        }
+
+        public virtual void OnLoadBoardItemsCompleted(LoadOperation<BoardColumn> operation)
+        {
+            this.BoardColumns =
+                new ObservableCollection<Container<BoardColumn, Task>>
+                    (
+                        operation.Entities.Null(new ObservableCollection<BoardColumn>()).Select(board => new Container<BoardColumn, Task>(board, board.Tasks.AsEnumerable().Null(new Task[0]).OrderBy(obj=>obj.Position), this.TasksCollectionChanged )).OrderBy(obj=>obj.Item.Position)
+                    );
+        }
+
+        private void TasksCollectionChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
+        {
+            var boardColumn = BoardColumns.Single(obj => obj.Children.Equals(sender as ObservableCollection<Task>));
+
+            switch (eventArgs.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    {
+                        foreach (var item in eventArgs.NewItems.Cast<Task>())
+                        {
+                            item.BoardColumnId = boardColumn.Item.Id;
+                        }
+
+                        SyncTasksPositionInColumn(boardColumn);
+                        
+                        kanbanBoardDomainContext.SubmitChanges(this.OnSubmitChangesCompleted, null );
+
+                        break;                        
+                    }
+                case NotifyCollectionChangedAction.Remove:
+                    {            
+                        SyncTasksPositionInColumn(boardColumn);
+                        break;
+                    }
+            }            
+        }
+
+        private void SyncTasksPositionInColumn(Container<BoardColumn,Task> boardColumn)
+        {
+
+            foreach (var syncItem in boardColumn.Children.Select((obj, i) => new { Element = obj, Position = i }).Where(obj => obj.Position != obj.Element.Position))
+            {
+                syncItem.Element.Position = (short)syncItem.Position;
+            }                       
+        }
+
+        private void OnSubmitChangesCompleted(SubmitOperation submitOperation)
+        {
+            var a=submitOperation.EntitiesInError;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);
+            this.LoadBoardItems();
+        }
+
+        #endregion
+
+        #region Methods
+
         private void AddNewColumn()
         {
             var childWindow = container.Resolve<ColumnChildWindow>();
             childWindow.Title = "add new column";
             childWindow.Closed += (s, e) =>
-            {
-                if (childWindow.DialogResult == true)
                 {
-                    var task = new BoardColumn()
-                        {
-                            BoardId = BoardId,
-                            Name = childWindow.ColumnName
-                        };
-                    // ToDo: Add implementation of the adding new column functionality
-                    //kanbanBoardDomainContext.Tasks.Add(task);
-                    //kanbanBoardDomainContext.SubmitChanges();
-                }
-            };
-            childWindow.Show();
-        }
-
-        private void RemoveColumn(BoardColumn column)
-        {
-            confirmDeleteColumn.Raise(new Confirmation()
-                {
-                    Content = "Are you sure you want to remove this column?"
-
-                }, confirmation =>
+                    if (childWindow.DialogResult == true)
                     {
-                        if (confirmation.Confirmed)
-                        {
-                            kanbanBoardDomainContext.BoardColumns.Remove(column);
-                            kanbanBoardDomainContext.SubmitChanges();
-                        }
-                    });
+                        var task = new BoardColumn() { BoardId = BoardId, Name = childWindow.ColumnName };
+                        // ToDo: Add implementation of the adding new column functionality
+                        //kanbanBoardDomainContext.Tasks.Add(task);
+                        //kanbanBoardDomainContext.SubmitChanges();
+                    }
+                };
+            childWindow.Show();
         }
 
         private void AddNewTask(BoardColumn column)
@@ -118,11 +204,7 @@ namespace KanbanBoard.ViewModel
                 {
                     if (childWindow.DialogResult == true)
                     {
-                        var task = new Task()
-                            {
-                                BoardColumnId = column.Id,
-                                Name = childWindow.TaskName
-                            };
+                        var task = new Task() { BoardColumnId = column.Id, Name = childWindow.TaskName };
                         // ToDo: Add implementation of the adding new task functionality
                         //kanbanBoardDomainContext.Tasks.Add(task);
                         //kanbanBoardDomainContext.SubmitChanges();
@@ -131,49 +213,8 @@ namespace KanbanBoard.ViewModel
             childWindow.Show();
         }
 
-        private void RemoveTask(Task task)
-        {
-            confirmDeleteTask.Raise(new Confirmation()
-                {
-                    Content = "Are you sure you want to remove this task?"
-                }, confirmation =>
-                    {
-                        if (confirmation.Confirmed)
-                        {
-                            // kanbanBoardDomainContext.Tasks.Remove(task);
-                            // kanbanBoardDomainContext.SubmitChanges();
-                        }
-                    }
-                );
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            BoardId = Guid.Parse(navigationContext.Parameters[BoardIdParam]);
-            this.LoadBoardItems();
-        }
-
-        public void LoadBoardItems()
-        {
-            kanbanBoardDomainContext.Load(kanbanBoardDomainContext.GetBoardColumnsQuery().Where(obj => obj.BoardId == this.BoardId), this.OnLoadBoardItemsCompleted, null);
-        }
-
-        public virtual void OnLoadBoardItemsCompleted(LoadOperation<BoardColumn> operation)
-        {
-            this._boardsColumns = new ObservableCollection<Container<BoardColumn, Task>>(operation.Entities.Select(obj => new Container<BoardColumn, Task>(obj, new ObservableCollection<Task>(obj.Tasks))));
-            this._boardsColumns.CollectionChanged += this.BoardColumnsCollectionChanged;
-        }
-        void BoardColumnsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void BoardColumnsCollectionChanged(
+            object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -187,7 +228,6 @@ namespace KanbanBoard.ViewModel
                         break;
                     }
 
-
                 case NotifyCollectionChangedAction.Remove:
                     {
                         foreach (var columnItem in e.OldItems.OfType<BoardColumn>())
@@ -200,18 +240,57 @@ namespace KanbanBoard.ViewModel
 
             kanbanBoardDomainContext.SubmitChanges();
         }
+
+        private void RemoveColumn(BoardColumn column)
+        {
+            confirmDeleteColumn.Raise(
+                new Confirmation() { Content = "Are you sure you want to remove this column?" },
+                confirmation =>
+                    {
+                        if (confirmation.Confirmed)
+                        {
+                            kanbanBoardDomainContext.BoardColumns.Remove(column);
+                            kanbanBoardDomainContext.SubmitChanges();
+                        }
+                    });
+        }
+
+        private void RemoveTask(Task task)
+        {
+            confirmDeleteTask.Raise(
+                new Confirmation() { Content = "Are you sure you want to remove this task?" },
+                confirmation =>
+                    {
+                        if (confirmation.Confirmed)
+                        {
+                            // kanbanBoardDomainContext.Tasks.Remove(task);
+                            // kanbanBoardDomainContext.SubmitChanges();
+                        }
+                    });
+        }
+
+        #endregion
     }
 
     public class Container<TU, TV>
     {
-        public TU Item { get; set; }
+        #region Constructors and Destructors
+
+        public Container(TU item, IEnumerable<TV> children,NotifyCollectionChangedEventHandler handler)
+        {
+            Item = item;
+            Children = new ObservableCollection<TV>(children);
+            Children.CollectionChanged += handler;
+        }
+
+        #endregion
+
+        #region Public Properties
 
         public ObservableCollection<TV> Children { get; set; }
 
-        public Container(TU item, ObservableCollection<TV> children)
-        {
-            Item = item;
-            Children = children;
-        }
+        public TU Item { get; set; }
+
+        #endregion
     }
 }

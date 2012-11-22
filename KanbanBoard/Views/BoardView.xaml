@@ -35,13 +35,13 @@
                         <StackPanel>
                             <Border CornerRadius="5" BorderThickness="2" BorderBrush="White">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding Name}" Foreground="White"/>
-                                    <Button x:Name="RemoveColumnBotton" Content="X" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveColumnCommand, ElementName=LayoutRoot}"/>
+                                    <TextBlock Style="{Binding Null}" x:Name="ColumnTitle" Text="{Binding Item.Name}" Foreground="White"/>
+                                    <Button x:Name="RemoveColumnBotton" Content="X" CommandParameter="{Binding Item}" Command="{Binding DataContext.RemoveColumnCommand, ElementName=LayoutRoot}"/>
                                 </StackPanel>
                             </Border>
                             <toolkit:ListBoxDragDropTarget VerticalAlignment="Top" AllowDrop="True" VerticalContentAlignment="Stretch">
 
-                                <ListBox Style="{Binding Null}" x:Name="listBox" Height="600" Width="255" ItemsSource="{Binding Tasks, Mode=TwoWay}">
+                                <ListBox Style="{Binding Null}" x:Name="listBox" Height="600" Width="255" ItemsSource="{Binding Children, Mode=TwoWay}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel/>
@@ -60,7 +60,7 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </toolkit:ListBoxDragDropTarget>
-                            <Button Content="Add Task" CommandParameter="{Binding}" Command="{Binding DataContext.AddNewTaskCommand, ElementName=LayoutRoot}"/>
+                            <Button Content="Add Task" CommandParameter="{Binding Item}" Command="{Binding DataContext.AddNewTaskCommand, ElementName=LayoutRoot}"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

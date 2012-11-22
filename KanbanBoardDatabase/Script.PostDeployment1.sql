@@ -73,20 +73,20 @@ DELETE;
 
 MERGE INTO [dbo].[Task] as Target
 USING (VALUES
-  (@task111, @column11, N'Board 1 Column1 Task1',N'',0),
-  (@task112, @column11, N'Board 1 Column1 Task2',N'',1),
-  (@task113, @column11, N'Board 1 Column1 Task3',N'',2),
-  (@task114, @column11, N'Board 1 Column1 Task4',N'',3),
-  (@task121, @column12, N'Board 1 Column2 Task1',N'',0),
-  (@task122, @column12, N'Board 1 Column2 Task2',N'',1),
-  (@task211, @column21, N'Board 2 Column1 Task1',N'',0),
-  (@task212, @column21, N'Board 2 Column1 Task2',N'',1)
+  (@task111, @column11, N'Board 1 Column1 Task1',N'Empty',0),
+  (@task112, @column11, N'Board 1 Column1 Task2',N'Empty',1),
+  (@task113, @column11, N'Board 1 Column1 Task3',N'Empty',2),
+  (@task114, @column11, N'Board 1 Column1 Task4',N'Empty',3),
+  (@task121, @column12, N'Board 1 Column2 Task1',N'Empty',0),
+  (@task122, @column12, N'Board 1 Column2 Task2',N'Empty',1),
+  (@task211, @column21, N'Board 2 Column1 Task1',N'Empty',0),
+  (@task212, @column21, N'Board 2 Column1 Task2',N'Empty',1)
 )
 AS Source (Id,BoardColumnId,Name,[Description],Position)
 ON Target.Id = Source.Id
 -- update matched rows
 WHEN MATCHED THEN
-UPDATE SET Name = Source.Name, BoardColumnId = Source.BoardColumnId, Position = Source.Position
+UPDATE SET Name = Source.Name, BoardColumnId = Source.BoardColumnId, Position = Source.Position, [Description] = Source.[Description]
 -- insert new rows
 WHEN NOT MATCHED BY TARGET THEN
 INSERT (Id,BoardColumnId,Name,[Description],Position)
