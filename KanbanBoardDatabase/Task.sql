@@ -5,5 +5,5 @@
     [Name] NVARCHAR(256) NOT NULL, 
     [Description] NVARCHAR(MAX) NOT NULL, 
     [Position] SMALLINT NOT NULL, 
-    CONSTRAINT [FK_Task_ToBoardColumn] FOREIGN KEY ([BoardColumnId]) REFERENCES [BoardColumn]([Id])
+    CONSTRAINT [FK_Task_ToBoardColumn] FOREIGN KEY ([BoardColumnId]) REFERENCES [BoardColumn]([Id]) ON DELETE CASCADE
 )
