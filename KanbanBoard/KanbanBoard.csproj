@@ -62,6 +62,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ISMOT.Silverlight5.Threading.Tasks">
+      <HintPath>..\packages\AsyncHelper.VS.2012.0.1.2\lib\sl50\ISMOT.Silverlight5.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Silverlight5">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\sl50\Microsoft.CompilerServices.AsyncTargetingPack.Silverlight5.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\Lib\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -132,6 +138,7 @@
     <Compile Include="..\KanbanBoard.Shell\Generated_Code\KanbanBoard.Web.g.cs">
       <Link>Generated_Code\KanbanBoard.Web.g.cs</Link>
     </Compile>
+    <Compile Include="AsyncExtensions.cs" />
     <Compile Include="Behaviors\DragAndDropBehavior.cs" />
     <Compile Include="Controller\ApplicationController.cs" />
     <Compile Include="Controller\LoginController.cs" />
