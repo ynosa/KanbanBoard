@@ -26,7 +26,7 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="inner project"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Text="{Binding BoardName, Mode=OneWay}"/>
         <ListBox Grid.Column="0" Grid.Row="1"  ItemsSource="{Binding BoardColumns}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -92,7 +92,7 @@
         <StackPanel Grid.Column="1" Grid.RowSpan="2">
             <Button Content="add column"  Command="{Binding AddNewColumnCommand}"/>
             <toolkit:PanelDragDropTarget Background="Violet">
-                
+
             </toolkit:PanelDragDropTarget>
         </StackPanel>
     </Grid>

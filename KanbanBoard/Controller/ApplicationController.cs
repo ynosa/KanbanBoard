@@ -31,7 +31,9 @@ namespace KanbanBoard.Controller
 
         public void OnBoardSelectedForManaging(Board board)
         {
-            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, ViewNames.SelectedBoardView, string.Format(viewOrchestrator.ParametrTemplate, BoardViewModel.BoardIdParam, board.Id));
+            viewOrchestrator.ChangeView(RegionNames.MAIN_REGION, ViewNames.SelectedBoardView,
+                string.Format(viewOrchestrator.ParametrTemplate, BoardViewModel.BoardIdParam, board.Id),
+                string.Format(viewOrchestrator.ParametrTemplate, BoardViewModel.BoardNameParam, board.BoardName));
         }
 
         public void OnBoardsSelectedForManaging(int i)
