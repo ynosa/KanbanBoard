@@ -8,6 +8,9 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.ServiceModel.DomainServices.Client;
+    using System.Threading.Tasks;
+
+    using ISMOT.Silverlight.Threading.Tasks;
 
     using KanbanBoard.Views.ChildWindows;
     using KanbanBoard.Web;
@@ -16,6 +19,8 @@
     using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
     using Microsoft.Practices.Prism.Regions;
     using Microsoft.Practices.Unity;
+
+    using Task = KanbanBoard.Web.Task;
 
     #endregion
 
@@ -203,11 +208,11 @@
             childWindow.Show();
         }
 
-        private void AddNewTask(BoardColumn column)
+        private async void  AddNewTask(BoardColumn column)
         {
             var childWindow = container.Resolve<TaskChildWindow>();
             childWindow.Title = "add new task";
-            childWindow.Closed += (s, e) =>
+            childWindow.Closed += async (s, e) =>
                 {
                     if (childWindow.DialogResult == true)
                     {
@@ -219,9 +224,10 @@
                                  Id = Guid.NewGuid(),
                                  Position = (short)(column.Tasks.Max(obj=>obj.Position)+1)
                             };
-                        
+ 
                         kanbanBoardDomainContext.Tasks.Add(task);
-                        kanbanBoardDomainContext.SubmitChanges(operation => LoadBoardItems(), null);
+                        await kanbanBoardDomainContext.SubmitChangesAsync();
+                        this.LoadBoardItems();
                     }
                 };
             childWindow.Show();
@@ -230,7 +236,7 @@
         private void RemoveColumn(BoardColumn column)
         {
             confirmDeleteColumn.Raise(
-                new Confirmation() { Content = "Are you sure you want to remove this column?" },
+                new Confirmation { Content = "Are you sure you want to remove this column?" },
                 confirmation =>
                 {
                     if (confirmation.Confirmed)
