@@ -118,10 +118,12 @@ namespace KanbanBoard.ViewModel
             {
                 if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
                 {
+                    string tmpBoardName = board.BoardName;
                     board.BoardName = dialog.BoardName;
 
                     if (HasValidationErrors(board))
                     {
+                        board.BoardName = tmpBoardName;
                         dialog.Show();
                         return;
                     }
