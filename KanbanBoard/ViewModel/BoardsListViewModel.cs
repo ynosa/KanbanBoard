@@ -86,13 +86,13 @@ namespace KanbanBoard.ViewModel
             dialog.Show();
         }
 
-        private static bool HasValidationErrors(Board board)
+        public static bool HasValidationErrors(Entity entity)
         {
-            if (board.HasValidationErrors)
+            if (entity.HasValidationErrors)
             {
                 StringBuilder builder = new StringBuilder();
 
-                foreach (var error in board.ValidationErrors)
+                foreach (var error in entity.ValidationErrors)
                 {
                     if (builder.Length > 0)
                         builder.AppendLine();
@@ -105,7 +105,7 @@ namespace KanbanBoard.ViewModel
                 System.Windows.MessageBox.Show(builder.ToString(), "Validation errors", System.Windows.MessageBoxButton.OK);
             }
 
-            return board.HasValidationErrors;
+            return entity.HasValidationErrors;
         }
 
         private void EditBoard(Board board)

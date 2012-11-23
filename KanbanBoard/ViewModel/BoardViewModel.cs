@@ -248,6 +248,12 @@
                                 : (short)0
                             };
 
+                        if (BoardsListViewModel.HasValidationErrors(task))
+                        {
+                            childWindow.Show();
+                            return; 
+                        }
+
                         kanbanBoardDomainContext.Tasks.Add(task);
                         await kanbanBoardDomainContext.SubmitChangesAsync();
                         this.LoadBoardItems();
