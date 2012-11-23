@@ -208,11 +208,11 @@
             childWindow.Show();
         }
 
-        private void  AddNewTask(BoardColumn column)
+        private async void  AddNewTask(BoardColumn column)
         {
             var childWindow = container.Resolve<TaskChildWindow>();
             childWindow.Title = "add new task";
-            childWindow.Closed += (s, e) =>
+            childWindow.Closed += async (s, e) =>
                 {
                     if (childWindow.DialogResult == true)
                     {
